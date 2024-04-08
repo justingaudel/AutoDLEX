@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v3.8.6">
+    <title>Violators Form</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.4/examples/sign-in/">
+
+    <!-- Bootstrap core CSS -->
+<link href="static/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+
+    <!-- Favicons -->
+
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+    <!-- Custom styles for this template -->
+    <link href="static/css/signin.css" rel="stylesheet">
+  </head>
+  <body class="text-center">
+  {% if session.loggedin %}
+ 
+<form class="form-signin" action="{{ url_for('violators_form') }}" method="post">
+<img  class="mb-4" src="static/images/CTMEU_LOGO.png" alt="" width="180" height="240">
+    <div class="form-group">
+        <label for="inputViolation" class="sr-only">Road Violation</label>
+        <select class="form-control" id="inputViolation" name="violation">
+            <option value="" disabled selected>Violation</option>
+            <option value="speeding">Speeding</option>
+            <option value="running-red-light">Running a Red Light</option>
+            <option value="illegal-parking">Illegal Parking</option>
+            <option value="reckless-driving">Reckless Driving</option>
+            <option value="driving-under-influence">Driving Under the Influence (DUI)</option>
+            <option value="failure-to-yield">Failure to Yield</option>
+        </select>
+    </div>
+    <div style="display:none" class="form-group">
+        <label  for="inputTime" class="sr-only">Time</label>
+        <input  type="text" name="time" id="inputTime" class="form-control" placeholder="Time">
+    </div>
+    <div style="display:none"  class="form-group">
+        <label for="inputDate" class="sr-only">Date</label>
+        <input type="text" name="date" id="inputDate" class="form-control" placeholder="Date">
+    </div>
+    <div class="form-group">
+        <label for="inputBarangay" class="sr-only">Barangay</label>
+        <select name="barangay" class="form-control" id="inputBarangay">
+            <option value="" disabled selected>Barangay</option>
+            <option value="Balibago">Balibago</option>
+            <option value="Caingin">Caingin</option>
+            <option value="Dila">Dila</option>
+            <option value="Dita">Dita</option>
+            <option value="Don Jose">Don Jose</option>
+            <option value="Ibaba">Ibaba</option>
+            <option value="Kanluran">Kanluran</option>
+            <option value="Labas">Labas</option>
+            <option value="Macabling">Macabling</option>
+            <option value="Malitlit">Malitlit</option>
+            <option value="Market Area">Market Area</option>
+            <option value="Poblacion">Poblacion</option>
+            <option value="Santo Domingo">Santo Domingo</option>
+            <option value="Sinalhan">Sinalhan</option>
+            <option value="Tagapo">Tagapo</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="inputPlateNumber" class="sr-only">Plate Number</label>
+        <input type="text" name="plateNumber" id="inputPlateNumber" class="form-control" placeholder="Plate Number" required>
+    </div>
+    <div class="form-group">
+        <label for="inputVehicleType" class="sr-only">Vehicle Type</label>
+        <select name="vehicle" class="form-control" id="inputVehicleType">
+            <option value="" disabled selected>Vehicle Type</option>
+            <option value="Motorcycle">Motorcycle</option>
+            <option value="Jeep">Jeep</option>
+            <option value="Tricycle">Tricycle</option>
+            <option value="Van">Van</option>
+            <option value="Pickup">Pickup</option>
+            <!-- Add more options as needed -->
+        </select>
+    </div>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Submit report</button>
+</form>
+
+<script>
+    // Get the current date and time in Singapore time zone
+    var singaporeTime = new Date().toLocaleString("en-US", {timeZone: "Asia/Singapore"});
+    var now = new Date(singaporeTime);
+
+    // Format the time as hh:mm AM/PM (e.g., 12:34 PM)
+    var hours = now.getHours();
+    var amPM = hours >= 12 ? 'PM' : 'AM';
+    hours = (hours % 12) || 12; // Convert from 24-hour to 12-hour format
+    var minutes = String(now.getMinutes()).padStart(2, '0');
+    var currentTime = hours + ':' + minutes + ' ' + amPM;
+
+    // Set the input field value to the current time
+    document.getElementById('inputTime').value = currentTime;
+
+    // Format the date as MM/DD/YYYY (e.g., 03/29/2024)
+    var month = String(now.getMonth() + 1).padStart(2, '0');
+    var day = String(now.getDate()).padStart(2, '0');
+    var year = now.getFullYear();
+    var currentDate = month + '/' + day + '/' + year;
+
+    // Set the input field value to the current date
+    document.getElementById('inputDate').value = currentDate;
+</script>
+
+
+
+{% else %}
+        <script>
+        window.onload = function() {
+            window.location.href = "{{ url_for('enforcer') }}";
+        }
+    </script>
+        {% endif %}
+
+
+
+
+<script src="{{ url_for('static', filename='javascript/camera.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>
+
+        <script src="{{ url_for('static', filename='js/feather.min.js') }}"></script>
+
+        <script src="{{ url_for('static', filename='js/jquery.slimscroll.min.js') }}"></script>
+
+        <script src="{{ url_for('static', filename='js/jquery.dataTables.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/dataTables.bootstrap4.min.js') }}"></script>
+
+        <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+
+        <script src="{{ url_for('static', filename='plugins/apexchart/apexcharts.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='plugins/apexchart/chart-data.js') }}"></script>
+
+        <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+      
+</body>
+</html>

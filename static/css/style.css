@@ -1,0 +1,77 @@
+#video {
+    border-radius: 12px;
+    width: 420px;
+    height: 340px;
+}
+
+#photo {
+    border: 1px solid black;
+    width: 420px;
+    height: 340px;
+}
+
+#canvas {
+    display: none;
+}
+
+.camera {
+    width: 420px;
+    display: inline-block;
+}
+
+.output {
+    width: 420px;
+    display: inline-block;
+}
+#startbutton {
+    margin-top: 40px;
+    display: block;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    bottom: 36px;
+    padding: 0; /* Remove padding to ensure the image fills the button */
+    font-size: 14px;
+    cursor: pointer;
+    background-color: transparent; /* Set background color to transparent */
+    border: none; /* Remove border if not needed */
+}
+#startbutton img {
+    width: 50px; /* Adjust the width as needed */
+    height: 50px; /* Adjust the height as needed */
+}
+
+#submit{
+    border-radius: 8px;
+    margin:60px;
+    margin-top: 5px;
+    bottom: 36px;
+    padding: 13px;
+    background-color: #6a67ce;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+    color: rgba(255, 255, 255, 1.0);
+    cursor: pointer;
+}
+ #retakebutton{
+    border-radius: 8px;
+    margin:60px;
+    margin-top: 5px;
+    bottom: 36px;
+    padding: 13px;
+    background-color: #6a67ce;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+    color: rgba(255, 255, 255, 1.0);
+    cursor: pointer;
+ } 
+#space-between{
+    margin: 12px;
+    justify-content: center;
+    display:flex;
+}
+.contentarea {
+    font-size: 16px;
+    font-family: Arial;
+    text-align: center;
+}
