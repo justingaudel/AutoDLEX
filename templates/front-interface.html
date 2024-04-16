@@ -37,9 +37,6 @@
   </head>
   <body class="text-center">
     <form class="form-signin" method="GET" >
-    <div style="text-align: center;">
-            <img style="margin-left: -150px" class="mb-4" src="static/images/logo3.png" alt="" width="600" height="200">
-        </div>
     <button class="btn btn-lg btn-primary btn-block" type="button" onclick="redirectTo('enforcer')">Enforcer</button>
     <button class="btn btn-lg btn-primary btn-block" type="button" onclick="redirectTo('admin_signin')">Admin</button>
 </form>
@@ -48,7 +45,7 @@
   function redirectTo(userType) {
             var url;
             if (userType === 'enforcer') {
-                url = "{{ url_for('enforcer') }}"; // Redirect to enforcer route
+                url = "{{ url_for('enforcer.enforcer') }}"; // Redirect to enforcer route
             } else if (userType === 'admin_signin') {
                 url = "{{ url_for('admin_signin') }}"; // Redirect to admin route
             } else {

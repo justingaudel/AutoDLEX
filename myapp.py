@@ -1,33 +1,26 @@
 from flask import Flask, request, render_template, session, redirect, url_for
 from flask import request
-from PIL import Image
-import mysql.connector
+from blueprints.enforcer.enforcer import enforcer_bp
+from blueprints.violators.violators import violator_bp
+from db_utils import get_db_connection
 import numpy as np
-import io
 import cv2
 import pytesseract 
 
 app = Flask(__name__)
 
+
+app.register_blueprint(enforcer_bp)
+app.register_blueprint(violator_bp)
 # Set a secret key for the Flask application
 app.secret_key = b'CTMEU/'
 
 #  connection to the MySQL database
-db_connection = mysql.connector.connect(
-    host='localhost',
-    user='root',
-    password='',
-    database='CTMEU'
-)
-
-# Check if the connection was successful
-if db_connection.is_connected():
-    print('Connected to MySQL database')
-else:
-    print('Failed to connect to MySQL database')
+db_connection = get_db_connection()
+cursor = db_connection.cursor()
 
 # Create a cursor object to execute SQL queries
-cursor = db_connection.cursor()
+
 
 # Path to Tesseract executable
 pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
@@ -48,7 +41,7 @@ def preprocess_image(img):
 def logout():
     session.pop('loggedin',None)
     session.pop('username',None)
-    return redirect(url_for('enforcer'))
+    return redirect(url_for('enforcer.enforcer'))
 
 
 @app.route('/logout_admin')
@@ -64,7 +57,7 @@ def interface():
 
 
 
-@app.route('/enforcer', methods=['GET', 'POST'])
+"""@app.route('/enforcer', methods=['GET', 'POST'])
 def enforcer():
     if 'loggedin' in session:
         return redirect(url_for('camera'))
@@ -82,7 +75,7 @@ def enforcer():
             msg = 'Incorrect Password or Username!'
     return render_template('enforcer-login.html', msg=msg)
 
-
+"""
 @app.route('/camera')
 def camera():
     return render_template('camera.html')
@@ -137,7 +130,6 @@ def settled_reports():
 
 
 #routes for admin
- 
 @app.route('/admin_signin', methods=['GET','POST'])
 def admin_signin():
     if 'loggedin' in session:
@@ -164,7 +156,7 @@ def admin_signin():
 #routes for Violators data view includes delete, edit, and view
 
 #viewing of violators data all
-
+"""
 @app.route('/violator_list')
 def violator_list():
     cursor.execute("SELECT * From  violators_data")
@@ -229,7 +221,7 @@ def delete_violator():
        
 #routes for Violators data view includes delete, edit, and view
 
-
+"""
 
 
 #routes for Enforcers includes add
@@ -271,6 +263,8 @@ def add_enforcer():
 
 #This is for processing images extracting text from images
     
+#This is for processing images extracting text from images
+    
 @app.route('/process_image', methods=['POST'])
 def process_image():
     try:
@@ -280,22 +274,36 @@ def process_image():
         # Read the image file sent from the frontend
         image_data = request.files['image'].read()
 
-        # Convert the image bytes to PIL Image
-        image = Image.open(io.BytesIO(image_data))
+        # Convert the image bytes to a numpy array
+        nparr = np.frombuffer(image_data, np.uint8)
 
-        # Convert the image to OpenCV format
-        img_cv = np.array(image)
+        # Decode numpy array into an image
+        image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
 
-        # Preprocess the image
-        img_processed = preprocess_image(img_cv)
+        # Dilation on the green channel
+        dilated_img = cv2.dilate(image[:, :, 1], np.ones((7, 7), np.uint8))
 
-        # Perform OCR
-        extracted_text = pytesseract.image_to_string(img_processed)
+        # Median blur to get the background image
+        bg_img = cv2.medianBlur(dilated_img, 21)
 
+        # Absolute difference to preserve edges
+        diff_img = 255 - cv2.absdiff(image[:, :, 1], bg_img)
+
+        # Normalizing between 0 to 255
+        norm_img = cv2.normalize(diff_img, None, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_8UC1)
+
+        # Thresholding
+        th = cv2.threshold(norm_img, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
+
+        # Perform OCR on the thresholded image
+        extracted_text = pytesseract.image_to_string(th)
+        extracted_text = extracted_text.split('\n')
         return extracted_text
+    
         
     except Exception as e:
         return f"Error processing image: {str(e)}"
-
+    
+  #this code is for the text classificatsion identifying string for names and the license id number  
 if __name__ == '__main__':
     app.run(debug=True)

@@ -22,7 +22,7 @@
                                     Dashboard</span> </a>
                         </li>
                              <li  class="active">
-                            <a href="{{ url_for('violator_list') }}">
+                            <a href="{{ url_for('violators.violator_list') }}">
                                 <img src="{{ url_for('static', filename='img/icons/users1.svg') }}" alt="img">
                                 <span>Violator list</span>
                             </a>
@@ -155,13 +155,13 @@
                                         <td>{{row.6}}</td>
                                         <td><span class="bg-lightgreen badges"> Unsettled</span></td>
                                         <td>
-                                        <a class="me-3" href="{{ url_for('view_violator', violator_id=row.0) }}">
+                                        <a class="me-3" href="{{ url_for('violators.view_violator', violator_id=row.0) }}">
                                                 <img src="static/img/icons/eye.svg" alt="img">
                                             </a>
-                                            <a class="me-3" href="{{ url_for('view_violators_data',violator_id=row.0) }}">
+                                            <a class="me-3" href="{{ url_for('violators.view_violators_data',violator_id=row.0) }}">
                                                 <img src="static/img/icons/edit.svg" alt="img">
                                             </a>
-                                            <a class="me-3 confirm-text" href="{{ url_for('delete_violator',violator_id=row.0) }}">
+                                            <a class="me-3 confirm-text" href="{{ url_for('violators.delete_violator',violator_id=row.0) }}">
                                                 <img src="static/img/icons/delete.svg" alt="img">
                                             </a>
                                         </td>
