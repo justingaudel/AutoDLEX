@@ -630,7 +630,8 @@ body {
     font-size: 14px;
     color: #212b36;
     line-height: 1.5;
-    background-color: #fafbfe
+    background-color: #fafbfe;
+    
 }
 
 .container {
@@ -3462,10 +3463,10 @@ table.dataTable>thead .sorting_desc_disabled:before {
 div.dataTables_wrapper div.dataTables_info {
     padding-top: 23px
 }
-
+/*  header-design top profile  */
 .header {
     background: #ff9f43;
-    background: #fff;
+    background: #2578F4;
     border-bottom: 1px solid transparent;
     height: 60px;
     z-index: 999;
@@ -4465,12 +4466,14 @@ span.select2-container.select2-container--default.select2-container--open {
     z-index: 9999
 }
 
+/*  Sidebars  */
+
 .sidebar {
     background-color: transparent;
     border-right: 1px solid transparent;
-    margin-top: 0;
     z-index: 1001;
     position: fixed;
+    margin-top: -125px;
     top: 60px;
     bottom: 0;
     left: 0;
@@ -4525,7 +4528,7 @@ span.select2-container.select2-container--default.select2-container--open {
 .sidebar .sidebar-menu>ul>li>a {
     padding: 10px 15px;
     position: relative;
-    color: #212b36
+    color: #2578F4
 }
 
 .sidebar .sidebar-menu>ul>li>a svg {
@@ -4535,9 +4538,9 @@ span.select2-container.select2-container--default.select2-container--open {
 .sidebar .sidebar-menu>ul>li>a img {
     width: 18px
 }
-
+/* sidebars color hover */
 .sidebar .sidebar-menu>ul>li>a:hover {
-    background: #1b2850;
+    background: #2578F4;
     color: #fff;
     border-radius: 5px
 }
@@ -4600,9 +4603,9 @@ span.select2-container.select2-container--default.select2-container--open {
     -webkit-transform: rotate(90deg);
     -ms-transform: rotate(90deg)
 }
-
+/*  sidebars button color */
 .sidebar .sidebar-menu>ul>li.active a {
-    background: #1b2850;
+    background: #2578F4;
     border-radius: 5px
 }
 
@@ -8351,4 +8354,8 @@ span.select2-container.select2-container--default.select2-container--open {
     position: absolute;
     top: 50%;
     right: 10px
+}
+
+.dashboard-logo{
+    margin-bottom: -50px;
 }

@@ -37,20 +37,25 @@
     <link href="static/css/signin.css" rel="stylesheet">
   </head>
   <body class="text-center">
-    <form class="form-signin" action="{{ url_for('admin_signin') }}" method="post">
-  <img class="mb-4" src="static/images/CTMEU_LOGO.png" alt="" width="200" height="260">
-  <h1 style="margin-top:-50px; color:black"class="h3 mb-3 font-weight-normal " > <b>Admin Log in </b></h1>
+    <div class="admin-logo mt-5">
+      <img class="mb-4" src="static/images/CTMEU_LOGO.png" alt="" width="500" height="660">
+    </div>
+  <form class="form-signin" action="{{ url_for('admin_signin') }}" method="post">
+    <h1 style="color:white; margin-top: 20px;" class="h3 mb-4 font-weight-normal"> 
+      <b>Admin Log in</b> 
+    </h1>
+  
   {% if msg %}
     <p style="color:red">{{ msg }}</p>
-{% endif %}
+  {% endif %}
 
   <div class="form-group">
   <label for="text" class="sr-only">Email address</label>
-  <input type="email" id="username" name="email" class="form-control" placeholder="Email address" required autofocus>
+        <input type="email" id="username" name="email" class="form-control" placeholder="Email address" required autofocus>
   </div>
-  <label for="inputPassword" class="sr-only">Password</label>
-  <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
-  <button class="btn btn-lg btn-primary btn-block" name="submit" type="submit">Sign in</button>
+   <label for="inputPassword" class="sr-only">Password</label>
+           <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+    <button class="btn btn-lg btn-primary btn-block" name="submit" type="submit">Sign in</button>
 </form>
 </body>
 

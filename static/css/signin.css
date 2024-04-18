@@ -10,7 +10,7 @@ body {
   align-items: center;
   padding-top: 40px;
   padding-bottom: 40px;
-  background-image: url('/static/images/bg1.jpg');
+  background-image: url('/static/images/bg3.jpg');
   background-position: center;
   background-size: cover;
 }
@@ -20,7 +20,6 @@ body {
   max-width: 330px;
   padding: 15px;
   margin: auto;
-  
  
 }
 .form-signin .checkbox {
@@ -45,4 +44,24 @@ body {
   margin-bottom: 10px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
+}
+
+
+.ctmeu-logo{
+  margin-top: -200px;
+  margin-bottom: -75px;
+  display: flex;
+  justify-content: center;
+}
+
+.enforcer-logo{
+  margin-top: -100px;
+  margin-bottom: -97px;
+  display: flex;
+  justify-content: center;
+}
+
+.admin-logo{
+  margin-left: 100px;
+  opacity: 0.8;
 }

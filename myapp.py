@@ -122,7 +122,6 @@ def index():
 
 
 
-
 @app.route('/settled_reports')
 def settled_reports():
     return render_template('settled-reports.html')

@@ -11,10 +11,14 @@
     <div class="main-wrapper">
 
         {% include 'include_assets/profile.html'%}
-        
         <div class="sidebar" id="sidebar">
             <div class="sidebar-inner slimscroll">
                 <div id="sidebar-menu" class="sidebar-menu">
+                    <div class="dashboard-logo">
+                        <a href="{{url_for('index')}}">
+                            <img src="static/images/CTMEU_LOGO.png" alt="" style="width: 200px; height: auto;">
+                        </a>
+                    </div>
                     <ul>
                         <li class="active">
                             <a href="{{ url_for('index') }}"><img src="static/img/icons/dashboard.svg" alt="img"><span>
@@ -42,54 +46,54 @@
                 </div>
             </div>
         </div>
-
         <div class="page-wrapper">
             <div class="content">
                 <div class="row">
-                    <div class="col-lg-3 col-sm-6 col-12 d-flex">
-                        <div class="dash-count">
-                            <div class="dash-counts">
-                                <h4>10</h4>
-                                <h5>Enforcers</h5>
-                            </div>
+                    <div class="col-lg-3 col-sm-6 col-12">
+                        <div class="dash-widget">
                             <div class="dash-imgs">
                                 <i data-feather="user"></i>
                             </div>
+                        <div class="dash-widgetcontent">
+                            <h5><span class="counters" data-count="307144.00">24</span></h5>
+                        <h6>Enforcers</h6>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-sm-6 col-12 d-flex">
-                        <div class="dash-count das1">
-                            <div class="dash-counts">
-                                <h4>11</h4>
-                                <h5>Violators</h5>
-                            </div>
+                    <div class="col-lg-3 col-sm-6 col-12">
+                        <div class="dash-widget">
                             <div class="dash-imgs">
-                                <i data-feather="user-check"></i>
+                                <i data-feather="user"></i>
+                            </div>
+                        <div class="dash-widgetcontent">
+                            <h5><span class="counters" data-count="307144.00">43</span></h5>
+                        <h6>Violators</h6>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-sm-6 col-12 d-flex">
-                        <div class="dash-count das2">
-                            <div class="dash-counts">
-                                <h4>11</h4>
-                                <h5>Settled Reports</h5>
-                            </div>
+                    <div class="col-lg-3 col-sm-6 col-12">
+                        <div class="dash-widget">
                             <div class="dash-imgs">
                                 <i data-feather="file-text"></i>
+                                </div>
+                        <div class="dash-widgetcontent">
+                            <h5><span class="counters" data-count="307144.00">54</span></h5>
+                        <h6>Settled Reports</h6>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-sm-6 col-12 d-flex">
-                        <div class="dash-count das3">
-                            <div class="dash-counts">
-                                <h4>7</h4>
-                                <h5>Unsettled Violations</h5>
-                            </div>
+                    <div class="col-lg-3 col-sm-6 col-12">
+                        <div class="dash-widget">
                             <div class="dash-imgs">
-                                <i data-feather="file"></i>
+                                <i data-feather="file-text"></i>
+                                </div>
+                        <div class="dash-widgetcontent">
+                            <h5><span class="counters" data-count="307144.00">98</span></h5>
+                        <h6>Unsettled Reports</h6>
                             </div>
                         </div>
                     </div>
+                   
                 </div>
 
                 <div class="row">
