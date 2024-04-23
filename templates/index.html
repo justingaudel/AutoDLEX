@@ -11,8 +11,8 @@
     <div class="main-wrapper">
 
         {% include 'include_assets/profile.html'%}
-        <div class="sidebar" id="sidebar">
-            <div class="sidebar-inner slimscroll">
+        <div class="sidebar" id="sidebar" style="background-color:  white;">
+            <div class="sidebar-inner slimscroll" >
                 <div id="sidebar-menu" class="sidebar-menu">
                     <div class="dashboard-logo">
                         <a href="{{url_for('index')}}">
@@ -31,7 +31,7 @@
                             </a>
                         </li>
                         <li >
-                        <a href="{{ url_for('enforcer_data') }}">
+                        <a href="{{ url_for('enforcer.enforcer_data') }}">
                                 <img src="static/img/icons/users1.svg" alt="img">
                                 <span> Enforcers</span>
                             </a>
@@ -104,10 +104,10 @@
                                 <div class="graph-sets">
                                     <ul>
                                         <li>
-                                            <span> test</span>
+                                            <span>Highest</span>
                                         </li>
                                         <li>
-                                            <span>test</span>
+                                            <span>lowest</span>
                                         </li>
                                     </ul>
                                     <div class="dropdown">
@@ -135,6 +135,34 @@
                         </div>
                     </div>
                 </div>
+                <style>
+                    #sales_charts .chartjs-render-monitor .bar {
+    background-color: blue; /* Change 'blue' to the shade of blue you prefer */
+}
+                </style>
+                <script>
+                    var ctx = document.getElementById('sales_charts').getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+        datasets: [{
+            label: 'Violations Data',
+            data: [12, 19, 3, 5, 2, 3, 10],
+            backgroundColor: 'blue', // Change 'blue' to the shade of blue you prefer
+            borderColor: 'blue', // Change 'blue' to the shade of blue you prefer
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+                </script>
                 <div class="card mb-0">
                     <div class="card-body">
                         <h4 class="card-title">Recently Violated  </h4>

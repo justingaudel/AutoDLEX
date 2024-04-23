@@ -13,22 +13,27 @@
     {% include 'include_assets/profile.html'%}
 
 
-        <div class="sidebar" id="sidebar">
-            <div class="sidebar-inner slimscroll">
+        <div class="sidebar" id="sidebar" style="background-color:  white;">
+            <div class="sidebar-inner slimscroll"  >
                 <div id="sidebar-menu" class="sidebar-menu">
+                    <div class="dashboard-logo">
+                        <a href="{{url_for('index')}}">
+                            <img src="static/images/CTMEU_LOGO.png" alt="" style="width: 200px; height: auto;">
+                        </a>
+                    </div>
                     <ul>
                         <li>
                             <a href="{{ url_for('index') }}"><img src="static/img/icons/dashboard.svg" alt="img"><span>
                                     Dashboard</span> </a>
                         </li>
                              <li>
-                            <a href="{{ url_for('violator_list') }}">
+                            <a href="{{ url_for('violators.violator_list') }}">
                                 <img src="{{ url_for('static', filename='img/icons/users1.svg') }}" alt="img">
                                 <span>Violator list</span>
                             </a>
                         </li>
                         <li class="active" >
-                        <a href="{{ url_for('enforcer') }}">
+                        <a href="{{ url_for('enforcer.enforcer_data') }}">
                                 <img src="static/img/icons/users1.svg" alt="img">
                                 <span> Enforcers</span>
                             </a>
@@ -51,46 +56,82 @@
                         <h4>Enforcer Management</h4>
                     </div>
                 </div>
-                <form action="{{ url_for('add_enforcer') }}" method="post">
+                <form action="{{ url_for('enforcer.add_enforcer') }}"  enctype="multipart/form-data"  method="post">
                     <div class="card">
                         <div class="card-body">
                         {% if msg %}
-                                <p style="color:red"> {{msg}}</p>
+                                <div class="alert alert-danger">
+                                    <strong>{{msg}}</strong>
+                                </div>
                                 {% endif %} 
                             <div class="row">
                                 <div class="col-lg-3 col-sm-6 col-12">
                                     <div class="form-group">
-                                        <label>User Name</label>
-                                        <input name="username" type="text">
+                                        <label><a style="color: red;">* </a>User Name</label>
+                                        <input name="username" type="text" required>
                                     </div>
                                     <div class="form-group">
-                                        <label>Password</label>
-                                        <div class="pass-group">
-                                            <input type="password" name="password" class="pass-input">
-                                            <span class="fas toggle-password fa-eye-slash"></span>
-                                        </div>
-                                    </div>
+                                        <label><a style="color: red;">* </a>Assiggned Location</label>
+                                        <select name="assigned_location" class="form-control" id="assigned_location" required>
+                                            <option value="" disabled selected> Seclect Barangay</option>
+                                            <option value="Balibago">Balibago</option>
+                                            <option value="Caingin">Caingin</option>
+                                            <option value="Dila">Dila</option>
+                                            <option value="Dita">Dita</option>
+                                            <option value="Don Jose">Don Jose</option>
+                                            <option value="Ibaba">Ibaba</option>
+                                            <option value="Kanluran">Kanluran</option>
+                                            <option value="Labas">Labas</option>
+                                            <option value="Macabling">Macabling</option>
+                                            <option value="Malitlit">Malitlit</option>
+                                            <option value="Market Area">Market Area</option>
+                                            <option value="Poblacion">Poblacion</option>
+                                            <option value="Santo Domingo">Santo Domingo</option>
+                                            <option value="Sinalhan">Sinalhan</option>
+                                            <option value="Tagapo">Tagapo</option>
+                                        </select>
+                                    </div>   
                                 </div>
                                 <div class="col-lg-3 col-sm-6 col-12">
                                     <div class="form-group">
-                                        <label>Mobile</label>
-                                        <input type="text">
+                                        <label><a style="color: red;">* </a>First Name</label>
+                                        <input type="text" name="first_name" required>
                                     </div>
                                     <div class="form-group">
-                                        <label>Confirm Password</label>
+                                        <label><a style="color: red;">* </a> Password</label>
                                         <div class="pass-group">
-                                            <input name="confirmPassword" type="password" class="pass-inputs">
-                                            <span class="fas toggle-passworda fa-eye-slash"></span>
+                                            <input name="password" id="password" type="password" class="pass-inputs" required>
+                                           
                                         </div>
                                     </div>
+                                   
+                                </div>
+                                <div class="col-lg-3 col-sm-6 col-12">
+                                    <div class="form-group">
+                                        <label><a style="color: red;">* </a>Last Name</label>
+                                        <input type="text" name="last_name" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label><a style="color: red;">* </a>Confirm Password</label>
+                                        <input type="password" id="confirm_password" name="confirm_password" class="pass-inputs" required>
+                                    </div>
+                                    
+                                    
+                                </div>
+                                <div class="col-lg-3 col-sm-6 col-12">
+                                    <div class="form-group">
+                                        <label><a style="color: red;">* </a>Email</label>
+                                        <input type="text" name="email" required>
+                                    </div>
+                                 
                                 </div>
                                 <div class="form-group">
-                                    <label for="profile_image">Profile Picture</label>
-                                    <input name="profile_image" id="profile_image" type="file">
+                                    <label for="profile_image"><a style="color: red;">* </a>Profile Picture</label>
+                                    <input name="profile_image" id="profile_image" type="file" required>
                                 </div>
                                   
                                 <div class="col-lg-6">
-                                    <button type="submit" class="btn btn-submit me-2">Submit</button>
+                                    <button type="submit" class="btn btn-submit me-2">Add</button>
                                     <button type="button" class="btn btn-cancel">Cancel</button>
                                 </div>
                             </div>
@@ -99,11 +140,13 @@
                 </form>
 
                 </div>
-
+               
+          
             </div>
         </div>
     </div>
-
+    
+   
     <script src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>
 
     <script src="{{ url_for('static', filename='js/feather.min.js') }}"></script>
@@ -121,7 +164,17 @@
     <script src="{{ url_for('static', filename='plugins/sweetalert/sweetalerts.min.js') }}"></script>
 
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> 
 
+    <script src="{{ url_for('static', filename='javascript/Error-handling.js') }}"></script>
+    
+    </script>
+    
+  
+    
+    
+    
 </body>
 
 </html>

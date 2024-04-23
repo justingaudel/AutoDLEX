@@ -12,22 +12,27 @@
          {% include 'include_assets/profile.html'%}
 
 
-         <div class="sidebar" id="sidebar">
+         <div class="sidebar" id="sidebar" style="background-color:  white;">
             <div class="sidebar-inner slimscroll">
                 <div id="sidebar-menu" class="sidebar-menu">
+                    <div class="dashboard-logo">
+                        <a href="{{url_for('index')}}">
+                            <img src="static/images/CTMEU_LOGO.png" alt="" style="width: 200px; height: auto;">
+                        </a>
+                    </div>
                     <ul>
                         <li >
                             <a href="{{ url_for('index') }}"><img src="static/img/icons/dashboard.svg" alt="img"><span>
                                     Dashboard</span> </a>
                         </li>
                              <li  class="active">
-                            <a href="{{ url_for('violator_list') }}">
+                            <a href="{{ url_for('violators.violator_list') }}">
                                 <img src="{{ url_for('static', filename='img/icons/users1.svg') }}" alt="img">
                                 <span>Violator list</span>
                             </a>
                         </li>
                         <li >
-                        <a  href="{{ url_for('enforcer_data') }}">
+                        <a  href="{{ url_for('enforcer.enforcer_data') }}">
                                 <img src="static/img/icons/users1.svg" alt="img">
                                 <span> Enforcers</span>
                             </a>
@@ -47,11 +52,31 @@
             <div class="content">
                 <div class="page-header">
                     <div class="page-title">
-                        <h4>Violator Details</h4>
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                              <li class="breadcrumb-item"><a href="{{ url_for('violators.violator_list') }}">Violator List</a></li>
+                              <li class="breadcrumb-item active" aria-current="page">Violator Details</li>
+                            </ol>
+                          </nav>
+                        
              </div>
                 </div>
-
                 <div class="row">
+                <div class="col-lg-4 col-sm-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="">
+                                <div class="owl-theme">
+                                    <div class="product">
+                                        <h2 style="text-align:center; margin-top: 9px;margin-bottom: 25px;">Captured Image</h2>
+                                        <img src="static/images/sample.png" alt="img">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+               
                     <div class="col-lg-8 col-sm-12">
                         <div class="card">
                             <div class="card-body">
@@ -87,23 +112,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-sm-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="">
-                                    <div class="owl-theme">
-                                        <div class="product">
-                                            <img src="static/images/sample.png" alt="img">
-                                            <h2 style="text-align:center; margin-top: 9px">Captured Image</h2>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
+             </div>
                     <div class="col-lg-432 col-sm-12">
-                        <div class="card">
-                            <div class="card-body">
+                        <div class="card text-center">
+                            <div class="card-body  ">
                                 <div class="productdetails">
                                 <h5> Ectracted Data from the license</h5>
                                     <ul class="product-bar">

@@ -13,22 +13,27 @@
 
          {% include 'include_assets/profile.html'%}
 
-        <div class="sidebar" id="sidebar">
+        <div class="sidebar" id="sidebar" style="background-color:  white;">
             <div class="sidebar-inner slimscroll">
-                <div id="sidebar-menu" class="sidebar-menu">
+                <div id="sidebar-menu" class="sidebar-menu" >
                     <ul>
+                        <div class="dashboard-logo">
+                            <a href="{{url_for('index')}}">
+                                <img src="static/images/CTMEU_LOGO.png" alt="" style="width: 200px; height: auto;">
+                            </a>
+                        </div>
                         <li >
                             <a href="{{ url_for('index') }}"><img src="static/img/icons/dashboard.svg" alt="img"><span>
                                     Dashboard</span> </a>
                         </li>
                              <li>
-                            <a href="{{ url_for('violator_list') }}">
+                            <a href="{{ url_for('violators.violator_list') }}">
                                 <img src="{{ url_for('static', filename='img/icons/users1.svg') }}" alt="img">
                                 <span>Violator list</span>
                             </a>
                         </li>
                         <li >
-                        <a  class="active" href="{{ url_for('enforcer_data') }}">
+                        <a  class="active" href="{{ url_for('enforcer.enforcer_data') }}">
                                 <img src="static/img/icons/users1.svg" alt="img">
                                 <span> Enforcers</span>
                             </a>
@@ -53,30 +58,29 @@
                             <h3 class="section-title">Enforcers</h3>
                         </div>
                         <div class="row">
-                            <div class="col-12 col-md-6 col-lg-4 d-flex">
+                            {% for data in enforcer_data %}
+                            <div class="col-xl-3 col-xxl-4 col-lg-4 col-md-6 col-sm-6">
                                 <div class="card flex-fill bg-white">
-                                    <img alt="Card Image" src="static/images/sins.jpg" class="card-img-top">
+                                    <img alt="Card Image" src="static/enforcer_profiles/{{data.8}}" class="card-img-top" >
                                     <div class="card-header">
                                         <h5 class="card-title mb-0">Enforcer</h5>
                                     </div>
                                     <div class="card-body">
-                                        <p> Name: Jhony  Sins </p>
-                                        <p> Position : Enforcer 1 </p>
-                                        <p> Assigned Location: Macabling  </p>
+                                        <a> Name: {{data.6}}{{data.7}}</a>
+                                        <p> Email : {{data.5}} </p>
+                                        <p> Assigned Location: {{data.9}} </p>
                                         <button type="button" class="btn btn-rounded btn-info">Edit</button>
                                         <button type="button" class="btn btn-rounded btn-info">Delete</button>
                                     </div>
                                 </div>
                             </div>
+                            {% endfor %}
                         </div>
-                       
-                       
-                    </section>
-
-                
-
+                        
+                </section>
             </div>
         </div>
+        
     </div>
 
 

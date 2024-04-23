@@ -11,22 +11,27 @@
     {% include 'include_assets/profile.html'%}
 
 
-    <div class="sidebar" id="sidebar">
+    <div class="sidebar" id="sidebar" style="background-color:  white;">
             <div class="sidebar-inner slimscroll">
                 <div id="sidebar-menu" class="sidebar-menu">
+                    <div class="dashboard-logo">
+                        <a href="{{url_for('index')}}">
+                            <img src="static/images/CTMEU_LOGO.png" alt="" style="width: 200px; height: auto;">
+                        </a>
+                    </div>
                     <ul>
                         <li >
                             <a href="{{ url_for('index') }}"><img src="static/img/icons/dashboard.svg" alt="img"><span>
                                     Dashboard</span> </a>
                         </li>
                              <li class="active">
-                            <a href="{{ url_for('violator_list') }}">
+                            <a href="{{ url_for('violators.violator_list') }}">
                                 <img src="{{ url_for('static', filename='img/icons/users1.svg') }}" alt="img">
                                 <span>Violator list</span>
                             </a>
                         </li>
                         <li >
-                        <a href="{{ url_for('enforcer_data') }}">
+                        <a href="{{ url_for('enforcer.enforcer_data') }}">
                                 <img src="static/img/icons/users1.svg" alt="img">
                                 <span> Enforcers</span>
                             </a>
@@ -49,7 +54,7 @@
                         <h4> Violators Information </h4>
                     </div>
                 </div>
-                <form action="{{url_for('edit_violators_data')}}"  method="POST" > 
+                <form action="{{url_for('violators.edit_violators_data')}}"  method="POST" > 
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
@@ -97,7 +102,7 @@
                             </div>
                             <div class="col-lg-12">
                                 <button class="btn btn-submit me-2" name="submit">Update</button>
-                                <a href="{{url_for('violator_list')}}" class="btn btn-cancel">Cancel</a>
+                                <a href="{{url_for('violators.violator_list')}}" class="btn btn-cancel">Cancel</a>
                             </div>
                         </div>
                     </div>

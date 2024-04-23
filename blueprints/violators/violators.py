@@ -16,7 +16,7 @@ def violator_list():
 @violator_bp.route('/view_violator')
 def view_violator():
     violator_id = request.args.get('violator_id')
-    query = "SELECT * FROM violators_data WHERE vd_id = %s"
+    query = "SELECT * FROM violators_data WHERE violators_id = %s"
     cursor.execute(query, (violator_id,))
     violator_data = cursor.fetchone()
     if violator_data:
@@ -29,7 +29,7 @@ def view_violator():
 @violator_bp.route('/view_violators_data')
 def view_violators_data():
     violator_id = request.args.get('violator_id')
-    query = "SELECT * FROM violators_data WHERE vd_id = %s"
+    query = "SELECT * FROM violators_data WHERE violators_id  = %s"
     cursor.execute(query, (violator_id,))
     violator_data = cursor.fetchone()
     if violator_data:
@@ -49,21 +49,21 @@ def edit_violators_data():
         plateNumber = request.form['plateNumber']
         vehicle = request.form['vehicle']
         
-        cursor.execute("UPDATE violators_data SET violation=%s, time=%s, date=%s, barangay=%s, plateNumber=%s, vehicle=%s WHERE vd_id = %s",
+        cursor.execute("UPDATE violators_data SET violation=%s, time=%s, date=%s, barangay=%s, plateNumber=%s, vehicle=%s WHERE violators_id  = %s",
                        (violation, time, date, barangay, plateNumber, vehicle, vd_id))
         db_connection.commit() 
 
-        return redirect(url_for('violator_list'))
+        return redirect(url_for('violators.violator_list'))
 
    
-    return render_template('edit_violators_data.html')
+    return render_template('violators_data/edit-violators-data.html')
 
         
 #deleting of violators data        
 @violator_bp.route('/delete_violator')
 def delete_violator():
     violator_id = request.args.get('violator_id')
-    cursor.execute("DELETE FROM violators_data WHERE vd_id = %s", (violator_id,))
+    cursor.execute("DELETE FROM violators_data WHERE violators_id  = %s", (violator_id,))
     db_connection.commit() 
     return redirect(url_for('violator_list'))
        

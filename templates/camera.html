@@ -29,7 +29,7 @@
                                 <span class="user-img"><img src="static/img/profiles/avator1.jpg" alt="">
                                     <span class="status online"></span></span>
                                 <div class="profilesets">
-                                    <h6>{{session.username}}</h6>
+                                    <h6>{{session.email}}</h6>
                                     <h5>Enforcer</h5>
                                 </div>
                             </div>
@@ -42,19 +42,22 @@
             </ul>
         </div>
                 
-        <form action="{{ url_for('violators') }}" method="post" enctype="multipart/form-data">
+        <form action="{{ url_for('svm.violators') }}" method="post" enctype="multipart/form-data">
                 <h1 style="margin-top: 90px">Capture ID now</h1>
-                     <div class="camera">
+                     <div class="camera" style="margin: 12px 20px;">
                             <video id="video">Video stream not available.</video>
-                        <img id="capturedImage" style="display:none; width: 420px; height: 340px;" src="" alt="Captured Image"> <!-- Set width and height to match camera -->
+                    <img id="capturedImage" style="display:none; width: 420px; height: 340px;" src="" alt="Captured Image"> <!-- Set width and height to match camera -->
                 </div>
                 <div>
                     <button id="startbutton">
                         <img src="{{ url_for('static', filename='images/camera-svgrepo-com.png') }}" alt="Camera Icon">
                     </button>
                 </div>
+                <input  style="display:none" type="text" name="tct_number" value="test_tct">
+                <input  style="display:none" type="text" name="name" value="test_name">
+                <input style="display:none" type="text" name="license_number" value="test_licenseNumber">
                 <input style="display:none"  id="extracted_text" name="extracted_text">
-                <input style="display:none"  id="image_data" name="image_data">
+                <input style="display:none" id="image_data"  name="image_data">
                 <canvas id="canvas"></canvas>
                 <div id="extractedText"></div>
                     {% if msg %}
@@ -67,9 +70,9 @@
                         });
                         </script>
                     {% endif %} 
-                <div id="space-between" >
-                    <button id="retakebutton">Retake</button> <!-- Button to retake photo -->
-                    <button id="submit" name="submit">Submit</button>
+                <div id="space-between" style="font-size: 20px;"  >
+                    <button id="retakebutton">  Retake </button> <!-- Button to retake photo -->
+                    <button id="submit" name="submit"> Submit</button>
                 </div>
                 <!-- Hidden input fields to store the values -->
             </form>
@@ -78,7 +81,7 @@
         {% else %}
         <script>
         window.onload = function() {
-            window.location.href = "{{ url_for('enforcer') }}";
+            window.location.href = "{{ url_for('enforcer.enforcer') }}";
         }
     </script>
         {% endif %}
