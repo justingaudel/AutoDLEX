@@ -7,7 +7,7 @@ from sklearn.metrics import accuracy_score
 import base64
 import os
 import uuid
-from flask import session
+
 
 
 db_connection = get_db_connection()
@@ -1334,10 +1334,10 @@ def violators():
         svm_classifier.fit(X_train, y_train)
 
 # Predictions
-        #y_pred = svm_classifier.predict(X_test)
+        y_pred = svm_classifier.predict(X_test)
 
 # Evaluation
-        #print("Accuracy:", accuracy_score(y_test, y_pred))
+        print("Accuracy:", accuracy_score(y_test, y_pred))
 
 # Example inference
 
@@ -1355,7 +1355,7 @@ def violators():
         
         
         #seting time for the filename
-        username = session.get('username')
+        username = request.args.get('username')
         
         #creating random filename with date on it 
         random_filename = f"{username}_{str(uuid.uuid4())[:8]}.png"

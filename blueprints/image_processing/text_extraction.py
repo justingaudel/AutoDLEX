@@ -3,8 +3,7 @@ from db_utils import get_db_connection
 import cv2
 import numpy as np
 import pytesseract 
-import os
-from werkzeug.utils import secure_filename
+
 
 db_connection = get_db_connection()
 cursor = db_connection.cursor()
@@ -46,6 +45,7 @@ def process_image():
         th = cv2.threshold(norm_img, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
 
         # Perform OCR on the thresholded image
+        cv2.imshow('Normalized Image', th)
         extracted_text = pytesseract.image_to_string(th)
         extracted_text = extracted_text.split('\n')
         return extracted_text
