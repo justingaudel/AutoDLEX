@@ -1,3 +1,4 @@
+/* Default styles */
 html,
 body {
   height: 100%;
@@ -19,9 +20,9 @@ body {
   width: 100%;
   max-width: 330px;
   padding: 15px;
-  margin: auto;
- 
+  margin: auto; /* Set margin to auto to center horizontally */
 }
+
 .form-signin .checkbox {
   font-weight: 400;
 }
@@ -46,22 +47,31 @@ body {
   border-top-right-radius: 0;
 }
 
-
-.ctmeu-logo{
+.ctmeu-logo {
   margin-top: -200px;
   margin-bottom: -75px;
   display: flex;
   justify-content: center;
 }
 
-.enforcer-logo{
+.enforcer-logo {
   margin-top: -100px;
   margin-bottom: -97px;
   display: flex;
   justify-content: center;
 }
 
-.admin-logo{
+.admin-logo {
   margin-left: 100px;
   opacity: 0.8;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  body {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+  
+ 
 }

@@ -14,22 +14,24 @@
             <link rel="stylesheet" href="{{ url_for('static', filename='index-css/style.css') }}">
             <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
-<body>
+<body style="background-color: wheat;">
+    
             <div class="contentarea">
-                {% if session.loggedin %}
+                {% if session.loggedin %}         
                 <div style="background-color:#2578F4 ;" class="header d-flex justify-content-end">
                 <ul class="nav" style="margin-top:-20px">                     
                 <li class="nav-item dropdown has-arrow main-drop">
                     <a href="javascript:void(0);" class="dropdown-toggle nav-link userset" data-bs-toggle="dropdown">
                         <span class="user-img"><img src="static/img/profiles/avator1.jpg" alt="">                               
                     </a>
+
                     <div class="dropdown-menu menu-drop-user">
                         <div class="profilename">
                             <div class="profileset">
                                 <span class="user-img"><img src="static/img/profiles/avator1.jpg" alt="">
                                     <span class="status online"></span></span>
                                 <div class="profilesets">
-                                    <h6>{{session.email}}</h6>
+                                    <h6>{{ username }}</h6>
                                     <h5>Enforcer</h5>
                                 </div>
                             </div>
@@ -42,12 +44,13 @@
             </ul>
         </div>
                 
-        <form action="{{ url_for('svm.violators') }}" method="post" enctype="multipart/form-data">
-                <h1 style="margin-top: 90px">Capture ID now</h1>
-                     <div class="camera" style="margin: 12px 20px;">
+        <form action="{{ url_for('svm.violators') }}" method="post" enctype="multipart/form-data" >
+                <h1 style="margin-top: 90px; margin-bottom:4px ;">License Scanner</h1>
+                     <div class="camera">
                             <video id="video">Video stream not available.</video>
-                    <img id="capturedImage" style="display:none; width: 420px; height: 340px;" src="" alt="Captured Image"> <!-- Set width and height to match camera -->
+                    <img id="capturedImage" class="capturedImage"  src="" alt="Captured Image"> <!-- Set width and height to match camera -->
                 </div>
+               
                 <div>
                     <button id="startbutton">
                         <img src="{{ url_for('static', filename='images/camera-svgrepo-com.png') }}" alt="Camera Icon">
@@ -58,6 +61,7 @@
                 <input style="display:none" type="text" name="license_number" value="test_licenseNumber">
                 <input style="display:none"  id="extracted_text" name="extracted_text">
                 <input style="display:none" id="image_data"  name="image_data">
+                <input style="display:none" type="text" name="username" value="{{username}}">
                 <canvas id="canvas"></canvas>
                 <div id="extractedText"></div>
                     {% if msg %}
@@ -70,12 +74,15 @@
                         });
                         </script>
                     {% endif %} 
-                <div id="space-between" style="font-size: 20px;"  >
-                    <button id="retakebutton">  Retake </button> <!-- Button to retake photo -->
-                    <button id="submit" name="submit"> Submit</button>
+                    <div id="warningMessage"></div>
+
+                <div  id="space-between" style="font-size: 20px;"  >
+                    <button id="retakebutton" name="retakebutton">  Retake </button> <!-- Button to retake photo -->
+                    <button id="submit" name="submit" > Submit</button>
                 </div>
                 <!-- Hidden input fields to store the values -->
             </form>
+        
 
 
         {% else %}

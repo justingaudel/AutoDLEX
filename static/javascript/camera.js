@@ -9,6 +9,7 @@
     var retakebutton = null; // Reference to the retake button
     var extractedTextElement = null; // Reference to the div to display extracted text
     var capturedImageElement = null; // Reference to the img element to display captured image
+    var submit = document.getElementById('submit'); // Reference to the submit button
 
     function startup() {
         video = document.getElementById('video');
@@ -26,10 +27,15 @@
         .then(function(stream) {
             video.srcObject = stream;
             video.play();
+            submit.disabled = true;
+          
         })
+    
         .catch(function(err) {
             console.log("An error occurred: " + err);
         });
+
+     
 
         video.addEventListener('canplay', function(ev) {
             if (!streaming) {
@@ -43,7 +49,7 @@
                 video.setAttribute('height', height);
                 canvas.setAttribute('width', width);
                 canvas.setAttribute('height', height);
-                streaming = true;
+                streaming = false;
             }
         }, false);
 
@@ -66,6 +72,7 @@
         context.fillRect(0, 0, canvas.width, canvas.height);
         var data = canvas.toDataURL('image/png');
         photo.setAttribute('src', data);
+       
     }
 
     function takepicture() {
@@ -98,6 +105,8 @@
                 capturedImageElement.style.display = 'block'; // Make the processed image visible
                 retakebutton.style.display = 'block'; // ShowA the "Retake" button
                 video.style.display = 'none'; // Hide the video stream
+                submit.disabled = false;
+                
             })
             .catch(error => console.error('Error:', error));
         } else {
@@ -109,6 +118,7 @@
         capturedImageElement.style.display = 'none'; // Hide the captured image
         startbutton.style.display = 'block'; // Show the "Take photo" button
         video.style.display = 'inline-block'; // Show the video stream
+        submit.disabled = true;
     }
 
     window.addEventListener('load', startup, false);

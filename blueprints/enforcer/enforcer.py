@@ -22,8 +22,7 @@ def enforcer():
         record = cursor.fetchone()
         if record:
             session['loggedin'] = True
-            session['username'] = record[1]
-            return redirect(url_for('camera'))
+            return redirect(url_for('camera',username=username))
         else:
             msg = 'Incorrect Password or Username!'
     return render_template('enforcer-login.html', msg=msg)

@@ -16,13 +16,28 @@
 
 .camera {
     width: 420px;
-    display: inline-block;
+    padding: 30px;
+    margin: 0 auto; 
+    display: flex; 
+    
 }
+
 
 .output {
     width: 420px;
-    display: inline-block;
+    padding: 30px;
+    margin: 0 auto; 
+    display: flex; 
 }
+
+#capturedImage{
+    width: 420px;
+    padding: 30px;
+    margin: 0 auto; 
+    display: flex;
+
+}
+
 #startbutton {
     margin-top: 40px;
     display: block;
@@ -34,7 +49,8 @@
     font-size: 14px;
     cursor: pointer;
     background-color: transparent; /* Set background color to transparent */
-    border: none; /* Remove border if not needed */
+    border: black
+     /* Remove border if not needed */
 }
 #startbutton img {
     width: 50px; /* Adjust the width as needed */
@@ -52,6 +68,7 @@
     font-size: 14px;
     color: rgba(255, 255, 255, 1.0);
     cursor: pointer;
+    
 }
  #retakebutton{
     border-radius: 8px;
@@ -75,3 +92,50 @@
     font-family: Arial;
     text-align: center;
 }
+
+.camera {
+    position: relative;
+    width: 420px; 
+    height: 340px;
+}
+
+#video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#capturedImage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    margin: auto 0;
+}
+/*
+#title {
+    font-size: 30px;
+    font-family: Arial;
+    text-align: center;
+    margin-top: 20px;
+    margin: 0 auto; Center horizontally 
+    color: white;
+    justify-content: center; 
+    
+}*/
+
+
+@media screen and (min-width: 768px) {
+    .contentarea {
+        padding: 40px;
+    }
+
+    .camera {
+        max-width: 420px;
+        margin: 0 auto;
+    }
+}
+

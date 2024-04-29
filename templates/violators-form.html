@@ -44,44 +44,20 @@
     <!-- Custom styles for this template -->
     <link href="static/css/signin.css" rel="stylesheet">
   </head>
-  <body >
+  <body class="text-center" >
 
-  <div class="contentarea">
+ 
     {% if session.loggedin %}
-    <div style="background-color:#2578F4 ;" class="header d-flex justify-content-end">
-    <ul class="nav" style="margin-top:-20px">                     
-    <li class="nav-item dropdown has-arrow main-drop">
-        <a href="javascript:void(0);" class="dropdown-toggle nav-link userset" data-bs-toggle="dropdown">
-            <span class="user-img"><img src="static/img/profiles/avator1.jpg" alt="">                               
-        </a>
-        <div class="dropdown-menu menu-drop-user">
-            <div class="profilename">
-                <div class="profileset">
-                    <span class="user-img"><img src="static/img/profiles/avator1.jpg" alt="">
-                        <span class="status online"></span></span>
-                    <div class="profilesets">
-                        <h6>{{session.email}}</h6>
-                        <h5>Enforcer</h5>
-                    </div>
-                </div>
-                <hr class="m-0">
-                <a class="dropdown-item logout pb-0" href="{{ url_for('logout') }}" ><img
-                        src="static/img/icons/log-out.svg" class="me-2" alt="img">Logout</a>
-            </div>
-        </div>
-    </li>
-</ul>
-</div>
-    
+  
 
 
 <form class="form-signin" action="{{ url_for('violators_form') }}" method="post">
-<img  class="mb-4" src="static/images/CTMEU_LOGO.png" alt="" width="180" height="240">
-    <div class="form-group">
-        <label for="inputViolation" class="sr-only">Road Violation</label>
+<img style="margin-top:-125px" src="static/images/CTMEU_LOGO.png" alt="" width="180" height="240">
+    <div id="violation" style="margin-top:-35px" class="form-group">
+        <h3 for="inputViolation"  class="mb-3">Violation Form</3>
         <select class="form-control" id="inputViolation" name="violation">
             <option value="" disabled selected>Violation</option>
-            <option value="speeding">Speeding</option>
+            <option  value="speeding">Speeding</option>
             <option value="running-red-light">Running a Red Light</option>
             <option value="illegal-parking">Illegal Parking</option>
             <option value="reckless-driving">Reckless Driving</option>
@@ -98,8 +74,9 @@
         <input type="text" name="date" id="inputDate" class="form-control" placeholder="Date">
     </div>
     <div class="form-group">
-        <label for="inputBarangay" class="sr-only">Barangay</label>
-        <select name="barangay" class="form-control" id="inputBarangay">
+        <label for="inputBarangay"  class="sr-only">Barangay</label>
+
+        <select name="barangay" class="form-control" id="inputBarangay"  class="fa fa-caret-down">
             <option value="" disabled selected>Barangay</option>
             <option value="Balibago">Balibago</option>
             <option value="Caingin">Caingin</option>
@@ -120,7 +97,7 @@
     </div>
     <div class="form-group">
         <label for="inputPlateNumber" class="sr-only">Plate Number</label>
-        <input type="text" name="plateNumber" id="inputPlateNumber" class="form-control" placeholder="Plate Number" required>
+        <input  style="border-color: black;" type="text" name="plateNumber" id="inputPlateNumber" class="form-control" placeholder="Plate Number" required>
     </div>
     <div class="form-group">
         <label for="inputVehicleType" class="sr-only">Vehicle Type</label>
@@ -168,14 +145,18 @@
 {% else %}
         <script>
         window.onload = function() {
-            window.location.href = "{{ url_for('enforcer') }}";
+            window.location.href = "{{ url_for('enforcer.enforcer') }}";
         }
     </script>
         {% endif %}
 
 
 
+        <script src="{{ url_for('static', filename='javascript/Error-handling.js') }}"></script>
 
+
+<script src="{{ url_for('static', filename='javascript/camera.js') }}"></script>
+        
 <script src="{{ url_for('static', filename='javascript/camera.js') }}"></script>
         <script src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>
 

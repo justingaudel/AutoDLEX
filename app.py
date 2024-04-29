@@ -52,7 +52,8 @@ def interface():
 
 @app.route('/camera')
 def camera():
-    return render_template('camera.html')
+    username = request.args.get('username')
+    return render_template('camera.html',username=username)
 
 
 
@@ -107,10 +108,6 @@ def admin_signin():
         else:
             msg = "Incorrect password or email!"
     return render_template('admin-login.html', msg=msg)
-
-
-
-
 
 
 @app.route('/add_enforcer', methods=['POST', 'GET'])
