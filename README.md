@@ -12,7 +12,7 @@ PHPMySQL:
  - Go to PHPMyAdmin and locate the "Import" button at the top of the page.
  - Click on "Choose File" and upload the gzipped file provided by your developer.
 
-Installation of Requirements:
+Installation of Requirements(libraries):
  - Add your project to VSCode and open the terminal.
  - Type pip install -r requirements.txt in the terminal.
 
