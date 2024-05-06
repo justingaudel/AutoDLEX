@@ -13,41 +13,41 @@
     {% include 'include_assets/profile.html'%}
 
 
-        <div class="sidebar" id="sidebar" style="background-color: white;">
-            <div class="sidebar-inner slimscroll">
-                <div id="sidebar-menu" class="sidebar-menu" > 
-                    <div class="dashboard-logo">
-                        <a href="{{url_for('index')}}">
-                            <img src="static/images/CTMEU_LOGO.png" alt="" style="width: 200px; height: auto;">
-                        </a>
-                    </div>
-                    <ul>
-                        <li >
-                            <a href="{{ url_for('index') }}"><img src="static/img/icons/dashboard.svg" alt="img"><span>
-                                    Dashboard</span> </a>
-                        </li>
-                             <li  class="active">
-                            <a href="{{ url_for('violators.violator_list') }}">
-                                <img src="{{ url_for('static', filename='img/icons/users1.svg') }}" alt="img">
-                                <span>Violator list</span>
-                            </a>
-                        </li>
-                        <li >
-                        <a  href="{{ url_for('enforcer.enforcer_data') }}">
-                                <img src="static/img/icons/users1.svg" alt="img">
-                                <span> Enforcers</span>
-                            </a>
-                        </li>
-                        <li  >
-                        <a href="{{ url_for('settled_reports') }}">
-                                <img src="static/img/icons/time.svg" alt="img">
-                                <span> Settled Reports</span>
-                            </a>
-                        </li>
-                    </ul>
+    <div class="sidebar" id="sidebar" style="background-color:  white;">
+        <div class="sidebar-inner slimscroll" >
+            <div id="sidebar-menu" class="sidebar-menu">
+                <div class="dashboard-logo">
+                    <a href="{{url_for('index')}}">
+                        <img src="static/images/autodlex.png" alt="" style="width: 200px; height: auto; margin-bottom: 80px;">
+                    </a>
                 </div>
+                <ul>
+                    <li >
+                        <a href="{{ url_for('index') }}"><img src="static/img/icons/dashboard.svg" alt="img"><span>
+                                Dashboard</span> </a>
+                    </li>
+                         <li class="active">
+                        <a href="{{ url_for('violators.violator_list') }}">
+                            <img src="{{ url_for('static', filename='img/icons/users1.svg') }}" alt="img">
+                            <span>Violator list</span>
+                        </a>
+                    </li>
+                    <li >
+                    <a href="{{ url_for('enforcer.enforcer_data') }}">
+                            <img src="static/img/icons/users1.svg" alt="img">
+                            <span> Enforcers</span>
+                        </a>
+                    </li>
+                    <li >
+                    <a href="{{ url_for('settled_reports') }}">
+                            <img src="static/img/icons/time.svg" alt="img">
+                            <span> Settled Reports</span>
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
+    </div>
 
 
 
@@ -80,14 +80,6 @@
                                     <li>
                                         <a data-bs-toggle="tooltip" data-bs-placement="top" title="pdf"><img
                                                 src="static/img/icons/pdf.svg" alt="img"></a>
-                                    </li>
-                                    <li>
-                                        <a data-bs-toggle="tooltip" data-bs-placement="top" title="excel"><img
-                                                src="static/img/icons/excel.svg" alt="img"></a>
-                                    </li>
-                                    <li>
-                                        <a data-bs-toggle="tooltip" data-bs-placement="top" title="print"><img
-                                                src="static/img/icons/printer.svg" alt="img"></a>
                                     </li>
                                 </ul>
                             </div>

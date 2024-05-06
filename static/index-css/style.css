@@ -4482,7 +4482,7 @@ span.select2-container.select2-container--default.select2-container--open {
     border-right: 1px solid transparent;
     z-index: 1001;
     position: fixed;
-    margin-top: -125px;
+    margin-top: -70px;
     top: 60px;
     bottom: 0;
     left: 0;
@@ -4576,12 +4576,7 @@ span.select2-container.select2-container--default.select2-container--open {
     color: #fff
 }
 
-.sidebar .sidebar-menu>ul>li>a span {
-    margin-left: 10px;
-    font-size: 15px;
-    font-weight: 500;
-    color: #637381
-}
+
 
 .sidebar .sidebar-menu>ul>li>a .menu-arrow {
     display: inline-block;
@@ -8370,3 +8365,34 @@ span.select2-container.select2-container--default.select2-container--open {
 }
 
 
+
+/* Override slimscroll styling */
+
+
+/* sidebar -ccss */
+
+.sidebar .sidebar-menu>ul>li>a span {
+    margin-left: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    color: white
+    
+}
+
+.sidebar-inner.slimscroll {
+    overflow: hidden;
+        background-color: #2578F4; /* Set the background color to blue */
+    }
+    
+    .sidebar{
+        background-color: #2578F4 !important; 
+    
+    }
+    
+    .sidebar .sidebar-menu>ul>li.active a{
+        background-color: white !important;
+    }
+    
+    .sidebar .sidebar-menu>ul>li.active a span{
+        color: black !important;
+    }

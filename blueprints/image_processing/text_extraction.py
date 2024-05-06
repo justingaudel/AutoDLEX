@@ -2,13 +2,15 @@ from flask import Blueprint, request
 from db_utils import get_db_connection
 import cv2
 import numpy as np
-import pytesseract 
+import pytesseract
+
 
 
 db_connection = get_db_connection()
 cursor = db_connection.cursor()
 
 pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+
 
 text_extraction_bp = Blueprint("text_extraction",__name__,template_folder="templates")
 
