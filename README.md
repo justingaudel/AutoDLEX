@@ -2,7 +2,7 @@ AutoDLEX: An OCR and SVM Powered System for Automating Driver's License Extracti
 
 
 Installation:
- - Clone the repository from 'https://github.com/justingaudel/AutoDLEX-An-OCR-and-SVM-Powered-System-for-Automating-Driver-s-License-Extraction-in-Santa-Rosa-Cit.git.[
+ - Clone the repository from 'https://github.com/justingaudel/AutoDLEX-An-OCR-and-SVM-Powered-System-for-Automating-Driver-s-License-Extraction-in-Santa-Rosa-Cit.git.
  - Create a folder in XAMPP/htdocs/"your folder name".
  - Open your Git Bash and navigate to the folder you've created using cd "folder name"
  - Type git clone https://github.com/justingaudel/AutoDLEX-An-OCR-and-SVM-Powered-System-for-Automating-Driver-s-License-Extraction-in-Santa-Rosa-Cit.git.
