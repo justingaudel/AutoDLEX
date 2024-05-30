@@ -8,6 +8,7 @@ from db_utils import get_db_connection
 
 
 
+
 app = Flask(__name__)
 
 
@@ -32,7 +33,7 @@ cursor = db_connection.cursor()
 
 @app.route('/logout')
 def logout():
-    session.pop('loggedin',None)
+    session.pop('loggedins',None)
     session.pop('username',None)
     return redirect(url_for('enforcer.enforcer'))
 
@@ -46,6 +47,15 @@ def logout_admin():
 
 @app.route('/')
 def interface():
+    if 'loggedins' in session:
+        return redirect(url_for('camera'))
+    elif 'loggedin' in session:
+        return redirect(url_for('index'))
+    
+    # Call loggedin() or loggedins() function here if needed
+    # Example: loggedins('index')
+    # Example: loggedin('camera')
+
     return render_template('front-interface.html')
 
 
@@ -53,12 +63,12 @@ def interface():
 @app.route('/camera')
 def camera():
     username = request.args.get('username')
-    return render_template('camera.html',username=username)
-
+    return render_template('camera.html')
 
 
 @app.route('/violators_form', methods=['GET','POST'])
 def violators_form():
+    msg = ''  # Initialize msg here
     if request.method == 'POST':
         violation = request.form['violation']
         time = request.form['time']
@@ -66,27 +76,54 @@ def violators_form():
         barangay = request.form['barangay']
         plateNumber = request.form['plateNumber']
         vehicle = request.form['vehicle']
+        status = request.form['status']
 
-        cursor.execute("INSERT INTO violators_data (violation, time, date, barangay, plateNumber, vehicle) VALUES (%s, %s, %s, %s, %s, %s)", (violation, time, date, barangay, plateNumber, vehicle))
+        cursor.execute("INSERT INTO violators_data (violation, time, date, barangay, plateNumber, vehicle, status) VALUES (%s, %s, %s, %s, %s, %s, %s)", (violation, time, date, barangay, plateNumber, vehicle, status))
 
         db_connection.commit()
-        msg = 'Report Submitted Succesfully!'
-        return render_template('camera.html',msg=msg)
+        msg = 'Report Submitted Successfully!'
+
+    return render_template('camera.html', msg=msg)
+
     
     
     
 @app.route('/index')
 def index():
-    cursor.execute("SELECT * From  violators_data")
-    data =  cursor.fetchall()
-    return render_template('index.html',violators = data)
+    try:
+        # Fetch counts
+        cursor.execute("SELECT COUNT(*) FROM enforcer_accounts")
+        enforcers_count = cursor.fetchone()[0]
+        
+        cursor.execute("SELECT COUNT(*) FROM violators_data")
+        violators_count = cursor.fetchone()[0]
+        
+        cursor.execute("SELECT COUNT(*) FROM violators_data WHERE status = 'unsettled'")
+        unsettled_reports_count = cursor.fetchone()[0]
+        
+        cursor.execute("SELECT COUNT(*) FROM violators_data WHERE status = 'settled'")
+        settled_reports_count = cursor.fetchone()[0]
+        
+        cursor.execute("SELECT * FROM violators_data")
+        violators = cursor.fetchall()
+        
+        # Pass counts and data to template
+        return render_template('index.html', enforcers_count=enforcers_count, violators_count=violators_count,
+                               unsettled_reports_count=unsettled_reports_count, settled_reports_count=settled_reports_count,
+                               violators=violators)
+    except Exception as e:
+        # Handle any exceptions gracefully
+        return render_template('error.html', error=str(e))
+
 
 
 
 
 @app.route('/settled_reports')
 def settled_reports():
-    return render_template('settled-reports.html')
+    cursor.execute("SELECT * FROM violators_data WHERE status = 'settled'")
+    data =  cursor.fetchall()
+    return render_template('settled-reports.html',reports = data)
 
 
 

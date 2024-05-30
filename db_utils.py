@@ -1,3 +1,5 @@
+# Description: This file contains the functions to connect and close the connection to the database.
+
 import mysql.connector
 
 def get_db_connection():
@@ -5,7 +7,8 @@ def get_db_connection():
         host='localhost',
         user='root',
         password='',
-        database='CTMEU'
+        database='CTMEU',
+        autocommit=True
     )
     return db_connection
 

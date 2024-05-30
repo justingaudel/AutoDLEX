@@ -1329,9 +1329,9 @@ def violators():
         X_train, X_test, y_train, y_test = train_test_split(X, labels, test_size=0.2, random_state=42)
 
 # Train SVM classifier with hyperparameter tuning
-        param_grid = {'C': [0.1, 1, 10, 100], 'kernel': ['linear', 'rbf', 'poly']}
-        svm_classifier = GridSearchCV(SVC(), param_grid, cv=3)
+        svm_classifier = SVC(kernel='linear')
         svm_classifier.fit(X_train, y_train)
+
 
 # Predictions
         y_pred = svm_classifier.predict(X_test)
