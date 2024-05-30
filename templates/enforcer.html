@@ -3,11 +3,12 @@
 {% include 'include_assets/styles.html' %}
 
 </head>
-
+{% if session.loggedin %}
 <body>
     <div id="global-loader">
-        <div class="whirly-loader"> </div>
+        <div class="whirly-loader">AutoDlex<i class="fa fa-camera" aria-hidden="true"></i></div>
     </div>
+    
 
     <div class="main-wrapper">
 
@@ -21,27 +22,27 @@
                             <img src="static/images/autodlex.png" alt="" style="width: 200px; height: auto; margin-bottom: 80px;">
                         </a>
                     </div>
-                    <ul>
+                    <ul >
                         <li >
-                            <a href="{{ url_for('index') }}"><img src="static/img/icons/dashboard.svg" alt="img"><span>
+                            <a href="{{ url_for('index') }}"><span class="fa fa-home"></span><span>
                                     Dashboard</span> </a>
                         </li>
-                             <li class="active">
+                             <li >
                             <a href="{{ url_for('violators.violator_list') }}">
-                                <img src="{{ url_for('static', filename='img/icons/users1.svg') }}" alt="img">
-                                <span>Violator list</span>
+                                <span class="fa fa-user-alt"></span>
+                                <span> Violator list</span>
                             </a>
                         </li>
-                        <li >
+                        <li class="active" >
                         <a href="{{ url_for('enforcer.enforcer_data') }}">
-                                <img src="static/img/icons/users1.svg" alt="img">
+                            <span class="fa fa-user-alt"></span>
                                 <span> Enforcers</span>
                             </a>
                         </li>
                         <li >
                         <a href="{{ url_for('settled_reports') }}">
-                                <img src="static/img/icons/time.svg" alt="img">
-                                <span> Settled Reports</span>
+                            <span class="fas fa-exclamation-circle"></span>
+                                <span  > Settled Reports</span>
                             </a>
                         </li>
                     </ul>
@@ -52,29 +53,61 @@
 
         <div class="page-wrapper">
             <div class="content">
-            <a href="{{ url_for('add_enforcer') }}" style="float:right;" class="btn btn-rounded btn-info">+ Add Enforcer</a>
+            
             <section class="comp-section comp-cards">
-                        <div class="section-header">
-                            <h3 class="section-title">Enforcers</h3>
-                        </div>
+                      
+                       
+                        {% if enforcer_data == []%}
                         <div class="row">
-                            {% for data in enforcer_data %}
-                            <div class="col-xl-3 col-xxl-4 col-lg-4 col-md-6 col-sm-6">
-                                <div class="card flex-fill bg-white">
-                                    <img alt="Card Image" src="static/enforcer_profiles/{{data.8}}" class="card-img-top" >
-                                    <div class="card-header">
-                                        <h5 class="card-title mb-0">Enforcer</h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <a> Name: {{data.6}}{{data.7}}</a>
-                                        <p> Email : {{data.5}} </p>
-                                        <p> Assigned Location: {{data.9}} </p>
-                                        <button type="button" class="btn btn-rounded btn-info">Edit</button>
-                                        <button type="button" class="btn btn-rounded btn-info">Delete</button>
-                                    </div>
+                            <img src="static/images/empty.svg" alt="img"  style="width: 200px; height: auto; margin: 0 auto; margin-top:50px">
+                            <span class="d-flex justify-content-center mt-2">You have not added any enforcers.  </span>
+                            <span class="d-flex justify-content-center mb-4">Click the button to add enforcers. </span>
+                            
+                            <div class="d-flex justify-content-center">
+                                <a href="{{ url_for('add_enforcer') }}" class="btn btn-info" >+ Add Enforcer</a>
+                            </div>
+                           
+                            {% else %}
+                            <div class="page-header">
+                                <div class="page-title">
+                                    <h4>Enforcer Management</h4>
                                 </div>
                             </div>
-                            {% endfor %}
+                            <div class="d-flex justify-content-end mb-4">
+                                <a href="{{ url_for('add_enforcer') }}" class="btn btn-info">+ Add Enforcer</a>
+                            </div>
+                            <div class="content-body" >
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        {% for data in enforcer_data %}
+                                        <div class="col-xl-3 col-xxl-4 col-lg-4 col-md-6 col-sm-6" >
+                                            <div class="card"style="box-shadow:2px 5px 7px rgba(0, 0, 0, 0.3);" > <!-- Adjust the height as needed -->
+                                                <img class="img-fluid" src="static\enforcer_profiles\{{data.8}}" style="height: 250px;" alt="">
+                                                <div class="card-body">
+                                                    <ul class="list-group mb-3 list-group-flush">
+                                                        <li class="list-group-item px-0 border-top-0 d-flex justify-content-between">
+                                                            <span class="mb-0 "> <B>Username:</B>  <b>{{data.3}} </b></span>
+                                                            <a href="javascript:void(0);"><i class="la la-heart-o mr-1"></i><strong></strong></a>
+                                                        </li>
+                                                        <li class="list-group-item px-0 d-flex justify-content-between">
+                                                            <span class="mb-0"><b>Assigned Location : </b>{{data.9}}</span><strong></strong>
+                                                        </li>
+                                                        <li class="list-group-item px-0 d-flex justify-content-between">
+                                                            <span class="mb-0"><b>Name : </b>{{data.6}}</span><strong></strong>
+                                                        </li>
+                                                        <li class="list-group-item px-0 border-top-0 d-flex justify-content-between">
+                                                        </li>
+                                                    </ul>
+                                                    <a href="{{ url_for('enforcer.view_enforcer', enforcer_id=data.0) }}" class="btn btn-primary d-flex justify-content-center">View</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                
+                          
+                            {% endif %}
                         </div>
                         
                 </section>
@@ -83,188 +116,18 @@
         
     </div>
 
+    {% else %}
+    <script>
+        
 
-    <div class="modal fade" id="showpayment" tabindex="-1" aria-labelledby="showpayment" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Show Payments</h5>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">×</span></button>
-                </div>
-                <div class="modal-body">
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Reference</th>
-                                    <th>Amount </th>
-                                    <th>Paid By </th>
-                                    <th>Paid By </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="bor-b1">
-                                    <td>2022-03-07 </td>
-                                    <td>INV/SL0101</td>
-                                    <td>$ 1500.00 </td>
-                                    <td>Cash</td>
-                                    <td>
-                                        <a class="me-2" href="javascript:void(0);">
-                                            <img src="static/img/icons/printer.svg" alt="img">
-                                        </a>
-                                        <a class="me-2" href="javascript:void(0);" data-bs-target="#editpayment"
-                                            data-bs-toggle="modal" data-bs-dismiss="modal">
-                                            <img src="static/img/icons/edit.svg" alt="img">
-                                        </a>
-                                        <a class="me-2 confirm-text" href="javascript:void(0);">
-                                            <img src="static/img/icons/delete.svg" alt="img">
-                                        </a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    window.onload = function() {
+        window.location.href = "{{ url_for('admin_signin') }}";
+    }
+</script>
+    {% endif %}
+   
 
-
-    <div class="modal fade" id="createpayment" tabindex="-1" aria-labelledby="createpayment" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Create Payment</h5>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">×</span></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-lg-6 col-sm-12 col-12">
-                            <div class="form-group">
-                                <label>Customer</label>
-                                <div class="input-group">
-                                    <input type="text" value="2022-03-07" class="datetimepicker">
-                                    <a class="scanner-set input-group-text">
-                                        <img src="static/img/icons/datepicker.svg" alt="img">
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-sm-12 col-12">
-                            <div class="form-group">
-                                <label>Reference</label>
-                                <input type="text" value="INV/SL0101">
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-sm-12 col-12">
-                            <div class="form-group">
-                                <label>Received Amount</label>
-                                <input type="text" value="1500.00">
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-sm-12 col-12">
-                            <div class="form-group">
-                                <label>Paying Amount</label>
-                                <input type="text" value="1500.00">
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-sm-12 col-12">
-                            <div class="form-group">
-                                <label>Payment type</label>
-                                <select class="select">
-                                    <option>Cash</option>
-                                    <option>Online</option>
-                                    <option>Inprogress</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <div class="form-group">
-                                <label>Note</label>
-                                <textarea class="form-control"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-submit">Submit</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <div class="modal " id="editpayment" tabindex="-1" aria-labelledby="editpayment" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Edit Payment</h5>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">×</span></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-lg-6 col-sm-12 col-12">
-                            <div class="form-group">
-                                <label>Customer</label>
-                                <div class="input-group">
-                                    <input type="text" value="2022-03-07" class="datetimepicker">
-                                    <a class="scanner-set input-group-text">
-                                        <img src="static/img/icons/datepicker.svg" alt="img">
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-sm-12 col-12">
-                            <div class="form-group">
-                                <label>Reference</label>
-                                <input type="text" value="INV/SL0101">
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-sm-12 col-12">
-                            <div class="form-group">
-                                <label>Received Amount</label>
-                                <input type="text" value="1500.00">
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-sm-12 col-12">
-                            <div class="form-group">
-                                <label>Paying Amount</label>
-                                <input type="text" value="1500.00">
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-sm-12 col-12">
-                            <div class="form-group">
-                                <label>Payment type</label>
-                                <select class="select">
-                                    <option>Cash</option>
-                                    <option>Online</option>
-                                    <option>Inprogress</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <div class="form-group">
-                                <label>Note</label>
-                                <textarea class="form-control"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-submit">Submit</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    {% include 'include_assets/script.html'%}
+    {% include 'include_assets/script.html' %}
 
 </body>
 

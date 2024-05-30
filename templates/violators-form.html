@@ -42,21 +42,24 @@
       }
     </style>
     <!-- Custom styles for this template -->
-    <link href="static/css/signin.css" rel="stylesheet">
+    <link href="static/index-css/form.css" rel="stylesheet">
   </head>
-  <body class="text-center" >
-
+  <body class="text-center"  >
+    <div id="global-loader">
+        <div class="whirly-loader">AutoDlex<i class="fa fa-camera" aria-hidden="true"></i></div>
+    </div>
  
-    {% if session.loggedin %}
+    {% if session.loggedins %}
   
 
 
-<form class="form-signin" action="{{ url_for('violators_form') }}" method="post">
-<img style="margin-top:-125px" src="static/images/CTMEU_LOGO.png" alt="" width="180" height="240">
+<form class="form-signin" action="{{ url_for('violators_form') }}" method="post" style="box-shadow:2px 5px 7px rgba(0, 0, 0, 0.3); margin-bottom: 25px; margin-top: 25px; justify-content: center; background-color: wheat;"  >
+<img  src="static/images/CTMEU_LOGO.png" alt="" width="180" height="240">
     <div id="violation" style="margin-top:-35px" class="form-group">
-        <h3 for="inputViolation"  class="mb-3">Violation Form</3>
-        <select class="form-control" id="inputViolation" name="violation">
-            <option value="" disabled selected>Violation</option>
+        <h3 class="mb-3 custom-center">Violation Form</h3>
+        <label for="inputBarangay"  class=""><span style="color:Red">* </span>Violation</label>
+        <select class="form-control" id="inputViolation" name="violation" required>
+            <option value="" disabled selected>Select</option>
             <option  value="speeding">Speeding</option>
             <option value="running-red-light">Running a Red Light</option>
             <option value="illegal-parking">Illegal Parking</option>
@@ -65,6 +68,7 @@
             <option value="failure-to-yield">Failure to Yield</option>
         </select>
     </div>
+  
     <div style="display:none" class="form-group">
         <label  for="inputTime" class="sr-only">Time</label>
         <input  type="text" name="time" id="inputTime" class="form-control" placeholder="Time">
@@ -74,10 +78,9 @@
         <input type="text" name="date" id="inputDate" class="form-control" placeholder="Date">
     </div>
     <div class="form-group">
-        <label for="inputBarangay"  class="sr-only">Barangay</label>
-
-        <select name="barangay" class="form-control" id="inputBarangay"  class="fa fa-caret-down">
-            <option value="" disabled selected>Barangay</option>
+        <label for="inputBarangay"  class=""><span style="color:Red">* </span>Barangay</label>
+        <select name="barangay" class="form-control" id="inputBarangay"  class="fa fa-caret-down" required>
+            <option value="" disabled selected>Select</option>
             <option value="Balibago">Balibago</option>
             <option value="Caingin">Caingin</option>
             <option value="Dila">Dila</option>
@@ -96,13 +99,17 @@
         </select>
     </div>
     <div class="form-group">
-        <label for="inputPlateNumber" class="sr-only">Plate Number</label>
-        <input  style="border-color: black;" type="text" name="plateNumber" id="inputPlateNumber" class="form-control" placeholder="Plate Number" required>
-    </div>
+        <label for="plateNumber" class=""><span style="color:Red">* </span>Plate Number</label>
+        <input type="text" name="plateNumber" id="plateNumber" class="form-control" placeholder="Plate Number" required pattern="[a-zA-Z0-9]\S*.*" oninvalid="this.setCustomValidity('Plate Number should not start with a space')" oninput="setCustomValidity('')" value="" maxlength="7" required>
+    </div>  
+    <div class="form-group" style="display: none;">
+        <label for="status" class="sr-only">Plate Number</label>
+        <input type="text" name="status" id="status" class="form-control" value="Unsettled"  required>
+    </div>     
     <div class="form-group">
-        <label for="inputVehicleType" class="sr-only">Vehicle Type</label>
-        <select name="vehicle" class="form-control" id="inputVehicleType">
-            <option value="" disabled selected>Vehicle Type</option>
+        <label for="inputVehicleType"><span style="color:Red">* </span>Vehicle Type</label>
+        <select name="vehicle" class="form-control" id="inputVehicleType" required>
+            <option value="" disabled selected>Select</option>
             <option value="Motorcycle">Motorcycle</option>
             <option value="Jeep">Jeep</option>
             <option value="Tricycle">Tricycle</option>
@@ -111,8 +118,11 @@
             <!-- Add more options as needed -->
         </select>
     </div>
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Submit report</button>
+    <button class="btn btn-primary btn-block" type="submit">Submit report</button>
 </form>
+
+
+
 
 </div>
 <script>
@@ -145,10 +155,47 @@
 {% else %}
         <script>
         window.onload = function() {
-            window.location.href = "{{ url_for('enforcer.enforcer') }}";
+            window.location.href = "{{ url_for('/') }}";
         }
     </script>
         {% endif %}
+
+<style>
+    .custom-center {
+    text-align: center;
+}
+</style>
+<script src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>
+<!-- Include other JavaScript files -->
+<script>
+    $(document).ready(function() {
+        // Store the initial form state
+        var initialFormState = $('form').serialize();
+    
+        // Function to show confirmation dialog when leaving the page
+        function beforeUnloadHandler(e) {
+            // If the current form state is different from the initial state
+            var currentFormState = $('form').serialize();
+            if (currentFormState !== initialFormState) {
+                // Customize the confirmation message
+                var confirmationMessage = 'You have unsaved changes. Are you sure you want to leave this page?';
+                
+                // For all browsers except Microsoft Edge
+                e.returnValue = confirmationMessage;
+                return confirmationMessage;
+            }
+        }
+    
+        window.addEventListener('beforeunload', beforeUnloadHandler);
+    
+        // Function to remove event listener when submitting the form
+        $('form').submit(function() {
+            // Remove the beforeunload event listener
+            window.removeEventListener('beforeunload', beforeUnloadHandler);
+        });
+    });
+</script>
+
 
 
 

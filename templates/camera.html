@@ -15,9 +15,11 @@
             <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <body style="background-color: wheat;">
-    
+    <div id="global-loader">
+        <div class="whirly-loader">AutoDlex<i class="fa fa-camera" aria-hidden="true"></i></div>
+    </div>
             <div class="contentarea">
-                {% if session.loggedin %}         
+                {% if session.loggedins %}         
                 <div style="background-color:#2578F4 ;" class="header d-flex justify-content-end">
                 <ul class="nav" style="margin-top:-20px">                     
                 <li class="nav-item dropdown has-arrow main-drop">
