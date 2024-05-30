@@ -1,11 +1,12 @@
 {% include 'include_assets/styles.html' %}
 
 </head>
-
+{% if session.loggedin %}
 <body>
     <div id="global-loader">
-        <div class="whirly-loader"> </div>
+        <div class="whirly-loader">AutoDlex<i class="fa fa-camera" aria-hidden="true"></i></div>
     </div>
+    
 
     <div class="main-wrapper">
 
@@ -13,34 +14,34 @@
 
 
          <div class="sidebar" id="sidebar" style="background-color:  white;">
-            <div class="sidebar-inner slimscroll">
+            <div class="sidebar-inner slimscroll" >
                 <div id="sidebar-menu" class="sidebar-menu">
                     <div class="dashboard-logo">
                         <a href="{{url_for('index')}}">
-                            <img src="static/images/CTMEU_LOGO.png" alt="" style="width: 200px; height: auto;">
+                            <img src="static/images/autodlex.png" alt="" style="width: 200px; height: auto; margin-bottom: 80px;">
                         </a>
                     </div>
-                    <ul>
+                    <ul >
                         <li >
-                            <a href="{{ url_for('index') }}"><img src="static/img/icons/dashboard.svg" alt="img"><span>
+                            <a href="{{ url_for('index') }}"><span class="fa fa-home"></span><span>
                                     Dashboard</span> </a>
                         </li>
-                             <li  class="active">
+                             <li class="active">
                             <a href="{{ url_for('violators.violator_list') }}">
-                                <img src="{{ url_for('static', filename='img/icons/users1.svg') }}" alt="img">
-                                <span>Violator list</span>
+                                <span class="fa fa-user-alt"></span>
+                                <span> Violator list</span>
                             </a>
                         </li>
                         <li >
-                        <a  href="{{ url_for('enforcer.enforcer_data') }}">
-                                <img src="static/img/icons/users1.svg" alt="img">
+                        <a href="{{ url_for('enforcer.enforcer_data') }}">
+                            <span class="fa fa-user-alt"></span>
                                 <span> Enforcers</span>
                             </a>
                         </li>
-                        <li  >
+                        <li >
                         <a href="{{ url_for('settled_reports') }}">
-                                <img src="static/img/icons/time.svg" alt="img">
-                                <span> Settled Reports</span>
+                            <span class="fas fa-exclamation-circle"></span>
+                                <span  > Settled Reports</span>
                             </a>
                         </li>
                     </ul>
@@ -58,54 +59,54 @@
                               <li class="breadcrumb-item active" aria-current="page">Violator Details</li>
                             </ol>
                           </nav>
-                        
-             </div>
-                </div>
-                <div class="row">
-                <div class="col-lg-4 col-sm-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="">
-                                <div class="owl-theme">
-                                    <div class="product">
-                                        <h2 style="text-align:center; margin-top: 9px;margin-bottom: 25px;">Captured Image</h2>
-                                        <img src="static/images/sample.png" alt="img">
+                                
+                    </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-lg-4 col-sm-12">
+                            <div class="card" style="box-shadow:2px 5px 7px rgba(0, 0, 0, 0.3);" >
+                                <div class="card-body">
+                                    <div class="">
+                                        <div class="owl-theme">
+                                            <div class="product">
+                                                <h2 style="text-align:center; margin-top: 9px;margin-bottom: 24px;">Captured Image</h2>
+                                                <img src="static/images/sample.png" alt="img">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
                
                     <div class="col-lg-8 col-sm-12">
-                        <div class="card">
+                        <div class="card"style="box-shadow:2px 5px 7px rgba(0, 0, 0, 0.3);" >
                             <div class="card-body">
                                 <div class="productdetails">
                                     <ul class="product-bar">
                                       
                                         <li>
                                             <h4>Plate Number</h4>
-                                            <h6>{{violator_data.5}}</h6>
+                                            <h6 style="color:Red">{{violator_data.8}}</h6>
                                         </li>
                                         <li>
                                             <h4>Time</h4>
-                                            <h6>{{violator_data.2}}</h6>
+                                            <h6 style="color:Red">{{violator_data.5}}</h6>
                                         </li>
                                         <li>
                                             <h4>Date</h4>
-                                            <h6>{{violator_data.3}}</h6>
+                                            <h6 style="color:Red">{{violator_data.6}}</h6>
                                         </li>
                                         <li>
                                             <h4>Vechicle</h4>
-                                            <h6>{{violator_data.5}}</h6>
+                                            <h6 style="color:Red">{{violator_data.9}}</h6>
                                         </li>
                                         <li>
                                             <h4>Violation</h4>
-                                            <h6>{{violator_data.1}}</h6>
+                                            <h6 style="color:Red">{{violator_data.4}}</h6>
                                         </li>
                                         <li>
                                             <h4>Barangay</h4>
-                                            <h6>{{violator_data.4}}</h6>
+                                            <h6 style="color:Red">{{violator_data.7}}</h6>
                                         </li>
                                     </ul>
                                 </div>
@@ -114,23 +115,23 @@
                     </div>
 
              </div>
-                    <div class="col-lg-432 col-sm-12">
+                    <div class="col-lg-432 col-sm-12" style="box-shadow:2px 5px 7px rgba(0, 0, 0, 0.3);" >
                         <div class="card text-center">
                             <div class="card-body  ">
                                 <div class="productdetails">
-                                <h5> Ectracted Data from the license</h5>
+                                <h5 class="mb-3"> Extracted Data from the license</h5>
                                     <ul class="product-bar">
                                         <li>
                                             <h4>Name</h4>
-                                            <h6>{{violator_data.5}}</h6>
+                                            
                                         </li>
                                         <li>
                                             <h4>License Number</h4>
-                                            <h6>{{violator_data.2}}</h6>
+                                           
                                         </li>
                                         <li>
                                             <h4>License Code</h4>
-                                            <h6>{{violator_data.3}}</h6>
+                                            
                                         </li>
                                     </ul>
                                 </div>
@@ -143,7 +144,13 @@
             </div>
         </div>
     </div>
-
+    {% else %}
+    <script>
+    window.onload = function() {
+        window.location.href = "{{ url_for('admin_signin') }}";
+    }
+</script>
+    {% endif %}
     <script src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/feather.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/jquery.slimscroll.min.js') }}"></script>
