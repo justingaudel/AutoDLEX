@@ -35,10 +35,20 @@ def view_violators_data():
     query = "SELECT * FROM violators_data WHERE violators_id  = %s"
     cursor.execute(query, (violator_id,))
     violator_data = cursor.fetchone()
-    if violator_data:
-        return render_template('violators_data/edit-violators-data.html', violator_data=violator_data)
-    else:
-        return "Violator not found", 404
+    
+    #getting the tct number of the violator
+    tct_number = " Select tct_number from violators_data where violators_id = %s"
+    cursor.execute(tct_number, (violator_id,))
+    tct_number = cursor.fetchone()
+    
+    tct_number = tct_number[0]
+    
+    extracted_data = "Select * from extracted_data where tct_number = %s"
+    cursor.execute(extracted_data, (tct_number,))
+    extracted_data = cursor.fetchone()
+    
+    return render_template('violators_data/view-violators-data.html',extracted_data = extracted_data , violator_data = violator_data)
+
     
 # Editing/Updating  violators data 
 from flask import render_template, request

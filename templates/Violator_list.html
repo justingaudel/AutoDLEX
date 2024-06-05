@@ -145,7 +145,7 @@
                                 {% for row in violators %}
                                     <tr>
                                         <td>{{row.5}}</td>
-                                        <td>{{row.4}}</td>
+                                        <td class="ellipsis">{{row.4}}</td>
                                         <td>{{row.8}}</td>
                                         <td>{{row.6}} </td>
                                         <td>{{row.7}}</td>
@@ -239,7 +239,7 @@
                     });
                 } else if (viewIds.length === 1) {
                     var viewId = viewIds[0];
-                    window.location.href = "{{ url_for('violators.view_violator', violator_id='') }}" + viewId;
+                    window.location.href = "{{ url_for('violators.view_violators_data', violator_id='') }}" + viewId;
                 } else {
                     Swal.fire({
                         icon: 'error',
@@ -251,7 +251,14 @@
             
         </script>
 
-
+<style>
+    .ellipsis {
+        white-space: nowrap; 
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 200px; /* Adjust the width as needed */
+    }
+</style>
 
 <script data-cfasync="false" src="{{ url_for('static', filename='js/email-decode.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>

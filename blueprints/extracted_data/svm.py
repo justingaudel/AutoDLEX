@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template,request
+from flask import Blueprint, render_template,request,url_for,redirect
 from db_utils import get_db_connection
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split, GridSearchCV
@@ -1317,6 +1317,23 @@ svm_bp = Blueprint("svm",__name__,template_folder="templates")
 @svm_bp .route('/violators', methods=['GET', 'POST'])
 def violators():
     if request.method == 'POST':
+            
+        cursor.execute("SELECT MAX(extracted_id) FROM extracted_data")
+        largest_id = cursor.fetchone()[0]  # Get the latest extracted_id
+
+        if largest_id is None:
+                new_id = 1
+        else:
+                cursor.execute("SELECT tct_number FROM extracted_data WHERE extracted_id = %s", (largest_id,))
+                existing_tct_number = cursor.fetchone()[0]
+                new_id = int(existing_tct_number.split('-')[1]) + 1
+
+        generated_id = 'TCT-' + str(new_id).zfill(5)  # Pad with leading zeros to ensure 5 digits
+
+        
+        
+        tct_number = generated_id 
+
         # Retrieve form data
         extracted_text = request.form['extracted_text']
         
@@ -1358,7 +1375,7 @@ def violators():
         username = request.args.get('username')
         
         #creating random filename with date on it 
-        random_filename = f"{username}_{str(uuid.uuid4())[:8]}.png"
+        random_filename = f"{tct_number}_{str(uuid.uuid4())[:8]}.png"
         
         image_binary = base64.b64decode(image.split(',')[1])
         # Specify the path to save the image
@@ -1370,6 +1387,10 @@ def violators():
         image_data = random_filename        
                 
                   
-        cursor.execute("INSERT INTO extracted_data (extracted_text, image_data) VALUES (%s, %s)", (extracted_text, image_data))
+        cursor.execute("INSERT INTO extracted_data (extracted_text,tct_number, image_data) VALUES (%s, %s,%s)", (extracted_text,tct_number, image_data))
         db_connection.commit()
-        return render_template('violators-form.html')
+        
+        return redirect(url_for('svm.violators',tct_number = tct_number))
+        
+    tct_number = request.args.get('tct_number')     
+    return render_template('violators-form.html',tct_number = tct_number)

@@ -70,7 +70,7 @@
                                         <div class="owl-theme">
                                             <div class="product">
                                                 <h2 style="text-align:center; margin-top: 9px;margin-bottom: 24px;">Captured Image</h2>
-                                                <img src="static/images/sample.png" alt="img">
+                                                <img src="static/extracted_images/{{extracted_data.5}}" alt="img">
                                             </div>
                                         </div>
                                     </div>
@@ -78,12 +78,12 @@
                             </div>
                         </div>
                
-                    <div class="col-lg-8 col-sm-12">
+                    <div class="col-lg-8 col-sm-20">
                         <div class="card"style="box-shadow:2px 5px 7px rgba(0, 0, 0, 0.3);" >
-                            <div class="card-body">
-                                <div class="productdetails">
-                                    <ul class="product-bar">
-                                      
+                            <div class="card-body" >
+                                <div class="productdetails ">
+                                    <ul class="product-bar" style="height: 300px;">
+                                   
                                         <li>
                                             <h4>Plate Number</h4>
                                             <h6 style="color:Red">{{violator_data.8}}</h6>
@@ -123,14 +123,16 @@
                                     <ul class="product-bar">
                                         <li>
                                             <h4>Name</h4>
-                                            
+                                            <h6 style="color:Red">{{extracted_data.5}}</h6>
                                         </li>
                                         <li>
                                             <h4>License Number</h4>
+                                            <h6 style="color:Red">{{extracted_data.0}}</h6>
                                            
                                         </li>
                                         <li>
                                             <h4>License Code</h4>
+                                            <h6 style="color:Red">{{extracted_data.1}}</h6>
                                             
                                         </li>
                                     </ul>

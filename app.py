@@ -66,22 +66,31 @@ def camera():
     return render_template('camera.html')
 
 
-@app.route('/violators_form', methods=['GET','POST'])
+@app.route('/violators_form', methods=['GET', 'POST'])
 def violators_form():
     msg = ''  # Initialize msg here
     if request.method == 'POST':
-        violation = request.form['violation']
+        
+        violation_list = request.form.getlist('violation[]')
+        violation = ', '.join(violation_list)
+        
+        tct_number = request.form['tct_number']
         time = request.form['time']
         date = request.form['date']
         barangay = request.form['barangay']
         plateNumber = request.form['plateNumber']
         vehicle = request.form['vehicle']
         status = request.form['status']
+        
+        
+       
 
-        cursor.execute("INSERT INTO violators_data (violation, time, date, barangay, plateNumber, vehicle, status) VALUES (%s, %s, %s, %s, %s, %s, %s)", (violation, time, date, barangay, plateNumber, vehicle, status))
+        cursor.execute("INSERT INTO violators_data (violation,tct_number, time, date, barangay, plateNumber, vehicle, status) VALUES (%s, %s,%s, %s, %s, %s, %s, %s)", (violation,tct_number, time, date, barangay, plateNumber, vehicle, status))
 
         db_connection.commit()
         msg = 'Report Submitted Successfully!'
+        
+        return redirect(url_for('violators_form'))
 
     return render_template('camera.html', msg=msg)
 
