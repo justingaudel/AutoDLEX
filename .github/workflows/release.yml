@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     branches:
-      - dev
+      - Developer
 
 jobs:
   release:
@@ -17,7 +17,10 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: v20.8.1
+        node-version: '20.x'  # Ensure you are using the latest version of Node.js 20
+
+    - name: Check Node.js version
+      run: node -v  # This will print the Node.js version to the workflow logs
 
     - name: Install Dependencies
       run: npm install
@@ -25,5 +28,5 @@ jobs:
     - name: Run semantic-release
       run: npx semantic-release
       env:
-        GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Use the correct environment variable name
         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
