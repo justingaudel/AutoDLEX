@@ -16,18 +16,16 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v3  # Ensure you are using the latest version
       with:
-        node-version: '20'  # Specify Node.js 20
+        node-version: '20.8.1'  # Specify Node.js 20.8.1 or higher
 
     - name: Install dependencies
       run: npm install
 
-    - name: Run build
-      run: npm run build
-
-    - name: Publish to NPM
+    - name: Run semantic-release
       env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      run: npm publish
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      run: npx semantic-release
 
     - name: Create GitHub Release
       uses: actions/create-release@v1
