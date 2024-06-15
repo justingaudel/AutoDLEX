@@ -3,9 +3,6 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Jekyll v3.8.6">
     <title>AutoDlex - Santa Rosa Government</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/4.4/examples/sign-in/">
@@ -45,9 +42,11 @@
       <b>Admin Log in</b> 
     </h1>
   
-  {% if msg %}
-    <p style="color:red">{{ msg }}</p>
-  {% endif %}
+    {% if msg %}
+                <div class="alert alert-danger">
+                        {{msg}}
+                  </div>
+        {% endif %} 
 <!--   test Apples -->
   <div class="form-group">
   <label for="text" class="sr-only">Email address </label>
@@ -56,7 +55,7 @@
    <label for="inputPassword" class="sr-only">Password</label>
            <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
     <button class="btn btn-lg btn-primary btn-block" name="submit" type="submit">Sign in</button>
-    <a href="{{url_for('interface')}}"><u style="color:black"> Back </u>
+    <a href="{{url_for('interface')}}"><u style="color:white"> Back </u>
     </a>
 </form>
 </body>

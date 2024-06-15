@@ -11,7 +11,7 @@ body {
   align-items: center;
   padding-top: 40px;
   padding-bottom: 40px;
-  background-image: url('/static/images/bg3.jpg');
+  background-image: url('/static/images/src2.jpg');
   background-position: center;
   background-size: cover;
 }
@@ -62,7 +62,7 @@ body {
 }
 
 .admin-logo {
-  margin-left: 100px;
+  margin-left: 250px;
   
 }
 

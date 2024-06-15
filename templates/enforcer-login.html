@@ -41,7 +41,7 @@
         <div class="enforcer-logo">
             <img src="static/images/CTMEU_LOGO.png" alt="" width="600" height="430">
         </div>
-        <h1 class="h3 mb-3 font-weight-normal text-white "><b>Enforcer Log in</b></h1>
+        <h1 class="h3 mb-3 font-weight-normal text-black "><b>Enforcer Log in</b></h1>
         {% if msg %}
                 <div class="alert alert-danger">
                         {{msg}}
@@ -52,7 +52,7 @@
         </div>
         <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
         <button class="btn btn-lg btn-primary btn-block" name="submit" type="submit">Sign in</button>
-        <a href="{{url_for('interface')}}"><u style="color: black;"> Back  </u>
+        <a href="{{url_for('interface')}}"><u style="color: white;"> Back  </u>
         </a>
     </form>
 

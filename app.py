@@ -70,7 +70,7 @@ def camera():
 def violators_form():
     msg = ''  # Initialize msg here
     if request.method == 'POST':
-        
+        session.get('submitted', True)
         violation_list = request.form.getlist('violation[]')
         violation = ', '.join(violation_list)
         
@@ -81,17 +81,16 @@ def violators_form():
         plateNumber = request.form['plateNumber']
         vehicle = request.form['vehicle']
         status = request.form['status']
-        
-        
-       
-
         cursor.execute("INSERT INTO violators_data (violation,tct_number, time, date, barangay, plateNumber, vehicle, status) VALUES (%s, %s,%s, %s, %s, %s, %s, %s)", (violation,tct_number, time, date, barangay, plateNumber, vehicle, status))
 
         db_connection.commit()
-        msg = 'Report Submitted Successfully!'
+        session['msg'] = 'Report Submitted Successfully!'
         
         return redirect(url_for('violators_form'))
-
+    
+    if 'msg' in session:
+        msg = session.pop('msg')
+        session.pop('submitted', None)
     return render_template('camera.html', msg=msg)
 
     
@@ -152,8 +151,9 @@ def admin_signin():
             session['email'] = record[1]
             return redirect(url_for('index'))  
         else:
-            msg = "Incorrect password or email!"
+            msg = "Incorrect email address or password!"
     return render_template('admin-login.html', msg=msg)
+
 
 
 @app.route('/add_enforcer', methods=['POST', 'GET'])
@@ -178,6 +178,21 @@ def add_enforcer():
     
     # If it's a GET request or if password matches, render the template without a message
     return render_template('new-enforcer.html')
+
+
+@app.route('/selection_mode')
+def selection_mode():
+    session['loggedins'] = True
+    return render_template('mode-selection.html')
+
+
+
+@app.route('/manual_input')
+def manual_input():
+    session['manual_input'] = True
+    return render_template('manual-input.html')
+
+
 
 
 if __name__ == '__main__':

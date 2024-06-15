@@ -44,39 +44,10 @@
                         </div>
                     </div>
                 </li>
-            </ul>
-        </div> 
+                    </ul>
+                </div> 
                 
-        <form action="{{ url_for('svm.violators') }}" method="post" enctype="multipart/form-data" >
-        
-                <h1 style="margin-top: 90px; margin-bottom:4px ;">License Scanner</h1>
-                     <div class="camera">
-                            <video id="video">Video stream not available.</video>
-                    <img id="capturedImage" class="capturedImage"  src="" alt="Captured Image"> <!-- Set width and height to match camera -->
-                </div>
-               
-                <div>
-                    <button id="startbutton">
-                        <img src="{{ url_for('static', filename='images/camera-svgrepo-com.png') }}" alt="Camera Icon">
-                    </button>
-                </div>
-                <input  style="display:none" type="text" name="tct_number" value="test_tct">
-                <input  style="display:none" type="text" name="name" value="test_name">
-                <input style="display:none" type="text" name="license_number" value="test_licenseNumber">
-                <input style="display:none"  id="extracted_text" name="extracted_text">
-                <input style="display:none" id="image_data"  name="image_data">
-                <input style="display:none" type="text" name="username" value="{{username}}">
-                <canvas id="canvas"></canvas>
-                <div id="extractedText"></div>
-                  
-                    <div id="warningMessage"></div>
-
-                <div  id="space-between" style="font-size: 20px;"  >
-                    <button id="retakebutton" name="retakebutton">  Retake </button> <!-- Button to retake photo -->
-                    <button id="submit" name="submit" > Submit</button>
-                </div>
-                <!-- Hidden input fields to store the values -->
-            </form>
+       
         
             {% if msg %}
             <script> 
@@ -98,23 +69,64 @@
         {% endif %}
     </div>
 
-        <script src="{{ url_for('static', filename='javascript/camera.js') }}"></script>
-        <script src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>
+    <div class="mode container">
+        <button class="btn btn-lg btn-primary btn-block mb-4 license" type="button" onclick="redirectTo('license-scanner')">License Scanner</button>
+        <button class="btn btn-lg btn-primary btn-block mb-4 manual" type="button" onclick="redirectTo('manual-input')">Manual Input</button>
+        <button class="btn btn-lg btn-primary btn-block mb-4 enforcer" type="button" onclick="redirectTo('enforcer')">No License</button>
+    </div>
+    
+    <style>
+        .mode {
+            margin-top: 200px;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            display: flex;
+        }
+    
+        .license, .manual, .enforcer {
+            width: 30%;
+            margin: 10px;
+        }
+    
+        @media (max-width: 768px) {
+            .license, .manual, .enforcer {
+                width: 50%;
+            }
+        }
+    
+        @media (max-width: 480px) {
+            .license, .manual, .enforcer {
+                width: 80%;
+            }
+        }
+    
+        @media (max-width: 320px) {
+            .license, .manual, .enforcer {
+                width: 100%;
+            }
+        }
 
-        <script src="{{ url_for('static', filename='js/feather.min.js') }}"></script>
+        
+    </style>
 
-        <script src="{{ url_for('static', filename='js/jquery.slimscroll.min.js') }}"></script>
-
-        <script src="{{ url_for('static', filename='js/jquery.dataTables.min.js') }}"></script>
-        <script src="{{ url_for('static', filename='js/dataTables.bootstrap4.min.js') }}"></script>
-
-        <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
-
-        <script src="{{ url_for('static', filename='plugins/apexchart/apexcharts.min.js') }}"></script>
-        <script src="{{ url_for('static', filename='plugins/apexchart/chart-data.js') }}"></script>
-
-        <script src="{{ url_for('static', filename='js/script.js') }}"></script>
-
+     <script> 
+        function redirectTo(userType) {
+                  var url;
+                  if (userType === 'license-scanner') {
+                      url = "{{ url_for('camera') }}"; // Redirect to enforcer route
+                  } else if (userType === 'manual-input') {
+                      url = "{{ url_for('manual_input') }}"; // Redirect to admin route
+                  } else {
+                      console.error("Invalid user type:", userType);
+                      return;
+                  }
+          
+                  console.log("Redirecting to:", url);
+                  window.location.href = url;
+              }
+        </script>
+        
         <script>
             document.getElementById("submit").addEventListener("click", 
             function() {
@@ -125,5 +137,22 @@
             document.getElementById("image_data").value = capturedImage;
         });
         </script>
+
+          <script src="{{ url_for('static', filename='javascript/camera.js') }}"></script>
+          <script src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>
+  
+          <script src="{{ url_for('static', filename='js/feather.min.js') }}"></script>
+  
+          <script src="{{ url_for('static', filename='js/jquery.slimscroll.min.js') }}"></script>
+  
+          <script src="{{ url_for('static', filename='js/jquery.dataTables.min.js') }}"></script>
+          <script src="{{ url_for('static', filename='js/dataTables.bootstrap4.min.js') }}"></script>
+  
+          <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+  
+          <script src="{{ url_for('static', filename='plugins/apexchart/apexcharts.min.js') }}"></script>
+          <script src="{{ url_for('static', filename='plugins/apexchart/chart-data.js') }}"></script>
+  
+          <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>

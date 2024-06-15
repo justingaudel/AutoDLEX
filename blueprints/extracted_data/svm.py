@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template,request,url_for,redirect
+from flask import Blueprint, render_template,request,url_for,redirect,session
 from db_utils import get_db_connection
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split, GridSearchCV
@@ -1318,6 +1318,7 @@ svm_bp = Blueprint("svm",__name__,template_folder="templates")
 def violators():
     if request.method == 'POST':
             
+        session['submitted'] = True
         cursor.execute("SELECT MAX(extracted_id) FROM extracted_data")
         largest_id = cursor.fetchone()[0]  # Get the latest extracted_id
 

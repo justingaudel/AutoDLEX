@@ -72,7 +72,7 @@
         <div class="whirly-loader">AutoDlex<i class="fa fa-camera" aria-hidden="true"></i></div>
     </div>
  
-    {% if session.submitted %}
+    {% if session.manual_input %}
   
 
 
@@ -84,40 +84,7 @@
             <label for="inputBarangay"  class=""><span style="color:Red; text-align: center;">* </span>TCT Number</label>
             <input  type="text" name="tct_number" id="tct_number" class="form-control"  value="{{tct_number}}" placeholder="Time" readonly>
         </div>
-        <div class="form-group">
-            <label for="inputViolation">Select Violation(s):</label>
-            <div class="dropdown-checkbox" id="dropdownViolation">
-                <button type="button" class="btn btn-secondary dropdown-toggle" id="dropdownMenuButton">
-                    Select Violations
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="violationSpeeding" name="violation[]" value="speeding">
-                        <label class="form-check-label" for="violationSpeeding">Speeding</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="violationRunningRedLight" name="violation[]" value="running-red-light">
-                        <label class="form-check-label" for="violationRunningRedLight">Running a Red Light</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="violationIllegalParking" name="violation[]" value="illegal-parking">
-                        <label class="form-check-label" for="violationIllegalParking">Illegal Parking</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="violationRecklessDriving" name="violation[]" value="reckless-driving">
-                        <label class="form-check-label" for="violationRecklessDriving">Reckless Driving</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="violationDUI" name="violation[]" value="driving-under-influence">
-                        <label class="form-check-label" for="violationDUI">Driving Under the Influence (DUI)</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="violationFailureToYield" name="violation[]" value="failure-to-yield">
-                        <label class="form-check-label" for="violationFailureToYield">Failure to Yield</label>
-                    </div>
-                </div>
-            </div>
-  
+        
     <div style="display:none" class="form-group">
         <label  for="inputTime" class="sr-only">Time</label>
         <input  type="text" name="time" id="inputTime" class="form-control" placeholder="Time">
@@ -127,46 +94,26 @@
         <input type="text" name="date" id="inputDate" class="form-control" placeholder="Date">
     </div>
     <div class="form-group">
-        <label for="inputBarangay"  class=""><span style="color:Red">* </span>Barangay</label>
-        <select name="barangay" class="form-control" id="inputBarangay"  class="fa fa-caret-down" required>
-            <option value="" disabled selected>Select</option>
-            <option value="Balibago">Balibago</option>
-            <option value="Caingin">Caingin</option>
-            <option value="Dila">Dila</option>
-            <option value="Dita">Dita</option>
-            <option value="Don Jose">Don Jose</option>
-            <option value="Ibaba">Ibaba</option>
-            <option value="Kanluran">Kanluran</option>
-            <option value="Labas">Labas</option>
-            <option value="Macabling">Macabling</option>
-            <option value="Malitlit">Malitlit</option>
-            <option value="Market Area">Market Area</option>
-            <option value="Poblacion">Poblacion</option>
-            <option value="Santo Domingo">Santo Domingo</option>
-            <option value="Sinalhan">Sinalhan</option>
-            <option value="Tagapo">Tagapo</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="plateNumber" class=""><span style="color:Red">* </span>Plate Number</label>
+        <label for="plateNumber" class=""><span style="color:Red">* </span>Name</label>
         <input type="text" name="plateNumber" id="plateNumber" class="form-control" placeholder="Plate Number" required pattern="[a-zA-Z0-9]\S*.*" oninvalid="this.setCustomValidity('Plate Number should not start with a space')" oninput="setCustomValidity('')" value="" maxlength="7" required>
     </div>  
+    <div class="form-group">
+        <label for="plateNumber" class=""><span style="color:Red">* </span>ID Number</label>
+        <input type="text" name="plateNumber" id="plateNumber" class="form-control" placeholder="Plate Number" required pattern="[a-zA-Z0-9]\S*.*" oninvalid="this.setCustomValidity('Plate Number should not start with a space')" oninput="setCustomValidity('')" value="" maxlength="7" required>
+    </div>
+    <div class="form-group">
+        <label for="plateNumber" class=""><span style="color:Red">* </span>License Number </label>
+        <input type="text" name="plateNumber" id="plateNumber" class="form-control" placeholder="Plate Number" required pattern="[a-zA-Z0-9]\S*.*" oninvalid="this.setCustomValidity('Plate Number should not start with a space')" oninput="setCustomValidity('')" value="" maxlength="7" required>
+    </div>
+    <div class="form-group">
+        <label for="plateNumber" class=""><span style="color:Red">* </span>Expiration Date</label>
+        <input type="text" name="plateNumber" id="plateNumber" class="form-control" placeholder="Plate Number" required pattern="[a-zA-Z0-9]\S*.*" oninvalid="this.setCustomValidity('Plate Number should not start with a space')" oninput="setCustomValidity('')" value="" maxlength="7" required>
+    </div>
     <div class="form-group" style="display: none;">
         <label for="status" class="sr-only">Plate Number</label>
         <input type="text" name="status" id="status" class="form-control" value="Unsettled"  required>
     </div>     
-    <div class="form-group">
-        <label for="inputVehicleType"><span style="color:Red">* </span>Vehicle Type</label>
-        <select name="vehicle" class="form-control" id="inputVehicleType" required>
-            <option value="" disabled selected>Select</option>
-            <option value="Motorcycle">Motorcycle</option>
-            <option value="Jeep">Jeep</option>
-            <option value="Tricycle">Tricycle</option>
-            <option value="Van">Van</option>
-            <option value="Pickup">Pickup</option>
-            <!-- Add more options as needed -->
-        </select>
-    </div>
+  
     <button class="btn btn-primary btn-block" type="submit">Submit report</button>
 </form>
 
@@ -174,52 +121,13 @@
 
 
 </div>
-<script>
-    // Get the current date and time in Singapore time zone
-    var singaporeTime = new Date().toLocaleString("en-US", {timeZone: "Asia/Singapore"});
-    var now = new Date(singaporeTime);
-
-    // Format the time as hh:mm AM/PM (e.g., 12:34 PM)
-    var hours = now.getHours();
-    var amPM = hours >= 12 ? 'PM' : 'AM';
-    hours = (hours % 12) || 12; // Convert from 24-hour to 12-hour format
-    var minutes = String(now.getMinutes()).padStart(2, '0');
-    var currentTime = hours + ':' + minutes + ' ' + amPM;
-
-    // Set the input field value to the current time
-    document.getElementById('inputTime').value = currentTime;
-
-    // Format the date as MM/DD/YYYY (e.g., 03/29/2024)
-    var month = String(now.getMonth() + 1).padStart(2, '0');
-    var day = String(now.getDate()).padStart(2, '0');
-    var year = now.getFullYear();
-    var currentDate = month + '/' + day + '/' + year;
-
-    // Set the input field value to the current date
-    document.getElementById('inputDate').value = currentDate;
-
-    
-</script>
-
-<script>
-    document.getElementById('dropdownMenuButton').addEventListener('click', function() {
-        document.getElementById('dropdownViolation').classList.toggle('open');
-    });
-
-    document.addEventListener('click', function(event) {
-        var isClickInside = document.getElementById('dropdownViolation').contains(event.target);
-        if (!isClickInside) {
-            document.getElementById('dropdownViolation').classList.remove('open');
-        }
-    });
 
 
-</script>
 
 {% else %}
         <script>
         window.onload = function() {
-            window.location.href = "{{ url_for('camera') }}";
+            window.location.href = "{{ url_for('selection_mode') }}";
         }
     </script>
         {% endif %}
