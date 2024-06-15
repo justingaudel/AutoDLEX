@@ -298,7 +298,7 @@
   "author": "",
   "license": "ISC",
   "release": {
-    "branches": ["developer"],
+    "branches": ["Developer"],
     "plugins": [
       "@semantic-release/commit-analyzer",
       "@semantic-release/release-notes-generator",
