@@ -68,8 +68,12 @@
     </script>
         {% endif %}
     </div>
-
+   
     <div class="mode container">
+        <div class="justify-content-center">
+            <img src="static/images/choices.png" height="300" width="300">
+         </div>
+         <h3 class="h3 mb-3 " style="font-size: 20px;">Choose Data Entry Method!</h3>
         <button class="btn btn-lg btn-primary btn-block mb-4 license" type="button" onclick="redirectTo('license-scanner')">License Scanner</button>
         <button class="btn btn-lg btn-primary btn-block mb-4 manual" type="button" onclick="redirectTo('manual-input')">Manual Input</button>
         <button class="btn btn-lg btn-primary btn-block mb-4 enforcer" type="button" onclick="redirectTo('enforcer')">No License</button>
@@ -77,7 +81,7 @@
     
     <style>
         .mode {
-            margin-top: 200px;
+            margin-top: 80px;
             justify-content: center;
             align-items: center;
             flex-direction: column;

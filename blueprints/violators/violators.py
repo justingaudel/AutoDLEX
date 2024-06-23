@@ -1,6 +1,9 @@
 from flask import Blueprint, redirect,render_template,request,url_for,make_response
 from db_utils import get_db_connection
 from openpyxl import Workbook
+from openpyxl.styles import Font, Alignment, Border, Side
+
+
 
 
 
@@ -97,51 +100,85 @@ def delete_violator():
 
 
 
+
+
+
 @violator_bp.route('/excellReports')
 def excellReports():
     violator_ids = request.args.get('violator_ids').split(',')
     all_data = []
+
+    # Connect to the database
+  
 
     for violator_id in violator_ids:
         cursor.execute("SELECT * FROM violators_data WHERE violators_id = %s", (violator_id,))
         data = cursor.fetchall()
         all_data.extend(data)
     
+    cursor.close()
+ 
+
     wb = Workbook()
     sheet = wb.active
-    
-    sheet['G2'] = 'Settled Reports Of Violators'
-    sheet['A3'] = 'Violator_id'
-    sheet['B3'] = 'Enforcer_id'
-    sheet['C3'] = 'Extracted_id'
-    sheet['D3'] = 'Ticket Number'
-    sheet['E3'] = 'Violation'
-    sheet['F3'] = 'Time'
-    sheet['G3'] = 'Date'
-    sheet['H3'] = 'Barangay'
-    sheet['I3'] = 'Plate Number'
-    sheet['J3'] = 'Vehicle'
-    sheet['K3'] = 'Status'
-    
-    
-    for row_index, row_data in enumerate(all_data, start=4):  # Start from row 4 for data population
-        sheet.cell(row=row_index, column=1).value = row_data[0]  # Violator_id
-        sheet.cell(row=row_index, column=2).value = row_data[1]  # Violation
-        sheet.cell(row=row_index, column=3).value = row_data[2]  # Time
-        sheet.cell(row=row_index, column=4).value = row_data[3]  # Date
-        sheet.cell(row=row_index, column=5).value = row_data[4]  # Barangay
-        sheet.cell(row=row_index, column=6).value = row_data[5]  # Plate Number
-        sheet.cell(row=row_index, column=7).value = row_data[6]  # Vehicle
-        sheet.cell(row=row_index, column=8).value = row_data[7]
-        sheet.cell(row=row_index, column=9).value = row_data[8]
-        sheet.cell(row=row_index, column=10).value = row_data[9]
-        sheet.cell(row=row_index, column=11).value = row_data[10]
-        
+
+    # Set up the margins
+    top_margin = 6
+    left_margin = 2  # At least one cell from the left
+
+    # Set up the text
+    headers = [
+        "Republika ng Pilipinas",
+        "Lungsod ng Santa Rosa",
+        "Lalawigan ng Laguna",
+        "SANGAY NG PAMAMAHALA AT PAGPAPATUPAD NG TRAPIKO",
+        "(CITY TRAFFIC MANAGEMENT AND ENFORCEMENT UNIT)"
+    ]
+
+    # Add the text with the required margins
+    for row_index, header in enumerate(headers, start=top_margin):
+        cell = sheet.cell(row=row_index, column=left_margin)
+        cell.value = header
+        if header == "(CITY TRAFFIC MANAGEMENT AND ENFORCEMENT UNIT)":
+            cell.font = Font(size=8)  # Smaller font size for the last line
+        else:
+            cell.font = Font(size=12, bold=True)  # Larger font for other lines
+        cell.alignment = Alignment(horizontal='center')
+        sheet.merge_cells(start_row=row_index, start_column=left_margin, end_row=row_index, end_column=left_margin + 9)
+
+    # Set up the header for the table
+    table_header_row = top_margin + len(headers) + 1
+    table_headers = [
+        "TRAFFIC CITATION TICKET NO.",
+        "NAME OF APPREHENDED DRIVER/OPERATOR",
+        "VIOLATION(S)",
+        "PLACE OF APPREHENSION",
+        "DRIVER'S LICENSE NO.",
+        "MV PLATE NO.",
+        "MUN. PLATE NO.",
+        "DATE/TIME OF APPREHENSION",
+        "RECEIVED BY (NAME AND SIGNATURE)",
+        "RECEIVED DATE"
+    ]
+
+    for col_index, header_title in enumerate(table_headers, start=left_margin):
+        cell = sheet.cell(row=table_header_row, column=col_index)
+        cell.value = header_title
+        cell.font = Font(bold=True)
+        cell.alignment = Alignment(horizontal='center', vertical='center')
+        cell.border = Border(left=Side(style='thin'), right=Side(style='thin'), top=Side(style='thin'), bottom=Side(style='thin'))
+        sheet.column_dimensions[cell.column_letter].width = 20  # Set column width
+
+    # Populating the data
+    for row_index, row_data in enumerate(all_data, start=table_header_row + 1):
+        for col_index in range(10):  # We assume there are 10 columns
+            cell = sheet.cell(row=row_index, column=left_margin + col_index)
+            if col_index < len(row_data):
+                cell.value = row_data[col_index]
+            cell.border = Border(left=Side(style='thin'), right=Side(style='thin'), top=Side(style='thin'), bottom=Side(style='thin'))
+
     file_path = 'temp.xlsx'
     wb.save(file_path)
-
-    # Close database connection
-    
 
     # Serve the file as a response
     response = make_response(open(file_path, 'rb').read())
@@ -149,7 +186,5 @@ def excellReports():
     response.headers['Content-Disposition'] = 'attachment; filename=Settled_Reports.xlsx'
 
     return response
-
-
        
 #routes for Violators data view includes delete, edit, and view

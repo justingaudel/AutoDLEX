@@ -81,7 +81,7 @@ def violators_form():
         plateNumber = request.form['plateNumber']
         vehicle = request.form['vehicle']
         status = request.form['status']
-        cursor.execute("INSERT INTO violators_data (violation,tct_number, time, date, barangay, plateNumber, vehicle, status) VALUES (%s, %s,%s, %s, %s, %s, %s, %s)", (violation,tct_number, time, date, barangay, plateNumber, vehicle, status))
+        cursor.execute("INSERT INTO violators_data (tct_number, time, date, barangay, plateNumber, vehicle, status) VALUES ( %s,%s, %s, %s, %s, %s, %s)", (tct_number, time, date, barangay, plateNumber, vehicle, status))
 
         db_connection.commit()
         session['msg'] = 'Report Submitted Successfully!'
@@ -91,11 +91,33 @@ def violators_form():
     if 'msg' in session:
         msg = session.pop('msg')
         session.pop('submitted', None)
-    return render_template('camera.html', msg=msg)
+    return render_template('mode-selection.html', msg=msg)
 
-    
-    
-    
+@app.route('/manual_input_data', methods=['GET', 'POST'])
+def manual_input_data():
+    session['submitted'] = True
+    msg = ''
+    tct_number = ''  # Initialize tct_number
+
+    if request.method == 'POST':
+        tct_number = request.form['tct_number']
+        name = request.form['name']
+        license_number = request.form['license_number']
+        expiration_date = request.form['expiration_date']
+        date_of_birth = request.form['date_of_birth']
+        sex = request.form['sex']
+        
+        cursor.execute(
+            "INSERT INTO extracted_data (tct_number, name, license_number, expiration_date, date_of_birth, sex) VALUES (%s, %s, %s, %s, %s, %s)",
+            (tct_number, name, license_number, expiration_date, date_of_birth, sex)
+        )            
+        
+        db_connection.commit()
+        
+        return redirect(url_for('manual_input_data',tct_number = tct_number))
+    tct_number = request.args.get('tct_number') 
+    return render_template('violators-form.html', tct_number=tct_number)
+
 @app.route('/index')
 def index():
     try:
@@ -190,7 +212,21 @@ def selection_mode():
 @app.route('/manual_input')
 def manual_input():
     session['manual_input'] = True
-    return render_template('manual-input.html')
+    cursor.execute("SELECT MAX(extracted_id) FROM extracted_data")
+    largest_id = cursor.fetchone()[0]  # Get the latest extracted_id
+
+    if largest_id is None:
+                new_id = 1
+    else:
+        cursor.execute("SELECT tct_number FROM extracted_data WHERE extracted_id = %s", (largest_id,))
+        existing_tct_number = cursor.fetchone()[0]
+        new_id = int(existing_tct_number.split('-')[1]) + 1
+
+    generated_id = 'TCT-' + str(new_id).zfill(5)
+    
+    tct_number = generated_id   
+    
+    return render_template('manual-input.html', tct_number=tct_number)
 
 
 

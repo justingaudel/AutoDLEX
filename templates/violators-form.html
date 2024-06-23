@@ -260,6 +260,46 @@
     });
 </script>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const dropdownMenuButton = document.getElementById('dropdownMenuButton');
+        const selectedViolationsDiv = document.getElementById('selectedViolations');
+        const checkboxes = document.querySelectorAll('.form-check-input');
+
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', updateSelectedViolations);
+        });
+
+        function updateSelectedViolations() {
+            const selectedCheckboxes = Array.from(checkboxes)
+                .filter(checkbox => checkbox.checked);
+
+            // Limit displayed violations to 3
+            const displayedViolations = selectedCheckboxes.slice(0, 3)
+                .map(checkbox => checkbox.nextElementSibling.innerText);
+
+            // Check if there are more than 3 selected violations
+            const moreViolations = selectedCheckboxes.length > 3;
+
+            // Update dropdown button text
+            if (displayedViolations.length > 0) {
+                dropdownMenuButton.innerText = displayedViolations.join(', ');
+                if (moreViolations) {
+                    dropdownMenuButton.innerText += ' ...';
+                }
+            } else {
+                dropdownMenuButton.innerText = 'Select Violations';
+            }
+
+            // Update selectedViolationsDiv content
+            selectedViolationsDiv.innerText = displayedViolations.join(', ');
+            if (moreViolations) {
+                selectedViolationsDiv.innerText += ' ...';
+            }
+        }
+    });
+</script>
+
 
 
 

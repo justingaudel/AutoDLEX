@@ -149,7 +149,7 @@
                                 {% for row in reports %}
                                     <tr>
                                         <td>{{row.5}}</td>
-                                        <td>{{row.4}}</td>
+                                        <td class="ellipsis">{{row.4}}</td>
                                         <td>{{row.8}}</td>
                                         <td>{{row.6}} </td>
                                         <td>{{row.7}}</td>
@@ -160,6 +160,14 @@
                                                <input type="checkbox" class="rowCheckbox" value="{{row.0}}"> 
                                           </div>
                                      
+<style>
+    .ellipsis {
+        white-space: nowrap; 
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 200px; /* Adjust the width as needed */
+    }
+</style>
                                        <!--   
                                         <a class="me-3" href="{{ url_for('violators.view_violator', violator_id=row.0) }}">
                                                 <img src="static/img/icons/eye.svg" alt="img">
