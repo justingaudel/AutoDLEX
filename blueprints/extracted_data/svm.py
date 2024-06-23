@@ -12,7 +12,7 @@ import uuid
 
 db_connection = get_db_connection()
 cursor = db_connection.cursor()
-
+#prepare data for SVM model
 data_sets = [
 (" U13-11-372984", "license_number"),
 (" Y05-04-823714", "license_number"),
