@@ -15,7 +15,7 @@
             <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <!-- Added Camera Feature-->
-<body style="background-color: wheat;">
+<body >
     <div id="global-loader">
         <div class="whirly-loader">AutoDlex<i class="fa fa-camera" aria-hidden="true"></i></div>
     </div>
@@ -49,16 +49,29 @@
                 
        
         
-            {% if msg %}
-            <script> 
-        swal({
-            title: "Success",
-            text: "{{ msg }}",
-            icon: "success",
-            button: "OK",
-            });
-            </script>
-        {% endif %} 
+                
+                {% if msg == "There is an unsettled violation for this data." %}
+                <script>
+                    swal({
+                        title: "Alert",
+                        text: "{{ msg }}",
+                        icon: "warning",
+                        button: "OK"
+                    });
+                </script>
+            {% elif msg == "Report Submitted Successfully!" %}
+                <script>
+                    swal({
+                        title: "Success",
+                        text: "{{ msg }}",
+                        icon: "success",
+                        button: "OK"
+                    });
+                </script>
+            {% endif %}
+            
+            
+            
 
         {% else %}
         <script>
@@ -69,14 +82,14 @@
         {% endif %}
     </div>
    
-    <div class="mode container">
+    <div class="mode container"  >
         <div class="justify-content-center">
             <img src="static/images/choices.png" height="300" width="300">
          </div>
          <h3 class="h3 mb-3 " style="font-size: 20px;">Choose Data Entry Method!</h3>
         <button class="btn btn-lg btn-primary btn-block mb-4 license" type="button" onclick="redirectTo('license-scanner')">License Scanner</button>
         <button class="btn btn-lg btn-primary btn-block mb-4 manual" type="button" onclick="redirectTo('manual-input')">Manual Input</button>
-        <button class="btn btn-lg btn-primary btn-block mb-4 enforcer" type="button" onclick="redirectTo('enforcer')">No License</button>
+        <button class="btn btn-lg btn-primary btn-block mb-4 enforcer" type="button" onclick="redirectTo('no_license')">No License</button>
     </div>
     
     <style>
@@ -121,7 +134,10 @@
                       url = "{{ url_for('camera') }}"; // Redirect to enforcer route
                   } else if (userType === 'manual-input') {
                       url = "{{ url_for('manual_input') }}"; // Redirect to admin route
-                  } else {
+                  } else if (userType ==='no_license'){
+                    url = "{{ url_for('no_license') }}"; 
+                  }
+                  else {
                       console.error("Invalid user type:", userType);
                       return;
                   }
