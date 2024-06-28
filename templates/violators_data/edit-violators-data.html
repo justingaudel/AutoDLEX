@@ -28,7 +28,7 @@
                          <li class="active">
                         <a href="{{ url_for('violators.violator_list') }}">
                             <span class="fa fa-user-alt"></span>
-                            <span> Violator list</span>
+                            <span> Violators List</span>
                         </a>
                     </li>
                     <li >
@@ -91,18 +91,27 @@
                                 </div>
                             </div> 
                             <div class="col-sm-6">                                                 
-                            <div class="form-group">
-                                <label for="inputVehicleType" ><a style="color: red;">* </a>Vehicle Type</label>
-                                <select name="vehicle" class="form-control" id="inputVehicleType" required>
-                                    <option value="" disabled selected>Vehicle Type</option>
-                                    <option value="Motorcycle" {% if violator_data.9 == "Motorcycle" %} selected {% endif %}>Motorcycle</option>
-                                    <option value="Jeep" {% if violator_data.9 == "Jeep" %} selected {% endif %}>Jeep</option>
-                                    <option value="Tricycle" {% if violator_data.9 == "Tricycle" %} selected {% endif %}>Tricycle</option>
-                                    <option value="Van" {% if violator_data.9 == "Van" %} selected {% endif %}>Van</option>
-                                    <option value="Pickup" {% if violator_data.9 == "Pickup" %} selected {% endif %}>Pickup</option>
-                                    <!-- Add more options as needed -->
-                                </select>
-                            </div>
+                                <div class="form-group">
+                                    <label for="inputVehicleType"><span style="color: red;">* </span>Vehicle Type</label>
+                                    <select name="vehicle" class="form-control" id="inputVehicleType" required>
+                                        <option value="" disabled selected>Select</option>
+                                        <option value="Motorcycle" {% if violator_data.9 == "Motorcycle" %} selected {% endif %}>Motorcycle</option>
+                                        <option value="Jeep" {% if violator_data.9 == "Jeep" %} selected {% endif %}>Jeep</option>
+                                        <option value="Tricycle" {% if violator_data.9 == "Tricycle" %} selected {% endif %}>Tricycle</option>
+                                        <option value="Van" {% if violator_data.9 == "Van" %} selected {% endif %}>Van</option>
+                                        <option value="Pickup" {% if violator_data.9 == "Pickup" %} selected {% endif %}>Pickup</option>
+                                        <option value="Car" {% if violator_data.9 == "Car" %} selected {% endif %}>Car</option>
+                                        <option value="Bus" {% if violator_data.9 == "Bus" %} selected {% endif %}>Bus</option>
+                                        <option value="Truck" {% if violator_data.9 == "Truck" %} selected {% endif %}>Truck</option>
+                                        <option value="SUV" {% if violator_data.9 == "SUV" %} selected {% endif %}>SUV</option>
+                                        <option value="Minivan" {% if violator_data.9 == "Minivan" %} selected {% endif %}>Minivan</option>
+                                        <option value="Sedan" {% if violator_data.9 == "Sedan" %} selected {% endif %}>Sedan</option>
+                                        <option value="Hatchback" {% if violator_data.9 == "Hatchback" %} selected {% endif %}>Hatchback</option>
+                                        <option value="Station Wagon" {% if violator_data.9 == "Station Wagon" %} selected {% endif %}>Station Wagon</option>
+                                        <option value="Forklift" {% if violator_data.9 == "Forklift" %} selected {% endif %}>Forklift</option>
+                                    </select>
+                                </div>
+                                    
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
