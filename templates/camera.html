@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='index-css/style.css') }}">
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
-<body style="background-color: wheat;">
+<body >
     <div id="global-loader">
         <div class="whirly-loader">AutoDlex<i class="fa fa-camera" aria-hidden="true"></i></div>
     </div>
@@ -45,12 +45,20 @@
             </ul>
         </div>
         <form action="{{ url_for('svm.violators') }}" method="post" enctype="multipart/form-data">
+            
             <h1 style="margin-top: 90px; margin-bottom:4px;">Scan License with Camera</h1>
+            <div class="container">
+                <div class="progress">
+                    <div class="progress-bar"  style="width: 150%;"  aria-valuemax="100">Step 1 of 2</div>
+                  </div>
+            </div>
+            
             <div class="camera">
                 <video id="video">Video stream not available.</video>
                 <img id="capturedImage" class="capturedImage" src="" alt="Captured Image">
             </div>
             <div>
+                <button id="showModalButton" type="button">Show Extracted Data</button>
                 <button id="startbutton">
                     <img src="{{ url_for('static', filename='images/camera-svgrepo-com.png') }}" alt="Camera Icon">
                 </button>
@@ -62,11 +70,11 @@
             <input style="display:none" id="image_data" name="image_data">
             <input style="display:none" type="text" name="username" value="{{username}}">
             <canvas id="canvas"></canvas>
-            <div id="extractedText"></div>
+            <div  style="display:none" id="extractedText"></div>
             <div id="warningMessage"></div>
             <div id="space-between" style="font-size: 20px;">
                 <button id="retakebutton" name="retakebutton">Retake</button>
-                <button id="submit" name="submit">Submit</button>
+                <button id="submit" name="submit">Next Step</button>
             </div>
         </form>
         {% if msg %}
@@ -101,7 +109,6 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="confirmCapture">Confirm</button>
                 </div>
             </div>
         </div>
@@ -124,8 +131,8 @@
             document.getElementById("image_data").value = capturedImage;
         });
 
-        // Capture button click event
-        document.getElementById("startbutton").addEventListener("click", function() {
+        // Show Modal button click event
+        document.getElementById("showModalButton").addEventListener("click", function() {
             // Display the modal with the captured image and extracted text
             var capturedImage = document.getElementById("capturedImage").src;
             var extractedText = document.getElementById("extractedText").innerHTML;
@@ -145,5 +152,7 @@
             captureModal.hide();
         });
     </script>
+
+
 </body>
 </html>
