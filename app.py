@@ -70,27 +70,49 @@ def camera():
 def violators_form():
     msg = ''  # Initialize msg here
     if request.method == 'POST':
-        session.get('submitted', True)
-        violation_list = request.form.getlist('violation[]')
-        violation = ', '.join(violation_list)
-        
         tct_number = request.form['tct_number']
         time = request.form['time']
         date = request.form['date']
+        violation_list = request.form.getlist('violation[]')
+        violation = ', '.join(violation_list)
         barangay = request.form['barangay']
         plateNumber = request.form['plateNumber']
         vehicle = request.form['vehicle']
         status = request.form['status']
-        cursor.execute("INSERT INTO violators_data (tct_number, time, date, barangay, plateNumber, vehicle, status) VALUES ( %s,%s, %s, %s, %s, %s, %s)", (tct_number, time, date, barangay, plateNumber, vehicle, status))
-
-        db_connection.commit()
-        session['msg'] = 'Report Submitted Successfully!'
         
+        # Check if there is an unsettled violation for the given plate number
+        cursor.execute("SELECT * FROM violators_data WHERE plateNumber = %s AND status = 'Uknsettled'", (plateNumber,))
+        existing_violation = cursor.fetchone()
+        
+        if existing_violation:
+             cursor.execute("INSERT INTO violators_data (tct_number, time, date, violation, barangay, plateNumber, vehicle, status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+                       (tct_number, time, date, violation, barangay, plateNumber, vehicle, status))
+             db_connection.commit()
+        
+        # Update reports table
+             cursor.execute("UPDATE reports SET violations=%s, place_of_apprehension=%s, plate_number=%s, vehicle=%s WHERE tct_number = %s",
+                       (violation, barangay, plateNumber, vehicle, tct_number))
+             db_connection.commit()
+             
+             session['msg'] = 'There is an unsettled violation for this data.'
+             return redirect(url_for('violators_form'))
+        
+        # Insert new violator data
+        cursor.execute("INSERT INTO violators_data (tct_number, time, date, violation, barangay, plateNumber, vehicle, status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+                       (tct_number, time, date, violation, barangay, plateNumber, vehicle, status))
+        db_connection.commit()
+        
+        # Update reports table
+        cursor.execute("UPDATE reports SET violations=%s, place_of_apprehension=%s, plate_number=%s, vehicle=%s WHERE tct_number = %s",
+                       (violation, barangay, plateNumber, vehicle, tct_number))
+        db_connection.commit()
+        
+        session['msg'] = 'Report Submitted Successfully!'
         return redirect(url_for('violators_form'))
     
     if 'msg' in session:
         msg = session.pop('msg')
-        session.pop('submitted', None)
+    
     return render_template('mode-selection.html', msg=msg)
 
 @app.route('/manual_input_data', methods=['GET', 'POST'])
@@ -113,6 +135,8 @@ def manual_input_data():
         )            
         
         db_connection.commit()
+        cursor.execute("INSERT INTO reports (tct_number, name,license_number) VALUES (%s, %s,%s)", (tct_number,name,license_number))
+      
         
         return redirect(url_for('manual_input_data',tct_number = tct_number))
     tct_number = request.args.get('tct_number') 
@@ -146,7 +170,9 @@ def index():
         return render_template('error.html', error=str(e))
 
 
-
+@app.route('/mode_selection')
+def mode_selection():
+    return render_template('mode-selection.html')
 
 
 @app.route('/settled_reports')
@@ -212,13 +238,14 @@ def selection_mode():
 @app.route('/manual_input')
 def manual_input():
     session['manual_input'] = True
-    cursor.execute("SELECT MAX(extracted_id) FROM extracted_data")
+    cursor = db_connection.cursor()
+    cursor.execute("SELECT MAX(id) FROM reports")
     largest_id = cursor.fetchone()[0]  # Get the latest extracted_id
 
     if largest_id is None:
                 new_id = 1
     else:
-        cursor.execute("SELECT tct_number FROM extracted_data WHERE extracted_id = %s", (largest_id,))
+        cursor.execute("SELECT tct_number FROM reports WHERE id = %s", (largest_id,))
         existing_tct_number = cursor.fetchone()[0]
         new_id = int(existing_tct_number.split('-')[1]) + 1
 
@@ -230,6 +257,50 @@ def manual_input():
 
 
 
+
+@app.route('/no_license')
+def no_license():
+    session['manual_input'] = True
+
+    cursor.execute("SELECT MAX(id) FROM reports")
+    largest_id = cursor.fetchone()[0]  # Get the latest extracted_id
+
+    if largest_id is None:
+                new_id = 1
+    else:
+        cursor.execute("SELECT tct_number FROM reports WHERE id = %s", (largest_id,))
+        existing_tct_number = cursor.fetchone()[0]
+        new_id = int(existing_tct_number.split('-')[1]) + 1
+
+    generated_id = 'TCT-' + str(new_id).zfill(5)
+    
+    tct_number = generated_id   
+    return render_template('no_license.html' ,tct_number=tct_number)
+
+
+@app.route('/no_license_data', methods=['GET', 'POST'])
+def no_license_data():
+    session['submitted'] = True
+    msg = ''
+    tct_number = ''  # Initialize tct_number
+
+    if request.method == 'POST':
+        tct_number = request.form['tct_number']
+        name = request.form['name']
+        date_of_birth = request.form['date_of_birth']
+        address = request.form['address']
+        sex = request.form['sex']
+      
+        cursor.execute("INSERT INTO no_license (tct_number, name, date_of_birth, address, sex) VALUES (%s, %s, %s, %s, %s)",
+               (tct_number, name, date_of_birth, address, sex))
+        
+        db_connection.commit()
+        cursor.execute("INSERT INTO reports (tct_number, name) VALUES (%s, %s)", (tct_number,name))
+      
+        
+        return redirect(url_for('no_license_data',tct_number = tct_number))
+    tct_number = request.args.get('tct_number') 
+    return render_template('violators-form.html', tct_number=tct_number)
 
 if __name__ == '__main__':
     app.run(debug=True)
