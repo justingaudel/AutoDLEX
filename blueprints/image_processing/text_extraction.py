@@ -77,10 +77,6 @@ def process_image():
                 expiration_match = expiration_pattern.search(line)
                 if expiration_match:
                     expiration_date = expiration_match.group()
-            if agency_code is None:
-                agency_code_match = agency_code_pattern.search(line)
-                if agency_code_match:
-                    agency_code = agency_code_match.group()
             if birthday is None:
                 birthday_match = birthday_pattern.search(line)
                 if birthday_match:
@@ -91,7 +87,6 @@ def process_image():
             "Name": name,
             "License Number": license_number,
             "Expiration Date": expiration_date,
-            "Agency Code": agency_code,
             "Birthday": birthday
         }
 
