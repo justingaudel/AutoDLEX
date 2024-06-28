@@ -1,0 +1,33 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - Developer
+    
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'  # Ensure you are using the latest version of Node.js 20
+
+    - name: Check Node.js version
+      run: node -v  # This will print the Node.js version to the workflow logs
+
+    - name: Install Dependencies
+      run: npm install
+
+    - name: Run semantic-release
+      run: npx semantic-release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Use the correct environment variable name
+        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

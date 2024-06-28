@@ -1,0 +1,152 @@
+#video {
+    border-radius: 12px;
+    width: 420px;
+    height: 340px;
+}
+
+#photo {
+    border: 1px solid black;
+    width: 420px;
+    height: 340px;
+}
+
+#canvas {
+    display: none;
+}
+
+.camera {
+    width: 420px;
+    padding: 30px;
+    margin: 0 auto; 
+    display: flex; 
+    
+}
+
+
+.output {
+    width: 420px;
+    padding: 30px;
+    margin: 0 auto; 
+    display: flex; 
+}
+
+#capturedImage{
+    width: 420px;
+    padding: 30px;
+    margin: 0 auto; 
+    display: flex;
+
+}
+
+#startbutton {
+    margin-top: 40px;
+    display: block;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    bottom: 36px;
+    padding: 0; /* Remove padding to ensure the image fills the button */
+    font-size: 14px;
+    cursor: pointer;
+    background-color: transparent; /* Set background color to transparent */
+    border: black
+     /* Remove border if not needed */
+}
+#startbutton img {
+    width: 50px; /* Adjust the width as needed */
+    height: 50px; /* Adjust the height as needed */
+}
+
+#submit{
+    border-radius: 8px;
+    margin:60px;
+    margin-top: 5px;
+    bottom: 36px;
+    padding: 13px;
+    background-color: #2578F4;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+    color: rgba(255, 255, 255, 1.0);
+    cursor: pointer;
+    
+}
+ #retakebutton{
+    border-radius: 8px;
+    margin:60px;
+    margin-top: 5px;
+    bottom: 36px;
+    padding: 13px;
+    background-color: #9C9C9C;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+    color: rgba(255, 255, 255, 1.0);
+    cursor: pointer;
+ } 
+
+ #showModalButton{
+    border-radius: 8px;
+    margin-top: 5px;
+    background-color: #9C9C9C;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+    color: rgba(255, 255, 255, 1.0);
+    cursor: pointer;
+ }
+#space-between{
+    margin: 12px;
+    justify-content: center;
+    display:flex;
+}
+.contentarea {
+    font-size: 16px;
+    font-family: Arial;
+    text-align: center;
+}
+
+.camera {
+    position: relative;
+    width: 420px; 
+    height: 340px;
+}
+
+#video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#capturedImage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    margin: auto 0;
+}
+/*
+#title {
+    font-size: 30px;
+    font-family: Arial;
+    text-align: center;
+    margin-top: 20px;
+    margin: 0 auto; Center horizontally 
+    color: white;
+    justify-content: center; 
+    
+}*/
+
+
+@media screen and (min-width: 768px) {
+    .contentarea {
+        padding: 40px;
+    }
+
+    .camera {
+        max-width: 420px;
+        margin: 0 auto;
+    }
+}
+
+
