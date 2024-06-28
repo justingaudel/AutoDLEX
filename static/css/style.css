@@ -82,6 +82,16 @@
     color: rgba(255, 255, 255, 1.0);
     cursor: pointer;
  } 
+
+ #showModalButton{
+    border-radius: 8px;
+    margin-top: 5px;
+    background-color: #9C9C9C;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+    color: rgba(255, 255, 255, 1.0);
+    cursor: pointer;
+ }
 #space-between{
     margin: 12px;
     justify-content: center;
