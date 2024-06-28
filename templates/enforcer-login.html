@@ -11,22 +11,9 @@
     <link rel="canonical" href="https://getbootstrap.com/docs/4.4/examples/sign-in/">
 
     <!-- Bootstrap core CSS -->
-<link href="static/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-
-
-    <!-- Faviconss -->
-
+    <link href="static/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
     <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-      }
-
       @media (min-width: 768px) {
         .bd-placeholder-img-lg {
           font-size: 3.5rem;
@@ -36,40 +23,69 @@
     <!-- Custom styles for this template -->
     <link href="static/css/signin.css" rel="stylesheet">
   </head>
-  <body class="text-center">
-    <form class="form-signin" action="{{ url_for('enforcer.enforcer') }}" method="post" >
-        <div class="enforcer-logo">
-            <img src="static/images/CTMEU_LOGO.png" alt="" width="600" height="430">
+  <body>
+    <form class="form-signin" action="{{ url_for('enforcer.enforcer') }}" method="post" style="background-color: white; padding: 50px; max-width: 500px; border-radius: 10px;" onsubmit="return validateForm()">
+      <div class="enforcer-logo" style="margin-top: -90px;">
+        <img src="static/images/CTMEU_LOGO.png" alt="" width="200" height="240">
+      </div>
+      <h1 style="color: blue; margin-top: -50px;" class="text-center">AutoDLEX</h1>
+      <p style="color:black" class="text-center">Enforcer Log in</p>
+      {% if msg %}
+        <div class="alert alert-danger">
+          {{msg}}
         </div>
-        <h1 class="h3 mb-3 font-weight-normal text-black "><b>Enforcer Log in</b></h1>
-        {% if msg %}
-                <div class="alert alert-danger">
-                        {{msg}}
-                  </div>
-        {% endif %} 
-        <div class="form-group">
-            <input type="text" id="username" name="username" class="form-control" placeholder="Username" maxlength="50" required autofocus>
-        </div>
+      {% endif %}
+      <div class="form-group">
+        <label for="Username" style="color: black">Username<span style="color:red"> *</span></label>
+        <input type="text" id="Username" name="username" class="form-control" placeholder="Username" maxlength="50" required autofocus>
+        <div id="emailError" style="color: red;"></div>
+      </div>
+      <div class="form-group">
+        <label for="password" style="color: black">Password<span style="color:red"> *</span></label>
         <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
-        <button class="btn btn-lg btn-primary btn-block" name="submit" type="submit">Sign in</button>
-        <a href="{{url_for('interface')}}"><u style="color: white;"> Back  </u>
-        </a>
+        <div id="passwordError" style="color: red;"></div>
+      </div>
+      <button class="btn btn-lg btn-primary btn-block" name="submit" type="submit">Sign in</button>
+      <p style="margin-bottom: -23px;" class="text-center">By using this service, you understand and agree to the AutoDLEX <span style="color: blue">Terms and Conditions</span></p>
+      <!-- <a href="{{url_for('interface')}}"><u style="color: white;"> Back </u></a> -->
     </form>
 
     <script>
-      document.getElementById('username').addEventListener('input', function(event) {
-          const input = event.target;
-          const regex = /[^a-zA-Z0-9]/g; // Regular expression to match any character that is not alphanumeric
-          if (regex.test(input.value)) {
-              input.value = input.value.replace(regex, ''); // Remove special characters
-              document.getElementById('error-message').textContent = 'Special characters are not allowed.';
-          } else {
-              document.getElementById('error-message').textContent = '';
-          }
-      });
-  </script>
+      function validateForm() {
+        // Clear previous error messages
+        document.getElementById('emailError').textContent = '';
+        document.getElementById('passwordError').textContent = '';
 
-</body>
+        // Get input values
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
 
+        // Email validation regex
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        let isValid = true;
+
+        // Validate email
+        if (!emailRegex.test(email)) {
+          document.getElementById('emailError').textContent = 'Please enter a valid email address.';
+          isValid = false;
+        }
+
+        // Validate password (minimum 6 characters for this example)
+        if (password.length < 6) {
+          document.getElementById('passwordError').textContent = 'Password must be at least 6 characters long.';
+          isValid = false;
+        }
+
+        return isValid;
+      }
+    </script>
+    <style>
+      /* Example of signin.css */
+      @media (max-width: 576px) {
+        .form-signin {
+          padding: 10px;
+        }
+      }
+    </style>
+  </body>
 </html>
-
