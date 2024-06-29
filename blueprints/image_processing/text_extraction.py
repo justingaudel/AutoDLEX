@@ -8,7 +8,7 @@ import re
 text_extraction_bp = Blueprint("text_extraction", __name__)
 
 # Path to Tesseract executable
-pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+pytesseract.pytesseract.tesseract_cmd = r'Tesseract-OCR\tesseract.exe'
 
 # Define regex patterns for extracting specific fields
 name_pattern = re.compile(r'[A-Z]+, [A-Z]+ [A-Z]+')
