@@ -9,15 +9,15 @@ from db_utils import get_db_connection
 
 
 
-application = Flask(__name__)
+app = Flask(__name__)
 
 
-application.register_blueprint(enforcer_bp) #blueprint for the enforcer pages
-application.register_blueprint(violator_bp) #blueprint for violators page
-application.register_blueprint(svm_bp) #blueprint for the svm alghorithm
-application.register_blueprint(text_extraction_bp) #blueprint for text extraction
-# Set a secret key for the Flask applicationlication
-application.secret_key = b'CTMEU/'
+app.register_blueprint(enforcer_bp) #blueprint for the enforcer pages
+app.register_blueprint(violator_bp) #blueprint for violators page
+app.register_blueprint(svm_bp) #blueprint for the svm alghorithm
+app.register_blueprint(text_extraction_bp) #blueprint for text extraction
+# Set a secret key for the Flask application
+app.secret_key = b'CTMEU/'
 
 #  connection to the MySQL database
 db_connection = get_db_connection()
@@ -31,21 +31,21 @@ cursor = db_connection.cursor()
 
 
 
-@application.route('/logout')
+@app.route('/logout')
 def logout():
     session.pop('loggedins',None)
     session.pop('username',None)
     return redirect(url_for('enforcer.enforcer'))
 
 
-@application.route('/logout_admin')
+@app.route('/logout_admin')
 def logout_admin():
     session.pop('loggedin',None)
     session.pop('username',None)
     return redirect(url_for('admin_signin'))
 
 
-@application.route('/')
+@app.route('/')
 def interface():
     if 'loggedins' in session:
         return redirect(url_for('camera'))
@@ -60,13 +60,13 @@ def interface():
 
 
 
-@application.route('/camera')
+@app.route('/camera')
 def camera():
     username = request.args.get('username')
     return render_template('camera.html')
 
 
-@application.route('/violators_form', methods=['GET', 'POST'])
+@app.route('/violators_form', methods=['GET', 'POST'])
 def violators_form():
     msg = ''  # Initialize msg here
     if request.method == 'POST':
@@ -90,7 +90,7 @@ def violators_form():
              db_connection.commit()
         
         # Update reports table
-             cursor.execute("UPDATE reports SET violations=%s, place_of_applicationrehension=%s, plate_number=%s, vehicle=%s WHERE tct_number = %s",
+             cursor.execute("UPDATE reports SET violations=%s, place_of_apprehension=%s, plate_number=%s, vehicle=%s WHERE tct_number = %s",
                        (violation, barangay, plateNumber, vehicle, tct_number))
              db_connection.commit()
              
@@ -103,7 +103,7 @@ def violators_form():
         db_connection.commit()
         
         # Update reports table
-        cursor.execute("UPDATE reports SET violations=%s, place_of_applicationrehension=%s, plate_number=%s, vehicle=%s WHERE tct_number = %s",
+        cursor.execute("UPDATE reports SET violations=%s, place_of_apprehension=%s, plate_number=%s, vehicle=%s WHERE tct_number = %s",
                        (violation, barangay, plateNumber, vehicle, tct_number))
         db_connection.commit()
         
@@ -115,7 +115,7 @@ def violators_form():
     
     return render_template('mode-selection.html', msg=msg)
 
-@application.route('/manual_input_data', methods=['GET', 'POST'])
+@app.route('/manual_input_data', methods=['GET', 'POST'])
 def manual_input_data():
     session['submitted'] = True
     msg = ''
@@ -142,7 +142,7 @@ def manual_input_data():
     tct_number = request.args.get('tct_number') 
     return render_template('violators-form.html', tct_number=tct_number)
 
-@application.route('/index')
+@app.route('/index')
 def index():
     try:
         # Fetch counts
@@ -170,12 +170,12 @@ def index():
         return render_template('error.html', error=str(e))
 
 
-@application.route('/mode_selection')
+@app.route('/mode_selection')
 def mode_selection():
     return render_template('mode-selection.html')
 
 
-@application.route('/settled_reports')
+@app.route('/settled_reports')
 def settled_reports():
     cursor.execute("SELECT * FROM violators_data WHERE status = 'settled'")
     data =  cursor.fetchall()
@@ -184,7 +184,7 @@ def settled_reports():
 
 
 #routes for admin
-@application.route('/admin_signin', methods=['GET','POST'])
+@app.route('/admin_signin', methods=['GET','POST'])
 def admin_signin():
     if 'loggedin' in session:
         return redirect(url_for('index'))
@@ -204,7 +204,7 @@ def admin_signin():
 
 
 
-@application.route('/add_enforcer', methods=['POST', 'GET'])
+@app.route('/add_enforcer', methods=['POST', 'GET'])
 def add_enforcer():
     if request.method == 'POST':
         username = request.form['username']
@@ -228,14 +228,14 @@ def add_enforcer():
     return render_template('new-enforcer.html')
 
 
-@application.route('/selection_mode')
+@app.route('/selection_mode')
 def selection_mode():
     session['loggedins'] = True
     return render_template('mode-selection.html')
 
 
 
-@application.route('/manual_input')
+@app.route('/manual_input')
 def manual_input():
     session['manual_input'] = True
     cursor = db_connection.cursor()
@@ -258,7 +258,7 @@ def manual_input():
 
 
 
-@application.route('/no_license')
+@app.route('/no_license')
 def no_license():
     session['manual_input'] = True
 
@@ -278,7 +278,7 @@ def no_license():
     return render_template('no_license.html' ,tct_number=tct_number)
 
 
-@application.route('/no_license_data', methods=['GET', 'POST'])
+@app.route('/no_license_data', methods=['GET', 'POST'])
 def no_license_data():
     session['submitted'] = True
     msg = ''
@@ -303,4 +303,4 @@ def no_license_data():
     return render_template('violators-form.html', tct_number=tct_number)
 
 if __name__ == '__main__':
-    application.run(debug=True)
+    app.run(debug=True)
