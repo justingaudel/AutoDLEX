@@ -124,7 +124,7 @@
           </select>
         </div>
         
-        <button class="btn btn-primary btn-block" type="submit">Next Step</button>
+        <button class="btn btn-primary btn-block" type="submit">Continue (step 1 of 2) </button>
       </div>
     </form>
 
@@ -170,6 +170,26 @@
         });
       });
     </script>
+
+<script>
+ document.addEventListener("DOMContentLoaded", function() {
+    var dateOfBirthInput = document.getElementById("date_of_birth");
+
+    // Calculate the current year
+    var currentYear = new Date().getFullYear();
+
+    // Calculate 18 years ago
+    var maxDate = (currentYear - 18) + "-12-31";
+
+    // Set attributes for input
+    dateOfBirthInput.setAttribute("min", "1900-01-01"); // Setting a practical minimum
+    dateOfBirthInput.setAttribute("max", maxDate); // Setting maximum as calculated
+
+    // Optional: You can also set the initial value if needed
+    // dateOfBirthInput.value = maxDate; 
+});
+
+</script>
     <script src="{{ url_for('static', filename='javascript/Error-handling.js') }}"></script>
     <script src="{{ url_for('static', filename='javascript/camera.js') }}"></script>
     <script src="{{ url_for('static', filename='js/feather.min.js') }}"></script>
