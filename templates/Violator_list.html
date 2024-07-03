@@ -205,20 +205,12 @@
             var editIds = Array.from(checkboxes).filter(checkbox => checkbox.checked).map(checkbox => checkbox.value);
 
             if (editIds.length > 1) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Please select only one row to edit',
-                });
+              
             } else if (editIds.length === 1) {
                 var editId = editIds[0];
                 window.location.href = "{{ url_for('violators.edit_violators_data', violator_id='') }}" + editId;
             } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Please select a row to edit',
-                });
+              
             }
         }
 
@@ -227,20 +219,12 @@
             var viewIds = Array.from(checkboxes).filter(checkbox => checkbox.checked).map(checkbox => checkbox.value);
 
             if (viewIds.length > 1) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Please select only one row to view',
-                });
+              
             } else if (viewIds.length === 1) {
                 var viewId = viewIds[0];
                 window.location.href = "{{ url_for('violators.view_violators_data', violator_id='') }}" + viewId;
             } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Please select a row to view',
-                });
+              
             }
         }
 

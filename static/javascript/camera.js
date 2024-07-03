@@ -21,21 +21,19 @@
         capturedImageElement = document.getElementById('capturedImage');
 
         navigator.mediaDevices.getUserMedia({
-            video: true,
+            video: {
+                facingMode: { ideal: 'environment' } // Attempt to use the back camera
+            },
             audio: false
         })
         .then(function(stream) {
             video.srcObject = stream;
             video.play();
             submit.disabled = true;
-          
         })
-    
         .catch(function(err) {
             console.log("An error occurred: " + err);
         });
-
-     
 
         video.addEventListener('canplay', function(ev) {
             if (!streaming) {
@@ -49,7 +47,7 @@
                 video.setAttribute('height', height);
                 canvas.setAttribute('width', width);
                 canvas.setAttribute('height', height);
-                streaming = false;
+                streaming = true; // Set streaming to true once video can play
             }
         }, false);
 
@@ -72,7 +70,6 @@
         context.fillRect(0, 0, canvas.width, canvas.height);
         var data = canvas.toDataURL('image/png');
         photo.setAttribute('src', data);
-       
     }
 
     function takepicture() {
@@ -103,10 +100,9 @@
                 // Display the processed image
                 capturedImageElement.src = dataURL;
                 capturedImageElement.style.display = 'block'; // Make the processed image visible
-                retakebutton.style.display = 'block'; // ShowA the "Retake" button
+                retakebutton.style.display = 'block'; // Show the "Retake" button
                 video.style.display = 'none'; // Hide the video stream
                 submit.disabled = false;
-                
             })
             .catch(error => console.error('Error:', error));
         } else {

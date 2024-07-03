@@ -21,7 +21,6 @@ app.secret_key = b'CTMEU/'
 
 #  connection to the MySQL database
 db_connection = get_db_connection()
-cursor = db_connection.cursor()
 
 # Create a cursor object to execute SQL queries
 
@@ -68,7 +67,9 @@ def camera():
 
 @app.route('/violators_form', methods=['GET', 'POST'])
 def violators_form():
+    cursor_violators = db_connection.cursor()
     msg = ''  # Initialize msg here
+
     if request.method == 'POST':
         tct_number = request.form['tct_number']
         time = request.form['time']
@@ -81,32 +82,32 @@ def violators_form():
         status = request.form['status']
         
         # Check if there is an unsettled violation for the given plate number
-        cursor.execute("SELECT * FROM violators_data WHERE plateNumber = %s AND status = 'Uknsettled'", (plateNumber,))
-        existing_violation = cursor.fetchone()
+        cursor_violators.execute("SELECT * FROM violators_data WHERE plateNumber = %s AND status = 'unsettled'", (plateNumber,))
+        existing_violation = cursor_violators.fetchall()
         
         if existing_violation:
-             cursor.execute("INSERT INTO violators_data (tct_number, time, date, violation, barangay, plateNumber, vehicle, status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+             cursor_violators.execute("INSERT INTO violators_data (tct_number, time, date, violation, barangay, plateNumber, vehicle, status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
                        (tct_number, time, date, violation, barangay, plateNumber, vehicle, status))
              db_connection.commit()
         
-        # Update reports table
-             cursor.execute("UPDATE reports SET violations=%s, place_of_apprehension=%s, plate_number=%s, vehicle=%s WHERE tct_number = %s",
+             cursor_violators.execute("UPDATE reports SET violations=%s, place_of_apprehension=%s, plate_number=%s, vehicle=%s WHERE tct_number = %s",
                        (violation, barangay, plateNumber, vehicle, tct_number))
              db_connection.commit()
-             
-             session['msg'] = 'There is an unsettled violation for this data.'
+             session['msg'] = 'There is an existing unsettled violation for the given data'
+             cursor_violators.close()  # Close the cursor before returning
              return redirect(url_for('violators_form'))
         
         # Insert new violator data
-        cursor.execute("INSERT INTO violators_data (tct_number, time, date, violation, barangay, plateNumber, vehicle, status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+        cursor_violators.execute("INSERT INTO violators_data (tct_number, time, date, violation, barangay, plateNumber, vehicle, status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
                        (tct_number, time, date, violation, barangay, plateNumber, vehicle, status))
         db_connection.commit()
         
         # Update reports table
-        cursor.execute("UPDATE reports SET violations=%s, place_of_apprehension=%s, plate_number=%s, vehicle=%s WHERE tct_number = %s",
+        cursor_violators.execute("UPDATE reports SET violations=%s, place_of_apprehension=%s, plate_number=%s, vehicle=%s WHERE tct_number = %s",
                        (violation, barangay, plateNumber, vehicle, tct_number))
         db_connection.commit()
         
+        cursor_violators.close()  # Close the cursor after all operations
         session['msg'] = 'Report Submitted Successfully!'
         return redirect(url_for('violators_form'))
     
@@ -115,8 +116,10 @@ def violators_form():
     
     return render_template('mode-selection.html', msg=msg)
 
+
 @app.route('/manual_input_data', methods=['GET', 'POST'])
 def manual_input_data():
+    cursor = db_connection.cursor()
     session['submitted'] = True
     msg = ''
     tct_number = ''  # Initialize tct_number
@@ -137,13 +140,14 @@ def manual_input_data():
         db_connection.commit()
         cursor.execute("INSERT INTO reports (tct_number, name,license_number) VALUES (%s, %s,%s)", (tct_number,name,license_number))
       
-        
+        cursor.close()
         return redirect(url_for('manual_input_data',tct_number = tct_number))
     tct_number = request.args.get('tct_number') 
     return render_template('violators-form.html', tct_number=tct_number)
 
 @app.route('/index')
 def index():
+    cursor = db_connection.cursor()
     try:
         # Fetch counts
         cursor.execute("SELECT COUNT(*) FROM enforcer_accounts")
@@ -160,7 +164,7 @@ def index():
         
         cursor.execute("SELECT * FROM violators_data")
         violators = cursor.fetchall()
-        
+        cursor.close()
         # Pass counts and data to template
         return render_template('index.html', enforcers_count=enforcers_count, violators_count=violators_count,
                                unsettled_reports_count=unsettled_reports_count, settled_reports_count=settled_reports_count,
@@ -177,8 +181,10 @@ def mode_selection():
 
 @app.route('/settled_reports')
 def settled_reports():
+    cursor = db_connection.cursor()
     cursor.execute("SELECT * FROM violators_data WHERE status = 'settled'")
     data =  cursor.fetchall()
+    cursor.close()
     return render_template('settled-reports.html',reports = data)
 
 
@@ -186,6 +192,7 @@ def settled_reports():
 #routes for admin
 @app.route('/admin_signin', methods=['GET','POST'])
 def admin_signin():
+    cursor = db_connection.cursor()
     if 'loggedin' in session:
         return redirect(url_for('index'))
     msg = ''
@@ -194,6 +201,7 @@ def admin_signin():
         password = request.form['password']
         cursor.execute("SELECT * FROM admin_accounts WHERE email = %s AND password = %s", (email, password))  # Corrected the SQL query
         record = cursor.fetchone()
+        cursor.close()
         if record:
             session['loggedin'] = True
             session['email'] = record[1]
@@ -206,6 +214,7 @@ def admin_signin():
 
 @app.route('/add_enforcer', methods=['POST', 'GET'])
 def add_enforcer():
+    cursor = db_connection.cursor()
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -220,7 +229,7 @@ def add_enforcer():
             val = (username, password)
             cursor.execute(sql, val)
             db_connection.commit()  # Commit changes to the database
-
+            cursor.close()  
             # Redirect to a success page or another route
             return redirect(url_for('enforcer_data'))
     
@@ -261,7 +270,7 @@ def manual_input():
 @app.route('/no_license')
 def no_license():
     session['manual_input'] = True
-
+    cursor = db_connection.cursor()
     cursor.execute("SELECT MAX(id) FROM reports")
     largest_id = cursor.fetchone()[0]  # Get the latest extracted_id
 
@@ -273,13 +282,14 @@ def no_license():
         new_id = int(existing_tct_number.split('-')[1]) + 1
 
     generated_id = 'TCT-' + str(new_id).zfill(5)
-    
+    cursor.close()
     tct_number = generated_id   
     return render_template('no_license.html' ,tct_number=tct_number)
 
 
 @app.route('/no_license_data', methods=['GET', 'POST'])
 def no_license_data():
+    cursor = db_connection.cursor()
     session['submitted'] = True
     msg = ''
     tct_number = ''  # Initialize tct_number
@@ -297,7 +307,7 @@ def no_license_data():
         db_connection.commit()
         cursor.execute("INSERT INTO reports (tct_number, name) VALUES (%s, %s)", (tct_number,name))
       
-        
+        cursor.close()
         return redirect(url_for('no_license_data',tct_number = tct_number))
     tct_number = request.args.get('tct_number') 
     return render_template('violators-form.html', tct_number=tct_number)

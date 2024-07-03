@@ -113,7 +113,7 @@
                 </section>
             </div>
         </div>
-        
+      
     </div>
 
     {% else %}
@@ -129,6 +129,23 @@
 
     {% include 'include_assets/script.html' %}
 
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <script>
+          Swal.fire({
+            icon: '{{ category }}',
+            title: '{{ message }}',
+            showConfirmButton: true,
+            allowOutsideClick: false, 
+            allowEscapeKey: false 
+          });
+        </script>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  
 </body>
 
 </html>

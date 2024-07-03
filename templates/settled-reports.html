@@ -77,12 +77,10 @@
                                 <ul>
                                   
                                     <li>
-                                        <a data-bs-toggle="tooltip" data-bs-placement="top" title="excel " onclick="excellReports()"><img
+                                        <a data-bs-toggle="tooltip" data-bs-placement="top" title="Generate Excel Reports " onclick="excellReports()"><img
                                                 src="static/img/icons/excel.svg"  alt="img"></a>
                                     </li>
-                                    <a class="me-3 ">
-                                        <img src="static/img/icons/delete.svg" onclick="deleteData()" alt="img">
-                                    </a>
+                                  
                                 </ul>
                             </div>
                         </div>
@@ -205,33 +203,7 @@
                     });
                 }
     
-                     function deleteData() {
-                        var checkboxes = document.querySelectorAll('.rowCheckbox');
-                        var viewIds = Array.from(checkboxes).filter(checkbox => checkbox.checked).map(checkbox => checkbox.value);
-
-                        if (viewIds.length < 1) {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Oops...',
-                                text: 'Please select at least one row to delete',
-                            });
-                        } else {
-                            Swal.fire({
-                                title: 'Are you sure?',
-                                text: 'You are about to delete this data',
-                                icon: 'warning',
-                                showCancelButton: true,
-                                confirmButtonColor: '#d33',
-                                cancelButtonColor: '#3085d6',
-                                confirmButtonText: 'Yes'
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    var viewId = viewIds[0];
-                                    window.location.href = "{{ url_for('violators.delete_violator', violator_id='') }}" + viewIds.join(',');
-                                }
-                            });
-                        } 
-                    }
+                    
 
 
 
@@ -242,11 +214,7 @@
                         .map(checkbox => checkbox.value);
 
                     if (viewIds.length < 1) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: 'Please select at least one row to export in excel!',
-                        });
+                       
                     } else {
                         // Construct the URL dynamically with all selected viewIds
                         var url = "{{ url_for('violators.excellReports', violator_ids='') }}" + viewIds.join(',');

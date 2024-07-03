@@ -67,21 +67,22 @@
                 <!-- Main content row -->
                 <div class="row">
                     <!-- Column for image -->
-                    <div class="col-lg-4 col-sm-12">
+                    <div class="col-lg-4 col-sm-12" style="height: 300px;">
                         <div class="card" style="box-shadow: 2px 5px 7px rgba(0, 0, 0, 0.3);">
-                            <div class="card-body">
+                            <div class="card-body" style="height: 365px;">
                                 <div class="">
                                     <div class="owl-theme">
                                         <div class="product centered-content">
                                             <h2 style="text-align:center; margin-top: 9px; margin-bottom: 24px;">Captured Image</h2>
-                                            <img src="static/extracted_images/{{extracted_data.8}}"  width="229" height="160">
-                                            <button id="viewImage" class="btn btn-primary" style="margin-top: 10px; width: 100%;">View Full Image</button>
+                                            <img src="static/extracted_images/{{extracted_data.8}}" style="width: 300px; height: 250px; object-fit: cover;">
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    
+                    
                     
                     <style>
                         .centered-content {
@@ -104,7 +105,7 @@
                             <div class="card-body">
                                 <div class="productdetails ">
                                     <h5 class="mb-3"> Apprehension Data </h5>
-                                    <ul class="product-bar" style="height: 310px;">
+                                    <ul class="product-bar" style="height: 280px;">
                                        
                                         <li >
                                             <h4>Plate Number</h4>
@@ -140,7 +141,8 @@
                    
 
                 </div> <!-- End of main content row -->
-                <div class="col-lg-432 col-sm-12" style="box-shadow:2px 5px 7px rgba(0, 0, 0, 0.3);">
+                <div class="row">  
+                <div class="col-lg-432 col-sm-6" >
                     <div class="card text-center">
                         <div class="card-body">
                             <div class="productdetails">
@@ -162,9 +164,33 @@
                                         <h4>Date of Birth</h4>
                                         <h6 style="color:Red">{{extracted_data.6}}</h6>
                                     </li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="col-lg-432 col-sm-6" >
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <div class="productdetails">
+                                <h5 class="mb-3"> No license</h5>
+                                <ul class="product-bar">
+                                    <li>
+                                        <h4>Name</h4>
+                                        <h6 style="color:Red">{{no_license.2}}</h6>
+                                    </li>
+                                    <li>
+                                        <h4>Date of Birth</h4>
+                                        <h6 style="color:Red">{{no_license.3}}</h6>
+                                    </li>
+                                    <li>
+                                        <h4>Address</h4>
+                                        <h6 style="color:Red">{{no_license.4}}</h6>
+                                    </li>
                                     <li>
                                         <h4>Gender</h4>
-                                        <h6 style="color:Red">{{extracted_data.7}}</h6>
+                                        <h6 style="color:Red">{{no_license.5}}</h6>
                                     </li>
                                 </ul>
                             </div>
@@ -172,6 +198,7 @@
                         
                     </div>
                 </div>
+            </div>
             </div> <!-- End of content div -->
         </div> <!-- End of page-wrapper div -->
 

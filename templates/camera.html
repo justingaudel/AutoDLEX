@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='index-css/style.css') }}">
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
-<body >
+<body>
     <div id="global-loader">
         <div class="whirly-loader">AutoDlex<i class="fa fa-camera" aria-hidden="true"></i></div>
     </div>
@@ -44,23 +44,20 @@
                 </li>
             </ul>
         </div>
+        <h1 style="margin-top: 90px; margin-bottom:4px; margin-left: 50px;">Scan License with Camera</h1>
+        <p style="margin-bottom: 20px; margin-left: 34px;">Please ensure the license is clear and visible</p>
         <form action="{{ url_for('svm.violators') }}" method="post" enctype="multipart/form-data">
-            
-            <h1 style="margin-top: 90px; margin-bottom:4px;">Scan License with Camera</h1>
-            <div class="container">
-              
-            </div>
-            
             <div class="camera">
                 <video id="video">Video stream not available.</video>
                 <img id="capturedImage" class="capturedImage" src="" alt="Captured Image">
             </div>
-            <div>
-                <button id="showModalButton" type="button">Show Extracted Data</button>
-                <button id="startbutton">
+            <div class="container">
+                <button style="padding: 15px; font-size: 0.8rem;margin-left: 34px;" id="showModalButton" type="button">Show Extracted Data</button>
+                <button id="startbutton" style="margin-left: 170px;">
                     <img src="{{ url_for('static', filename='images/camera-svgrepo-com.png') }}" alt="Camera Icon">
                 </button>
             </div>
+            
             <input style="display:none" type="text" name="tct_number" value="test_tct">
             <input style="display:none" type="text" name="name" value="test_name">
             <input style="display:none" type="text" name="license_number" value="test_licenseNumber">
@@ -68,11 +65,11 @@
             <input style="display:none" id="image_data" name="image_data">
             <input style="display:none" type="text" name="username" value="{{username}}">
             <canvas id="canvas"></canvas>
-            <div  style="display:none" id="extractedText"></div>
+            <div style="display:none" id="extractedText"></div>
             <div id="warningMessage"></div>
-            <div id="space-between" style="font-size: 20px;">
-                <button id="retakebutton" name="retakebutton">Retake</button>
-                <button id="submit" name="submit">Continue (step 1 of 2) </button>
+            <div class="d-flex">
+                <button id="retakebutton" style="padding: 15px; font-size: 1.2rem; margin-left:50px;">Retake</button>
+                <button id="submit" style="padding: 15px; font-size: 1.2rem;">Continue</button>
             </div>
         </form>
         {% if msg %}
@@ -92,25 +89,27 @@
         }
         </script>
         {% endif %}
-    </div>
-    <!-- Modal -->
-    <div class="modal fade" id="captureModal" tabindex="-1" aria-labelledby="captureModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="captureModalLabel">Captured Driver's License</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <img id="modalCapturedImage" src="" alt="Captured Image" style="width: 100%;">
-                    <div id="modalExtractedText"></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+        <div class="modal fade" id="captureModal" tabindex="-1" aria-labelledby="captureModalLabel" aria-hidden="true" data-bs-backdrop="false">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="captureModalLabel">Captured Driver's License</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <img id="modalCapturedImage" src="" alt="Captured Image" style="max-width: 100%; height: auto;">
+                        <div id="modalExtractedText"></div>
+                        <div id="modalJsonData"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
     <script src="{{ url_for('static', filename='javascript/camera.js') }}"></script>
     <script src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/feather.min.js') }}"></script>
@@ -131,11 +130,15 @@
 
         // Show Modal button click event
         document.getElementById("showModalButton").addEventListener("click", function() {
-            // Display the modal with the captured image and extracted text
             var capturedImage = document.getElementById("capturedImage").src;
             var extractedText = document.getElementById("extractedText").innerHTML;
+            
+            // Example JSON data
+           
+
             document.getElementById("modalCapturedImage").src = capturedImage;
             document.getElementById("modalExtractedText").innerHTML = extractedText;
+        
             var captureModal = new bootstrap.Modal(document.getElementById('captureModal'));
             captureModal.show();
         });
@@ -150,7 +153,24 @@
             captureModal.hide();
         });
     </script>
+   <style>
+    .flex-row {
+        display: flex;
+        justify-content: center; /* Center horizontally */
+        align-items: center;    /* Center vertically */
+        gap: 10px; /* Optional: Adds space between the buttons */
+    }
 
+    #showModalButton {
+        padding: 15px;
+        font-size: 0.8rem;
+    }
+
+    #startbutton img {
+        display: block;
+        margin: auto; /* Center the image within the button */
+    }
+   </style>
 
 </body>
 </html>

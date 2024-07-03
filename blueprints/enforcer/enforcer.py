@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, session, url_for, redirect
+from flask import Blueprint, render_template, request, session, url_for, redirect,flash
 from db_utils import get_db_connection 
 import os
 from werkzeug.utils import secure_filename
@@ -6,12 +6,13 @@ from werkzeug.utils import secure_filename
 
 
 db_connection = get_db_connection()
-cursor = db_connection.cursor()
+
 
 enforcer_bp = Blueprint("enforcer", __name__, template_folder="templates")
 
 @enforcer_bp.route('/enforcer', methods=['GET', 'POST'])
 def enforcer():
+    cursor = db_connection.cursor()
     if 'loggedins' in session:
         return redirect(url_for('camera'))
     msg = ''
@@ -20,6 +21,7 @@ def enforcer():
         password = request.form['password']
         cursor.execute('SELECT * FROM enforcer_accounts WHERE username=%s AND password=%s', (username, password,))
         record = cursor.fetchone()
+        cursor.close()
         if record:
             session['loggedins'] = True
             return redirect(url_for('selection_mode'))
@@ -30,6 +32,8 @@ def enforcer():
 
 @enforcer_bp.route('/add_enforcer', methods=['POST', 'GET'])
 def add_enforcer():
+    cursor = db_connection.cursor()
+    msg = ''  # Initialize msg here
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -59,25 +63,31 @@ def add_enforcer():
             val = (username, password, email, first_name, last_name, assigned_location, filename)  # Save filename instead of file object
             cursor.execute(sql, val)
             db_connection.commit()
+            cursor.close()
+            flash('Enforcer added successfully!', 'success')
             return redirect(url_for('enforcer.enforcer_data'))
-    
+        
     return render_template('new-enforcer.html')
 
 
 @enforcer_bp.route('/enforcer_data')
 def enforcer_data():
+    cursor = db_connection.cursor()
     cursor.execute("SELECT * From  enforcer_accounts")
     enforcer_data = cursor.fetchall()
+    cursor.close()
     return render_template('enforcer.html',enforcer_data = enforcer_data)
 
 
 
 @enforcer_bp.route('/view_enforcer')
 def view_enforcer():
+    cursor = db_connection.cursor()
     enforcer_id = request.args.get('enforcer_id')
     query = "SELECT * FROM enforcer_accounts WHERE enforcer_id=%s"
     cursor.execute(query, (enforcer_id,))
     enforcer_data = cursor.fetchone()
+    cursor.close()
     if enforcer_data:
         return render_template('Enforcers_Information.html', enforcer_data=enforcer_data)
     else:
@@ -86,6 +96,7 @@ def view_enforcer():
     
 @enforcer_bp.route('/edit_enforcer', methods=['POST', 'GET'])
 def edit_enforcer():
+    cursor = db_connection.cursor()
     enforcer_id = request.args.get('enforcer_id')
     print(" THis is the enforcer Id",enforcer_id)
     query = "SELECT * FROM enforcer_accounts WHERE enforcer_id=%s"
@@ -104,8 +115,8 @@ def edit_enforcer():
         cursor.execute("UPDATE enforcer_accounts SET username=%s, password=%s, email=%s, first_name=%s, last_name=%s, assigned_location=%s, profile_image=%s WHERE enforcer_id=%s",
                        (username, password, email, first_name, last_name, assigned_location, profile_image,  enforcer_id))
         db_connection.commit()
+        cursor.close()
         
-        
-        
+        flash('Enforcer information updated successfully!', 'success')
         return redirect(url_for('enforcer.enforcer_data'))
     
