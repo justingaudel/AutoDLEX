@@ -58,29 +58,14 @@
                     <div class="card-body">
                         {% with messages = get_flashed_messages(with_categories=true) %}
                         {% if messages %}
-                          <div class="alert-container">
-                            <ul class="alert">
-                              {% for category, message in messages %}
-                                <li class="alert alert-{{ category }}">
-                                  {{ message }}
-                                  <button  id="close" class="close" onclick="closeAlert(this)" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                  </button>
-                                </li>
-                              {% endfor %}
-                            </ul>
-                          </div>
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endfor %}
                         {% endif %}
-                      {% endwith %}
-                      
-                      
-                      <script>
-                        function closeAlert(element) {
-  var alertElement = element.closest('.alert'); // Find the closest .alert container
-  if (alertElement) {
-    alertElement.remove(); // Remove the alert from the DOM
-  }
-}
+                    {% endwith %}
                       </script>
                         <div class="table-top">
                             <div class="search-set">
@@ -141,7 +126,7 @@
                             <table class="table datanew">
                                 <thead>
                                     <tr>
-                                       <th>Time</th>
+                                       <th>TCT Number</th>
                                         <th>Violation</th>
                                         <th>Plate Number</th>
                                         <th>Date</th>
@@ -158,7 +143,7 @@
                                 <tbody>
                                     {% for row in violators %}
                                     <tr>
-                                        <td>{{row.5}}</td>
+                                        <td>{{row.3}}</td>
                                         <td class="ellipsis">{{row.4}}</td>
                                         <td>{{row.8}}</td>
                                         <td>{{row.6}}</td>
@@ -205,20 +190,12 @@
             var editIds = Array.from(checkboxes).filter(checkbox => checkbox.checked).map(checkbox => checkbox.value);
 
             if (editIds.length > 1) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Please select only one row to edit',
-                });
+              
             } else if (editIds.length === 1) {
                 var editId = editIds[0];
                 window.location.href = "{{ url_for('violators.edit_violators_data', violator_id='') }}" + editId;
             } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Please select a row to edit',
-                });
+              
             }
         }
 
@@ -227,20 +204,12 @@
             var viewIds = Array.from(checkboxes).filter(checkbox => checkbox.checked).map(checkbox => checkbox.value);
 
             if (viewIds.length > 1) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Please select only one row to view',
-                });
+              
             } else if (viewIds.length === 1) {
                 var viewId = viewIds[0];
                 window.location.href = "{{ url_for('violators.view_violators_data', violator_id='') }}" + viewId;
             } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Please select a row to view',
-                });
+              
             }
         }
 
@@ -256,59 +225,6 @@
             text-overflow: ellipsis;
             max-width: 200px; /* Adjust the width as needed */
         }
-        .alert-container {
-  margin: 10px 0;
-}
-
-.alert {
-  list-style-type: none;
-  padding: 0;
-}
-
-.alert li {
-  margin: 5px 0;
-  padding: 5px 10px; /* Reduce padding */
-  font-size: 14px; /* Reduce font size */
-  border-radius: 3px; /* Slightly reduce border radius */
-  position: relative;
-}
-
-.alert .close {
-  position: absolute;
-  top: 5px;
-  right: 10px;
-  font-size: 12px; /* Reduce font size of the close button */
-
-}
-
-.alert-success {
-  background-color: #d4edda;
-  color: #155724;
-}
-
-#close{
-    background-color:  #d4edda;
-    border-color: #d4edda ;
-    border-top-color: #d4edda;
-    border-bottom-color: #d4edda ;
-    border-left-color: #d4edda ;
-    border-right-color: #d4edda ;
-}
-
-.alert-error {
-  background-color: #f8d7da;
-  color: #721c24;
-}
-
-.alert-warning {
-  background-color: #fff3cd;
-  color: #856404;
-}
-
-.alert-info {
-  background-color: #d1ecf1;
-  color: #0c5460;
-}
 
     </style>
 

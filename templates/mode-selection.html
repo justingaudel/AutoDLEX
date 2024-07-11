@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% if session.loggedins %}  
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Image Capture and Text Extraction</title>
@@ -20,7 +21,7 @@
         <div class="whirly-loader">AutoDlex<i class="fa fa-camera" aria-hidden="true"></i></div>
     </div>
             <div class="contentarea">
-                {% if session.loggedins %}         
+                     
                 <div style="background-color:#2578F4 ;" class="header d-flex justify-content-end">
                 <ul class="nav" style="margin-top:-20px">                     
                 <li class="nav-item dropdown has-arrow main-drop">
@@ -47,16 +48,17 @@
                     </ul>
                 </div> 
                 
-       
-        
+              
                 
-                {% if msg == "There is an unsettled violation for this data." %}
+                {% if msg == "There is an existing unsettled violation for the given data" %}
                 <script>
                     swal({
-                        title: "Alert",
+                        title: "{{existing_violation}}",
                         text: "{{ msg }}",
                         icon: "warning",
-                        button: "OK"
+                        button: "OK",
+                        allowOutsideClick: false, 
+                        allowEscapeKey: false 
                     });
                 </script>
             {% elif msg == "Report Submitted Successfully!" %}
@@ -65,28 +67,24 @@
                         title: "Success",
                         text: "{{ msg }}",
                         icon: "success",
-                        button: "OK"
+                        button: "OK",
+                        allowOutsideClick: false, 
+                        allowEscapeKey: false 
                     });
                 </script>
             {% endif %}
             
-            
-            
 
-        {% else %}
-        <script>
-        window.onload = function() {
-            window.location.href = "{{ url_for('enforcer.enforcer') }}";
-        }
-    </script>
-        {% endif %}
+          
+
+      
     </div>
    
     <div class="mode container"  >
         <div class="justify-content-center">
             <img src="static/images/choices.png" height="300" width="300">
          </div>
-         <h3 class="h3 mb-3 " style="font-size: 20px;">Choose Data Entry Method!</h3>
+         <h3 class="h3 mb-3 " style="font-size: 20px;">Choose Data Entry Method</h3>
         <button class="btn btn-lg btn-primary btn-block mb-4 license" type="button" onclick="redirectTo('license-scanner')">License Scanner</button>
         <button class="btn btn-lg btn-primary btn-block mb-4 manual" type="button" onclick="redirectTo('manual-input')">Manual Input</button>
         <button class="btn btn-lg btn-primary btn-block mb-4 enforcer" type="button" onclick="redirectTo('no_license')">No License</button>
@@ -145,8 +143,20 @@
                   console.log("Redirecting to:", url);
                   window.location.href = url;
               }
+
+
+
+
+
+              
         </script>
-        
+          {% else %}
+          <script>
+          window.onload = function() {
+              window.location.href = "{{ url_for('enforcer.enforcer') }}";
+          }
+      </script>
+          {% endif %}
         <script>
             document.getElementById("submit").addEventListener("click", 
             function() {
@@ -157,6 +167,25 @@
             document.getElementById("image_data").value = capturedImage;
         });
         </script>
+ {% if existing_violation %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var violationDetails = `
+            <li>TCT Number: {{ existing_violation[0] }}</li>
+            <li>Time: {{ existing_violation[1] }}</li>
+            <li>Date: {{ existing_violation[2] }}</li>
+            <li>Violation: {{ existing_violation[3] }}</li>
+            <li>Barangay: {{ existing_violation[4] }}</li>
+            <li>Plate Number: {{ existing_violation[5] }}</li>
+            <li>Vehicle: {{ existing_violation[6] }}</li>
+            <li>Status: {{ existing_violation[7] }}</li>
+        `;
+        document.getElementById('violationDetails').innerHTML = violationDetails;
+        $('#violationModal').modal('show');
+      
+    });
+</script>
+{% endif %}
 
           <script src="{{ url_for('static', filename='javascript/camera.js') }}"></script>
           <script src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>

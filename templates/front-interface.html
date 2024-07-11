@@ -43,23 +43,34 @@
       <div class="ctmeu-logo"> 
         <img src="static/images/CTMEU_LOGO.png" class="img-fluid" alt="CTMEU Logo"> 
       </div>
-      <button class="btn btn-lg btn-primary btn-block mb-4" type="button" onclick="redirectTo('enforcer')">Enforcer</button>
+      <button id="enforcerButton" class="btn btn-lg btn-primary btn-block mb-4" type="button" onclick="redirectTo('enforcer')">Enforcer</button>
       <button id="adminButton" class="btn btn-lg btn-primary btn-block" type="button" onclick="redirectTo('admin_signin')">Admin</button>
 
       <script>
-        function disableAdminButtonOnMobile() {
+        function toggleButtons() {
+          const enforcerButton = document.getElementById('enforcerButton');
           const adminButton = document.getElementById('adminButton');
-          if (window.innerWidth <= 768) { // Adjust this value as needed for your definition of "mobile"
+
+          if (window.innerWidth <= 768) { // Mobile screen
+              enforcerButton.disabled = false;
+              enforcerButton.onclick = function() { redirectTo('enforcer'); }; // Enable click event
+
               adminButton.disabled = true;
               adminButton.onclick = null; // Remove the click event
+          } else { // Desktop screen
+              enforcerButton.disabled = true;
+              enforcerButton.onclick = null; // Remove the click event
+
+              adminButton.disabled = false;
+              adminButton.onclick = function() { redirectTo('admin_signin'); }; // Enable click event
           }
         }
 
         // Run the function on page load
-        window.onload = disableAdminButtonOnMobile;
+        window.onload = toggleButtons;
 
         // Optionally, run the function on window resize to handle dynamic changes
-        window.onresize = disableAdminButtonOnMobile;
+        window.onresize = toggleButtons;
       </script>
     </form>
     

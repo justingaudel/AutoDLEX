@@ -13,7 +13,7 @@ import json
 
 
 db_connection = get_db_connection()
-cursor = db_connection.cursor()
+
 
 svm_bp = Blueprint("svm", __name__, template_folder="templates")
 #prepare data for SVM models
@@ -184,18 +184,18 @@ def violators():
         session['submitted'] = True
 
         # Database connection and cursor
-        db_connection = get_db_connection()
-        cursor = db_connection.cursor()
+       
+        cursor_svm = db_connection.cursor()
 
         # Get the latest extracted_id
-        cursor.execute("SELECT MAX(id) FROM reports")
-        largest_id = cursor.fetchone()[0]
+        cursor_svm.execute("SELECT MAX(id) FROM reports")
+        largest_id = cursor_svm.fetchone()[0]
 
         if largest_id is None:
             new_id = 1
         else:
-            cursor.execute("SELECT tct_number FROM reports WHERE id = %s", (largest_id,))
-            existing_tct_number = cursor.fetchone()[0]
+            cursor_svm.execute("SELECT tct_number FROM reports WHERE id = %s", (largest_id,))
+            existing_tct_number = cursor_svm.fetchone()[0]
             new_id = int(existing_tct_number.split('-')[1]) + 1
 
         generated_id = 'TCT-' + str(new_id).zfill(5)
@@ -258,14 +258,12 @@ def violators():
         image_data = random_filename
 
         # Insert data into the database
-        cursor.execute("INSERT INTO extracted_data (extracted_text, tct_number, image_data,name,license_number,expiration_date,date_of_birth) VALUES (%s, %s, %s, %s, %s, %s, %s)", (extracted_text, tct_number, image_data,predicted_name,predicted_license_number,predicted_expiration_date,predicted_birthday))
+        cursor_svm.execute("INSERT INTO extracted_data (extracted_text, tct_number, image_data,name,license_number,expiration_date,date_of_birth) VALUES (%s, %s, %s, %s, %s, %s, %s)", (extracted_text, tct_number, image_data,predicted_name,predicted_license_number,predicted_expiration_date,predicted_birthday))
         db_connection.commit()
 
-        cursor.execute("INSERT INTO reports (tct_number, name,license_number) VALUES (%s, %s,%s)", (tct_number,predicted_name,predicted_license_number))
+        cursor_svm.execute("INSERT INTO reports (tct_number, name,license_number) VALUES (%s, %s,%s)", (tct_number,predicted_name,predicted_license_number))
         # Close database connection
-        cursor.close()
-        db_connection.close()
-
+        cursor_svm.close()     
         return redirect(url_for('svm.violators', tct_number=tct_number))
 
     tct_number = request.args.get('tct_number')

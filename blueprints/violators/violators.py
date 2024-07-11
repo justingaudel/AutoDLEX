@@ -10,22 +10,26 @@ import os
 
 
 db_connection = get_db_connection()
-cursor = db_connection.cursor()
+
 
 violator_bp = Blueprint("violators", __name__, template_folder="templates")
 
 @violator_bp.route('/violator_list')
 def violator_list():
+    cursor = db_connection.cursor()
     cursor.execute("SELECT * FROM violators_data WHERE status = 'Unsettled'")
     data =  cursor.fetchall()
+    cursor.close()
     return render_template('Violator_list.html',violators = data)
 
 @violator_bp.route('/view_violator')
 def view_violator():
+    cursor = db_connection.cursor()
     violator_id = request.args.get('violator_id')
     query = "SELECT * FROM violators_data WHERE violators_id = %s"
     cursor.execute(query, (violator_id,))
     violator_data = cursor.fetchone()
+    cursor.close()
     if violator_data:
         return render_template('violators_data/view-violators-data.html', violator_data=violator_data)
     else:
@@ -35,6 +39,7 @@ def view_violator():
 #viewing of violators data specific 
 @violator_bp.route('/view_violators_data')
 def view_violators_data():
+    cursor = db_connection.cursor()
     violator_id = request.args.get('violator_id')
     query = "SELECT * FROM violators_data WHERE violators_id  = %s"
     cursor.execute(query, (violator_id,))
@@ -51,9 +56,13 @@ def view_violators_data():
     cursor.execute(extracted_data, (tct_number,))
     extracted_data = cursor.fetchone()
     
-   
     
-    return render_template('violators_data/view-violators-data.html',extracted_data = extracted_data , violator_data = violator_data)
+    no_license = "Select * from no_license where tct_number = %s"
+    cursor.execute(no_license,(tct_number,))
+    no_license = cursor.fetchone()
+    cursor.close()
+
+    return render_template('violators_data/view-violators-data.html',extracted_data = extracted_data , violator_data = violator_data ,no_license = no_license)
 
     
 # Editing/Updating  violators data 
@@ -61,6 +70,7 @@ from flask import render_template, request
 
 @violator_bp.route('/edit_violators_data', methods=['GET', 'POST'])  
 def edit_violators_data():
+    cursor = db_connection.cursor()
     msg = ''
     violator_id = request.args.get('violator_id')
     # Assuming you have a function to get violator data from the database
@@ -82,6 +92,7 @@ def edit_violators_data():
         cursor.execute("UPDATE violators_data SET violation=%s, time=%s, date=%s, barangay=%s, plateNumber=%s, vehicle=%s ,status=%s WHERE violators_id  = %s",
                        (violation, time, date, barangay, plateNumber, vehicle, status,violator_id))
         db_connection.commit() 
+        cursor.close()
         flash('Violator data updated successfully!', 'success')
         return redirect(url_for('violators.violator_list'))
 
@@ -95,10 +106,21 @@ def edit_violators_data():
 #deleting of violators data        
 @violator_bp.route('/delete_violator')
 def delete_violator():
+    cursor = db_connection.cursor()
     violators_id = request.args.get('violator_id').split(',')
     for violator in violators_id:
-        cursor.execute("DELETE FROM violators_data WHERE violators_id = %s", (violator,))
-        db_connection.commit() 
+        cursor.execute("UPDATE violators_data SET status = 'archive' WHERE violators_id = %s", (violator,))
+    flash('Violator data move to archive successfully!', 'success')
+    return redirect(url_for('settled_reports'))
+
+
+@violator_bp.route('/restore_reports')
+def restore_reports():
+    violators_id = request.args.get('violator_id').split(',')
+    for violator in violators_id:
+        cursor = db_connection.cursor()
+        cursor.execute("UPDATE violators_data SET status = 'settled' WHERE violators_id = %s", (violator,))
+    flash('Violator data restored successfully!', 'success')
     return redirect(url_for('settled_reports'))
 
 
@@ -108,6 +130,7 @@ def delete_violator():
 
 @violator_bp.route('/excellReports')
 def excellReports():
+    cursor = db_connection.cursor()
     violator_ids = request.args.get('violator_ids').split(',')
     all_data = []
     
@@ -219,5 +242,5 @@ def excellReports():
 
     # Clean up (delete the temporary file)
     os.remove(file_path)
-
+    cursor.close()
     return response
