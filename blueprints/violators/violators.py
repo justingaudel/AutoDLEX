@@ -109,9 +109,18 @@ def delete_violator():
     cursor = db_connection.cursor()
     violators_id = request.args.get('violator_id').split(',')
     for violator in violators_id:
-        cursor.execute("DELETE FROM violators_data WHERE violators_id = %s", (violator,))
-        db_connection.commit() 
-        cursor.close()
+        cursor.execute("UPDATE violators_data SET status = 'archive' WHERE violators_id = %s", (violator,))
+    flash('Violator data move to archive successfully!', 'success')
+    return redirect(url_for('settled_reports'))
+
+
+@violator_bp.route('/restore_reports')
+def restore_reports():
+    violators_id = request.args.get('violator_id').split(',')
+    for violator in violators_id:
+        cursor = db_connection.cursor()
+        cursor.execute("UPDATE violators_data SET status = 'settled' WHERE violators_id = %s", (violator,))
+    flash('Violator data restored successfully!', 'success')
     return redirect(url_for('settled_reports'))
 
 

@@ -83,12 +83,20 @@ def process_image():
                     birthday = birthday_match.group()
 
         # Prepare response JSON with extracted data
-        response_data = {
-            "Name": name,
-            "License Number": license_number,
-            "Expiration Date": expiration_date,
-            "Birthday": birthday
-        }
+        
+        error = "The image captured was not processed correctly. Please try again."
+        
+        if ( name == None or license_number == None or expiration_date == None or birthday == None):
+            return jsonify(error)
+        else:
+            response_data = {
+                "Name": name,
+                "License Number": license_number,
+                "Expiration Date": expiration_date,
+                "Birthday": birthday
+            }
+       
+      
 
         return jsonify(response_data)
 

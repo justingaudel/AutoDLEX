@@ -1,6 +1,6 @@
 (function() {
-    var width = 700; // Increase the width for higher resolution
-    var height = 480; // Increase the height for higher resolution
+    var width = 1920; // Increase the width for higher resolution
+    var height = 1080; // Increase the height for higher resolution
     var streaming = false;
     var video = null;
     var canvas = null;
@@ -22,7 +22,10 @@
 
         navigator.mediaDevices.getUserMedia({
             video: {
-                facingMode: { ideal: 'environment' } // Attempt to use the back camera
+                facingMode: { ideal: 'environment' }, // Attempt to use the back camera
+                width: { ideal: width },
+                height: { ideal: height },
+                focusMode: 'continuous' // Request continuous autofocus (if supported)
             },
             audio: false
         })

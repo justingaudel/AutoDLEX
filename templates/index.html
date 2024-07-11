@@ -107,10 +107,10 @@
                             <table id="example" class="table table-striped table-bordered" style="width:100%">
                         <thead>
                             <tr>
+                                <th>TCT Number</th>
                                 <th>Plate Number</th>
                                 <th>Barangay</th>
                                 <th>Violation</th>
-                                <th>Time</th>
                                 <th>Date</th>
                                 <th>Status</th>
                             </tr>
@@ -118,10 +118,10 @@
                         <tbody>
                             {% for data in violators  %}
                             <tr>
+                                <td>{{ data.3}}</td>
                                 <td>{{ data.8 }}</td>
                                 <td>{{ data.7 }}</td>
                                 <td class="ellipsis">{{ data.4 }}</td>
-                                <td>{{ data.5 }}</td>
                                 <td>{{ data.6 }}</td>
                                 <td>{{ data.10 }}</td>
                             </tr>
@@ -159,6 +159,9 @@
         max-width: 200px; /* Adjust the width as needed */
     }
 </style>
+
+
+ 
 </body>
 
 </html>

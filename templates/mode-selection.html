@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% if session.loggedins %}  
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Image Capture and Text Extraction</title>
@@ -20,7 +21,7 @@
         <div class="whirly-loader">AutoDlex<i class="fa fa-camera" aria-hidden="true"></i></div>
     </div>
             <div class="contentarea">
-                {% if session.loggedins %}         
+                     
                 <div style="background-color:#2578F4 ;" class="header d-flex justify-content-end">
                 <ul class="nav" style="margin-top:-20px">                     
                 <li class="nav-item dropdown has-arrow main-drop">
@@ -76,13 +77,7 @@
 
           
 
-        {% else %}
-        <script>
-        window.onload = function() {
-            window.location.href = "{{ url_for('enforcer.enforcer') }}";
-        }
-    </script>
-        {% endif %}
+      
     </div>
    
     <div class="mode container"  >
@@ -155,7 +150,13 @@
 
               
         </script>
-        
+          {% else %}
+          <script>
+          window.onload = function() {
+              window.location.href = "{{ url_for('enforcer.enforcer') }}";
+          }
+      </script>
+          {% endif %}
         <script>
             document.getElementById("submit").addEventListener("click", 
             function() {

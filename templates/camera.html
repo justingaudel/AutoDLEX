@@ -19,40 +19,18 @@
         <div class="whirly-loader">AutoDlex<i class="fa fa-camera" aria-hidden="true"></i></div>
     </div>
     <div class="contentarea">
-        {% if session.loggedins %}
-        <div style="background-color:#2578F4 ;" class="header d-flex justify-content-end">
-            <ul class="nav" style="margin-top:-20px">
-                <li class="nav-item dropdown has-arrow main-drop">
-                    <a href="javascript:void(0);" class="dropdown-toggle nav-link userset" data-bs-toggle="dropdown">
-                        <span class="user-img"><img src="static/img/profiles/avator1.jpg" alt="">
-                    </a>
-                    <div class="dropdown-menu menu-drop-user">
-                        <div class="profilename">
-                            <div class="profileset">
-                                <span class="user-img"><img src="static/img/profiles/avator1.jpg" alt="">
-                                    <span class="status online"></span></span>
-                                <div class="profilesets">
-                                    <h6>{{ username }}</h6>
-                                    <h5>Enforcer</h5>
-                                </div>
-                            </div>
-                            <hr class="m-0">
-                            <a class="dropdown-item logout pb-0" href="{{ url_for('logout') }}"><img
-                                    src="static/img/icons/log-out.svg" class="me-2" alt="img">Logout</a>
-                        </div>
-                    </div>
-                </li>
-            </ul>
+        {% if session.loggedins %}     
         </div>
-        <h1 style="margin-top: 90px; margin-bottom:4px; margin-left: 50px;">Scan License with Camera</h1>
-        <p style="margin-bottom: 20px; margin-left: 34px;">Please ensure the license is clear and visible</p>
+        <h1 style="margin-top: 50px; margin-bottom:4px; margin-left: 50px;" class="text-center">Scan License with Camera</h1>
+        <p style="margin-bottom: 20px; margin-left: 50px;" class="text-center">Please ensure the license is clear and visible</p>
         <form action="{{ url_for('svm.violators') }}" method="post" enctype="multipart/form-data">
             <div class="camera">
                 <video id="video">Video stream not available.</video>
                 <img id="capturedImage" class="capturedImage" src="" alt="Captured Image">
             </div>
+            <h1 class="text-center" ><button style="padding: 15px; font-size: 0.8rem;margin-left: 34px;" id="showModalButton" type="button">Show Extracted Data</button></h1>
             <div class="container">
-                <button style="padding: 15px; font-size: 0.8rem;margin-left: 34px;" id="showModalButton" type="button">Show Extracted Data</button>
+               
                 <button id="startbutton" style="margin-left: 170px;">
                     <img src="{{ url_for('static', filename='images/camera-svgrepo-com.png') }}" alt="Camera Icon">
                 </button>
@@ -91,10 +69,10 @@
         {% endif %}
 
         <div class="modal fade" id="captureModal" tabindex="-1" aria-labelledby="captureModalLabel" aria-hidden="true" data-bs-backdrop="false">
-            <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-dialog modal-dialog-centered" style="margin-left:50px">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="captureModalLabel">Captured Driver's License</h5>
+                        <h5 class="modal-title" id="captureModalLabel" >Captured Driver's License</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -171,6 +149,25 @@
         margin: auto; /* Center the image within the button */
     }
    </style>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.querySelector('form');
+        const submitButton = document.getElementById('submit');
+        let isFormSubmitted = false;
 
+        // Detect form submission
+        submitButton.addEventListener('click', function () {
+            isFormSubmitted = true;
+        });
+
+        // Prevent page reload
+        window.addEventListener('beforeunload', function (event) {
+            if (!isFormSubmitted) {
+                event.preventDefault();
+                event.returnValue = '';
+            }
+        });
+    });
+</script>
 </body>
 </html>

@@ -139,7 +139,7 @@ def manual_input_data():
         
         db_connection.commit()
         cursor.execute("INSERT INTO reports (tct_number, name,license_number) VALUES (%s, %s,%s)", (tct_number,name,license_number))
-      
+        db_connection.commit()
         cursor.close()
         return redirect(url_for('manual_input_data',tct_number = tct_number))
     tct_number = request.args.get('tct_number') 
@@ -184,8 +184,10 @@ def settled_reports():
     cursor = db_connection.cursor()
     cursor.execute("SELECT * FROM violators_data WHERE status = 'settled'")
     data =  cursor.fetchall()
+    cursor.execute("SELECT * FROM violators_data WHERE status = 'archive'")
+    archiveData = cursor.fetchall()
     cursor.close()
-    return render_template('settled-reports.html',reports = data)
+    return render_template('settled-reports.html',reports = data , archiveData = archiveData)
 
 
 

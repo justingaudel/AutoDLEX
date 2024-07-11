@@ -92,7 +92,7 @@
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" required>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="violationSpeeding" name="violation[]" value="speeding" required>
+                        <input class="form-check-input" type="checkbox" id="violationSpeeding" name="violation[]" value="speeding" >
                         <label class="form-check-label" for="violationSpeeding">Speeding</label>
                     </div>
                     <div class="form-check">
@@ -216,21 +216,24 @@
         <input type="text" name="date" id="inputDate" class="form-control" placeholder="Date">
     </div>
     <div class="form-group">
-        <label for="inputBarangay"  class=""><span style="color:Red">* </span>Barangay</label>
-        <select name="barangay" class="form-control" id="inputBarangay"  class="fa fa-caret-down" required>
+        <label for="inputBarangay" class=""><span style="color:Red">* </span>Barangay</label>
+        <select name="barangay" class="form-control" id="inputBarangay" required>
             <option value="" disabled selected>Select</option>
+            <option value="Aplaya">Aplaya</option>
             <option value="Balibago">Balibago</option>
             <option value="Caingin">Caingin</option>
             <option value="Dila">Dila</option>
             <option value="Dita">Dita</option>
             <option value="Don Jose">Don Jose</option>
             <option value="Ibaba">Ibaba</option>
-            <option value="Kanluran">Kanluran</option>
             <option value="Labas">Labas</option>
             <option value="Macabling">Macabling</option>
             <option value="Malitlit">Malitlit</option>
+            <option value="Malusak">Malusak</option>
             <option value="Market Area">Market Area</option>
-            <option value="Poblacion">Poblacion</option>
+            <option value="Kanluran">Kanluran</option>
+            <option value="Pooc">Pooc</option>
+            <option value="Pulong Santa Cruz">Pulong Santa Cruz</option>
             <option value="Santo Domingo">Santo Domingo</option>
             <option value="Sinalhan">Sinalhan</option>
             <option value="Tagapo">Tagapo</option>
@@ -457,10 +460,12 @@
             if (!validateViolations()) {
                 event.preventDefault(); // Prevent form submission
                 swal({
-                    title: "Validation Error",
+                    title: "Error",
                     text: "Please select at least one violation.",
                     icon: "error",
                     button: "OK",
+                    allowOutsideClick: false, 
+                    allowEscapeKey: false 
                 });
             }
         });

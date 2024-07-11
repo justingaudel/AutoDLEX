@@ -24,12 +24,12 @@
     <link href="static/css/signin.css" rel="stylesheet">
   </head>
   <body>
-    <form class="form-signin" action="{{ url_for('admin_signin') }}" method="post" style="background-color: white; padding: 50px; max-width: 500px; border-radius: 10px;" onsubmit="return validateForm()">
-      <div class="enforcer-logo" style="margin-top: -90px;">
+    <form class="form-signin" action="{{ url_for('admin_signin') }}" method="post" style="background-color: white; padding: 50px; max-width: 500px; border-radius: 10px; " onsubmit="return validateForm()">
+      <div class="enforcer-logo" style="margin-top: -80px;">
         <img src="static/images/CTMEU_LOGO.png" alt="" width="200" height="240">
       </div>
-      <h1 style="color: blue; margin-top: -50px;" class="text-center">AutoDLEX</h1>
-      <p style="color:black" class="text-center">Admin Log in</p>
+      <h1 style="color: blue; margin-top: -50px;" class="text-center">AutoDLEX Admin</h1>
+      <a href="{{url_for('interface')}}" style="text-decoration: none; color: black; display: block; text-align: center; margin-top: 5px;" >Sign in As Enforcer</a>
       {% if msg %}
         <div class="alert alert-danger">
           {{msg}}
@@ -45,20 +45,103 @@
         <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
         <div id="passwordError" style="color: red;"></div>
       </div>
+      <div class="form-group form-check">
+        <input type="checkbox" class="form-check-input" id="termsCheckbox">
+        <label class="form-check-label" for="termsCheckbox" style="color: black;">
+          I have read and agree to the <span style="color: blue; cursor: pointer;" data-toggle="modal" data-target="#termsModal">Terms and Conditions</span>
+        </label>
+        <div id="termsError" style="color: red;"></div>
+      </div>
       <button class="btn btn-lg btn-primary btn-block" name="submit" type="submit">Sign in</button>
-      <p style="margin-bottom: -23px;" class="text-center">By using this service, you understand and agree to the AutoDLEX <span style="color: blue">Terms and Conditions</span></p>
-      <!-- <a href="{{url_for('interface')}}"><u style="color: white;"> Back </u></a> -->
+     
     </form>
-
+    <div class="modal fade" id="termsModal" tabindex="-1" role="dialog" aria-labelledby="termsModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header" style="background-color: #007BFF;">
+            <h5 class="modal-title" id="termsModalLabel" style="color: white;">Terms and Conditions</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: white;">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" style="background-color: #f2f2f2; color: #333;">
+            <!-- Terms and conditions content goes here -->
+            <p style="font-weight: bold; color:  #007BFF;">Terms and Conditions</p>
+            <p>
+              1. Acceptance of Terms<br>
+              Welcome to AutoDLEX. By using our services, you agree to comply with and be legally bound by these Terms and Conditions (T&C). These terms may be updated from time to time without notice.
+            </p>
+            <p>
+              2. Description of Service<br>
+              AutoDLEX provides a web-based system for automating the extraction and processing of driver’s license information. By using our service, you agree to receive necessary communications, including updates and notifications related to your use of AutoDLEX.
+            </p>
+            <p>
+              3. Service Features<br>
+              Driver’s License Data Extraction: Utilizes OCR and SVM technologies to extract and classify information from driver’s licenses.<br>
+              Digital and Manual Data Entry: Allows for both automated and manual entry of traffic violations.<br>
+              Reporting Dashboard: Provides real-time tracking and insights into system operations.<br>
+              Data Management: Ensures secure storage and handling of personal information.<br>
+              Security Protocols: Includes encryption and access controls to protect data.
+            </p>
+            <p>
+              4. User Registration Obligations<br>
+              You agree to provide accurate, current, and complete information during registration and to update your information as necessary. If you provide false information, AutoDLEX reserves the right to suspend or terminate your account.
+            </p>
+            <p>
+              5. Password and Account Security<br>
+              You are responsible for maintaining the security of your account credentials. Sharing your username and password with unauthorized persons is prohibited, and AutoDLEX will not be liable for any loss resulting from such activities. Accounts with repeated failed login attempts will be temporarily disabled.
+            </p>
+            <p>
+              6. Restrictions on Use<br>
+              Your use of AutoDLEX is subject to the following restrictions:<br>
+              - Do not use AutoDLEX for unlawful or harmful purposes.<br>
+              - Do not upload malicious software or engage in data mining without permission.<br>
+              - Do not share or misuse personal information extracted from the system.<br>
+              - Do not use the scanner for personal agendas.<br>
+              - Logging in to another user's account may result in consequences including account suspension or termination.
+            </p>
+            <p>
+              7. Compliance with Applicable Laws<br>
+              Users must comply with all applicable laws regarding the use of AutoDLEX. Unauthorized use of the system may result in legal action and penalties as per the relevant laws, including Republic Act No. 10173 of the Data Privacy Act of the Philippines.
+            </p>
+            <p>
+              8. Limitation of Liability<br>
+              AutoDLEX is provided "as-is" and "as available." To the fullest extent permitted by law, AutoDLEX and its affiliates will not be liable for any indirect, incidental, or consequential damages arising from your use of the service.
+            </p>
+            <p>
+              9. Privacy Policy<br>
+              AutoDLEX is committed to protecting your privacy. Any personal information collected will be used in accordance with our privacy policy and the Data Privacy Act of the Philippines.
+            </p>
+            <p>
+              10. Miscellaneous<br>
+              These T&C constitute the entire agreement between you and AutoDLEX. Any failure to enforce any right or provision will not constitute a waiver of such right or provision. If any part of these T&C is found to be unenforceable, the remaining provisions will continue in full force and effect.
+            </p>
+            <p>
+              11. Contact Information<br>
+              For any inquiries or issues, please contact us at:<br>
+              Email: autodlex@gmail.com<br>
+              Phone: +63 (916) 149 3665<br>
+              Address: 130 F. Gomez Street, Brgy. Malusak Santa Rosa City, Laguna 4026
+            </p>
+          </div>
+          <div class="modal-footer" style="background-color: #007BFF;">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" style="background-color: #f2f2f2; color: #333;">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <script>
       function validateForm() {
         // Clear previous error messages
         document.getElementById('emailError').textContent = '';
         document.getElementById('passwordError').textContent = '';
+        document.getElementById('termsError').textContent = '';
+
 
         // Get input values
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
+        const termsCheckbox = document.getElementById('termsCheckbox').checked;
 
         // Email validation regex
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -75,6 +158,11 @@
           document.getElementById('passwordError').textContent = 'Password must be at least 6 characters long.';
           isValid = false;
         }
+        if (!termsCheckbox) {
+        document.getElementById('termsError').textContent = 'You must agree to the terms and conditions.';
+        isValid = false;
+      }
+
 
         return isValid;
       }
@@ -88,4 +176,7 @@
       }
     </style>
   </body>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </html>

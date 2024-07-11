@@ -75,24 +75,32 @@
                                 <div class="col-lg-3 col-sm-6 col-12">
                                     <div class="form-group">
                                         <label><a style="color: red;">* </a>User Name</label>
-                                        <input name="username" type="text"  placeholder="maximum of 10 characters"  required pattern="[a-zA-Z0-9]\S*.*" oninvalid="this.setCustomValidity('Username should not start with a space')" oninput="setCustomValidity('')"  maxlength="10">
+                                        <input id="usernameInput" name="username" type="text" class="form-control" placeholder="maximum of 10 characters"
+                                               maxlength="10"
+                                               pattern="^\S{1,10}$"
+                                               oninvalid="this.setCustomValidity('Username should not be empty or should not contain spaces')"
+                                               oninput="setCustomValidity('')" />
                                     </div>
+                                              
                                     <div class="form-group">
                                         <label><a style="color: red;">* </a>Assiggned Location</label>
                                         <select name="assigned_location" class="form-control" id="assigned_location" required>
-                                            <option value="" disabled selected> Seclect Barangay</option>
+                                            <option value="" disabled selected>Select</option>
+                                            <option value="Aplaya">Aplaya</option>
                                             <option value="Balibago">Balibago</option>
                                             <option value="Caingin">Caingin</option>
                                             <option value="Dila">Dila</option>
                                             <option value="Dita">Dita</option>
                                             <option value="Don Jose">Don Jose</option>
                                             <option value="Ibaba">Ibaba</option>
-                                            <option value="Kanluran">Kanluran</option>
                                             <option value="Labas">Labas</option>
                                             <option value="Macabling">Macabling</option>
                                             <option value="Malitlit">Malitlit</option>
+                                            <option value="Malusak">Malusak</option>
                                             <option value="Market Area">Market Area</option>
-                                            <option value="Poblacion">Poblacion</option>
+                                            <option value="Kanluran">Kanluran</option>
+                                            <option value="Pooc">Pooc</option>
+                                            <option value="Pulong Santa Cruz">Pulong Santa Cruz</option>
                                             <option value="Santo Domingo">Santo Domingo</option>
                                             <option value="Sinalhan">Sinalhan</option>
                                             <option value="Tagapo">Tagapo</option>
@@ -102,8 +110,12 @@
                                 <div class="col-lg-3 col-sm-6 col-12">
                                     <div class="form-group">
                                         <label><a style="color: red;">* </a>First Name</label>
-                                        <input type="text" name="first_name" required  required pattern="[a-zA-Z0-9]\S*.*" oninvalid="this.setCustomValidity('Name should not start with a space')" oninput="setCustomValidity('')"  maxlength="49">
+                                        <input type="text" name="first_name" class="form-control" required maxlength="49"
+                                               pattern="^\S.*$"
+                                               oninvalid="this.setCustomValidity('First Name should not start with a space')"
+                                               oninput="setCustomValidity('')" />
                                     </div>
+                                    
                                     <div class="form-group">
                                         <label><a style="color: red;">* </a> Password</label>
                                         <div class="pass-group">
@@ -116,8 +128,11 @@
                                 <div class="col-lg-3 col-sm-6 col-12">
                                     <div class="form-group">
                                         <label><a style="color: red;">* </a>Last Name</label>
-                                        <input type="text" name="last_name" required required pattern="[a-zA-Z0-9]\S*.*" oninvalid="this.setCustomValidity('Lastname should not start with a space')" oninput="setCustomValidity('')"  maxlength="49">
-                                    </div>
+                                        <input type="text" name="last_name" class="form-control" required maxlength="49"
+                                               pattern="^\S.*$"
+                                               oninvalid="this.setCustomValidity('Last Name should not start with a space')"
+                                               oninput="setCustomValidity('')" />
+                                    </div>                                    
                                     <div class="form-group">
                                         <label><a style="color: red;">* </a>Confirm Password</label>
                                         <input type="password" id="confirm_password" name="confirm_password" class="pass-inputs"  placeholder=" maximum of 11 characters" minlength="7" maxlength="11" required>
@@ -128,9 +143,12 @@
                                 <div class="col-lg-3 col-sm-6 col-12">
                                     <div class="form-group">
                                         <label><a style="color: red;">* </a>Email</label>
-                                        <input type="email" name="email" class="form-control" required   required pattern="^(?!.*\.c0m).*$" maxlength="100" oninvalid="this.setCustomValidity('Username should not start with a space')" oninput="setCustomValidity('')"    >
+                                        <input type="email" name="email" class="form-control" required maxlength="100"
+                                               pattern="^(?!.*\.c0m).*$"
+                                               oninvalid="this.setCustomValidity('')"
+                                               oninput="setCustomValidity('')" />
                                     </div>
-                                 
+                                    
                                 </div>
                                 <div class="form-group">
                                     <label for="profile_image"><a style="color: red;">* </a>Profile Picture</label>
@@ -193,6 +211,8 @@ window.onload = function() {
 }
 </script>
 {% endif %}
+
+
     <script src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>
 
     <script src="{{ url_for('static', filename='js/feather.min.js') }}"></script>

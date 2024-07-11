@@ -84,31 +84,39 @@
                                 <div class="col-lg-6 col-sm-12">
                                     <div class="form-group">
                                         <label><a style="color: red;">* </a>First Name</label>
-                                        <input type="text" name="first_name" value="{{ enforcer_data.6 }}" required pattern="[a-zA-Z0-9]\S*.*" oninvalid="this.setCustomValidity('Name should not start with a space')" oninput="setCustomValidity('')"  maxlength="25">
+                                        <input type="text" name="first_name" class="form-control" value="{{ enforcer_data.6 }}" required maxlength="49"
+                                               pattern="^\S.*$"
+                                               oninvalid="this.setCustomValidity('First Name should not start with a space')"
+                                               oninput="setCustomValidity('')" />
                                     </div>
                                 </div>
+                                
                                 <div class="col-lg-6 col-sm-12">
                                     <div class="form-group">
                                         <label><a style="color: red;">* </a>Last Name</label>
-                                        <input type="text" class="form-control" name="last_name" value="{{ enforcer_data.7 }}" required pattern="[a-zA-Z0-9]\S*.*" oninvalid="this.setCustomValidity('Last name should not start with a space')" oninput="setCustomValidity('')"  maxlength="25">
-                                    </div>
+                                        <input type="text" name="last_name" class="form-control" required maxlength="49" value="{{ enforcer_data.7 }}"
+                                               pattern="^\S.*$"
+                                               oninvalid="this.setCustomValidity('Last Name should not start with a space')"
+                                               oninput="setCustomValidity('')" />
+                                    </div> 
                                 </div>
                                 <div class="col-lg-6 col-sm-12">
                                     <div class="form-group">
                                         <label><a style="color: red;">* </a>Email</label>
-                                        <input class="form-control" type="email" name="email" value="{{ enforcer_data.5 }}"  required pattern="^(?!.*\.c0m).*$" maxlength="255">
+                                        <input type="email" name="email" class="form-control" required maxlength="100" value="{{ enforcer_data.5 }}" 
+                                               pattern="^(?!.*\.c0m).*$"
+                                               oninvalid="this.setCustomValidity('')"
+                                               oninput="setCustomValidity('')" />
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-sm-12">
                                     <div class="form-group">
-                                        <label><a style="color: red;">* </a>Username</label>
-                                        <input type="text" name="username" value="{{ enforcer_data.3 }}"  required pattern="[a-zA-Z0-9]\S*.*" oninvalid="this.setCustomValidity('Username should not start with a space')" oninput="setCustomValidity('')" maxlength="10">
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 col-sm-12" style="display: none;">
-                                    <div class="form-group">
-                                        <label><a style="color: red;">* </a>Username</label>
-                                        <input type="text" name="profile_image" value="{{ enforcer_data.8 }}" >
+                                        <label><a style="color: red;">* </a>User Name</label>
+                                        <input id="usernameInput" name="username" type="text" class="form-control" placeholder="maximum of 10 characters" value="{{ enforcer_data.3 }}"
+                                               maxlength="10"
+                                               pattern="^\S{1,10}$"
+                                               oninvalid="this.setCustomValidity('Username should not be empty or should not contain spaces')"
+                                               oninput="setCustomValidity('')" />
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-sm-12">
@@ -128,22 +136,26 @@
                                     <div class="form-group">
                                         <label><a style="color: red;">* </a>Barangay</label>
                                         <select name="assigned_location" id="inputBarangay" class="form-control" required>
-                                            <option value="" disabled>Choose Barangay</option>
-                                            <option value="Balibago" {% if enforcer_data.9 == "Balibago" %} selected {% endif %}>Balibago</option>
-                                            <option value="Caingin" {% if enforcer_data.9 == "Caingin" %} selected {% endif %}>Caingin</option>
-                                            <option value="Dila" {% if enforcer_data.9 == "Dila" %} selected {% endif %}>Dila</option>
-                                            <option value="Dita" {% if enforcer_data.9 == "Dita" %} selected {% endif %}>Dita</option>
-                                            <option value="Don Jose" {% if enforcer_data.9 == "Don Jose" %} selected {% endif %}>Don Jose</option>
-                                            <option value="Ibaba" {% if enforcer_data.9 == "Ibaba" %} selected {% endif %}>Ibaba</option>
-                                            <option value="Kanluran" {% if enforcer_data.9 == "Kanluran" %} selected {% endif %}>Kanluran</option>
-                                            <option value="Labas" {% if enforcer_data.9 == "Labas" %} selected {% endif %}>Labas</option>
-                                            <option value="Macabling" {% if enforcer_data.9 == "Macabling" %} selected {% endif %}>Macabling</option>
-                                            <option value="Malitlit" {% if enforcer_data.9 == "Malitlit" %} selected {% endif %}>Malitlit</option>
-                                            <option value="Market Area" {% if enforcer_data.9 == "Market Area" %} selected {% endif %}>Market Area</option>
-                                            <option value="Poblacion" {% if enforcer_data.9 == "Poblacion" %} selected {% endif %}>Poblacion</option>
-                                            <option value="Santo Domingo" {% if enforcer_data.9 == "Santo Domingo" %} selected {% endif %}>Santo Domingo</option>
-                                            <option value="Sinalhan" {% if enforcer_data.9 == "Sinalhan" %} selected {% endif %}>Sinalhan</option>
-                                            <option value="Tagapo" {% if enforcer_data.9 == "Tagapo" %} selected {% endif %}>Tagapo</option>
+                                                <option value="" disabled selected>Choose Barangay</option>
+                                                <option value="Aplaya" {% if enforcer_data.9 == "Aplaya" %} selected {% endif %}>Aplaya</option>
+                                                <option value="Balibago" {% if enforcer_data.9 == "Balibago" %} selected {% endif %}>Balibago</option>
+                                                <option value="Caingin" {% if enforcer_data.9 == "Caingin" %} selected {% endif %}>Caingin</option>
+                                                <option value="Dila" {% if enforcer_data.9 == "Dila" %} selected {% endif %}>Dila</option>
+                                                <option value="Dita" {% if enforcer_data.9 == "Dita" %} selected {% endif %}>Dita</option>
+                                                <option value="Don Jose" {% if enforcer_data.9 == "Don Jose" %} selected {% endif %}>Don Jose</option>
+                                                <option value="Ibaba" {% if enforcer_data.9 == "Ibaba" %} selected {% endif %}>Ibaba</option>
+                                                <option value="Labas" {% if enforcer_data.9 == "Labas" %} selected {% endif %}>Labas</option>
+                                                <option value="Macabling" {% if enforcer_data.9 == "Macabling" %} selected {% endif %}>Macabling</option>
+                                                <option value="Malitlit" {% if enforcer_data.9 == "Malitlit" %} selected {% endif %}>Malitlit</option>
+                                                <option value="Malusak" {% if enforcer_data.9 == "Malusak" %} selected {% endif %}>Malusak</option>
+                                                <option value="Market Area" {% if enforcer_data.9 == "Market Area" %} selected {% endif %}>Market Area</option>
+                                                <option value="Kanluran" {% if enforcer_data.9 == "Kanluran" %} selected {% endif %}>Kanluran</option>
+                                                <option value="Pooc" {% if enforcer_data.9 == "Pooc" %} selected {% endif %}>Pooc</option>
+                                                <option value="Pulong Santa Cruz" {% if enforcer_data.9 == "Pulong Santa Cruz" %} selected {% endif %}>Pulong Santa Cruz</option>
+                                                <option value="Santo Domingo" {% if enforcer_data.9 == "Santo Domingo" %} selected {% endif %}>Santo Domingo</option>
+                                                <option value="Sinalhan" {% if enforcer_data.9 == "Sinalhan" %} selected {% endif %}>Sinalhan</option>
+                                                <option value="Tagapo" {% if enforcer_data.9 == "Tagapo" %} selected {% endif %}>Tagapo</option>
+                                            </select>
                                         </select>
                                     </div>
                                 </div>
