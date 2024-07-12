@@ -67,6 +67,7 @@ def camera():
 
 @app.route('/violators_form', methods=['GET', 'POST'])
 def violators_form():
+    db_connection = get_db_connection()
     cursor_violators = db_connection.cursor()
     msg = ''  # Initialize msg here
 
@@ -119,6 +120,7 @@ def violators_form():
 
 @app.route('/manual_input_data', methods=['GET', 'POST'])
 def manual_input_data():
+    db_connection = get_db_connection()
     cursor = db_connection.cursor()
     session['submitted'] = True
     msg = ''
@@ -147,6 +149,7 @@ def manual_input_data():
 
 @app.route('/index')
 def index():
+    db_connection = get_db_connection()
     cursor = db_connection.cursor()
     try:
         # Fetch counts
@@ -181,6 +184,7 @@ def mode_selection():
 
 @app.route('/settled_reports')
 def settled_reports():
+    db_connection = get_db_connection()
     cursor = db_connection.cursor()
     cursor.execute("SELECT * FROM violators_data WHERE status = 'settled'")
     data =  cursor.fetchall()
@@ -194,6 +198,7 @@ def settled_reports():
 #routes for admin
 @app.route('/admin_signin', methods=['GET','POST'])
 def admin_signin():
+    db_connection = get_db_connection()
     cursor = db_connection.cursor()
     if 'loggedin' in session:
         return redirect(url_for('index'))
@@ -216,6 +221,7 @@ def admin_signin():
 
 @app.route('/add_enforcer', methods=['POST', 'GET'])
 def add_enforcer():
+    db_connection = get_db_connection()
     cursor = db_connection.cursor()
     if request.method == 'POST':
         username = request.form['username']
@@ -249,6 +255,7 @@ def selection_mode():
 @app.route('/manual_input')
 def manual_input():
     session['manual_input'] = True
+    db_connection = get_db_connection()
     cursor = db_connection.cursor()
     cursor.execute("SELECT MAX(id) FROM reports")
     largest_id = cursor.fetchone()[0]  # Get the latest extracted_id
@@ -272,6 +279,7 @@ def manual_input():
 @app.route('/no_license')
 def no_license():
     session['manual_input'] = True
+    db_connection = get_db_connection()
     cursor = db_connection.cursor()
     cursor.execute("SELECT MAX(id) FROM reports")
     largest_id = cursor.fetchone()[0]  # Get the latest extracted_id
@@ -291,6 +299,7 @@ def no_license():
 
 @app.route('/no_license_data', methods=['GET', 'POST'])
 def no_license_data():
+    db_connection = get_db_connection()
     cursor = db_connection.cursor()
     session['submitted'] = True
     msg = ''

@@ -1,90 +1,95 @@
-{% include 'include_assets/styles.html' %}
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Enforcer</title>
+
+    <!-- Include stylesheets -->
+    {% include 'include_assets/styles.html' %}
+
+    <!-- Include SweetAlert library -->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
-{% if session.loggedin %}
+
 <body>
+    {% if session.loggedin %}
     <div id="global-loader">
         <div class="whirly-loader">AutoDlex<i class="fa fa-camera" aria-hidden="true"></i></div>
     </div>
-    
 
     <div class="main-wrapper">
+        {% include 'include_assets/profile.html'%}
 
-    {% include 'include_assets/profile.html'%}
-
-
-    <div class="sidebar" id="sidebar" style="background-color:  white;">
-        <div class="sidebar-inner slimscroll" >
-            <div id="sidebar-menu" class="sidebar-menu">
-                <div class="dashboard-logo">
-                    <a href="{{url_for('index')}}">
-                        <img src="static/images/autodlex.png" alt="" style="width: 200px; height: auto; margin-bottom: 80px;">
-                    </a>
+        <div class="sidebar" id="sidebar" style="background-color: white;">
+            <div class="sidebar-inner slimscroll">
+                <div id="sidebar-menu" class="sidebar-menu">
+                    <div class="dashboard-logo">
+                        <a href="{{url_for('index')}}">
+                            <img src="static/images/autodlex.png" alt="" style="width: 200px; height: auto; margin-bottom: 80px;">
+                        </a>
+                    </div>
+                    <ul>
+                        <li>
+                            <a href="{{ url_for('index') }}"><span class="fa fa-home"></span><span>
+                                    Dashboard</span> </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('violators.violator_list') }}">
+                                <span class="fa fa-user-alt"></span>
+                                <span> Violator List</span>
+                            </a>
+                        </li>
+                        <li class="active">
+                            <a href="{{ url_for('enforcer.enforcer_data') }}">
+                                <span class="fa fa-user-alt"></span>
+                                <span> Enforcers</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('settled_reports') }}">
+                                <span class="fas fa-exclamation-circle"></span>
+                                <span> Settled Reports</span>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
-                <ul >
-                    <li >
-                        <a href="{{ url_for('index') }}"><span class="fa fa-home"></span><span>
-                                Dashboard</span> </a>
-                    </li>
-                         <li >
-                        <a href="{{ url_for('violators.violator_list') }}">
-                            <span class="fa fa-user-alt"></span>
-                            <span> Violator List</span>
-                        </a>
-                    </li>
-                    <li class="active" >
-                    <a href="{{ url_for('enforcer.enforcer_data') }}">
-                        <span class="fa fa-user-alt"></span>
-                            <span> Enforcers</span>
-                        </a>
-                    </li>
-                    <li >
-                    <a href="{{ url_for('settled_reports') }}">
-                        <span class="fas fa-exclamation-circle"></span>
-                            <span  > Settled Reports</span>
-                        </a>
-                    </li>
-                </ul>
             </div>
         </div>
-    </div>
 
-        <div class="page-wrapper" >
-            <div class="content" >
+        <div class="page-wrapper">
+            <div class="content">
                 <nav aria-label="breadcrumb" class="mb-4">
                     <ol class="breadcrumb">
-                      <li class="breadcrumb-item"><a href="{{ url_for('enforcer.enforcer_data') }}">Enforcer Management</a></li>
-                      <li class="breadcrumb-item active" aria-current="page">Add Enforcer</li>
+                        <li class="breadcrumb-item"><a href="{{ url_for('enforcer.enforcer_data') }}">Enforcer Management</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Add Enforcer</li>
                     </ol>
-                  </nav>
+                </nav>
                 <div class="page-header">
                     <div class="page-title">
                         <h4>Enforcer Information</h4>
                     </div>
                 </div>
-                <form action="{{ url_for('enforcer.add_enforcer') }}"  enctype="multipart/form-data"  method="post" style="box-shadow:2px 5px 7px rgba(0, 0, 0, 0.3); ">
+                <form id="addEnforcerForm" action="{{ url_for('enforcer.add_enforcer') }}" enctype="multipart/form-data" method="post" style="box-shadow: 2px 5px 7px rgba(0, 0, 0, 0.3);">
                     <div class="card">
                         <div class="card-body">
                             {% if msg %}
-                            <i class="alert alert-danger d-flex justify-content-center">
+                            <div class="alert alert-danger d-flex justify-content-center">
                                 <strong>{{msg}}</strong>
-                            </i>
-                            {% endif %} 
+                            </div>
+                            {% endif %}
                             <div class="row">
                                 <div class="col-lg-3 col-sm-6 col-12">
                                     <div class="form-group">
                                         <label><a style="color: red;">* </a>User Name</label>
-                                        <input id="usernameInput" name="username" type="text" class="form-control" placeholder="maximum of 10 characters"
-                                               maxlength="10"
-                                               pattern="^\S{1,10}$"
-                                               oninvalid="this.setCustomValidity('Username should not be empty or should not contain spaces')"
-                                               oninput="setCustomValidity('')" />
+                                        <input id="usernameInput" name="username" type="text" class="form-control" placeholder="maximum of 10 characters" maxlength="10" >
+                                        <div id="usernameError" class="text-danger"></div>
                                     </div>
-                                              
+
                                     <div class="form-group">
-                                        <label><a style="color: red;">* </a>Assiggned Location</label>
-                                        <select name="assigned_location" class="form-control" id="assigned_location" required>
+                                        <label><a style="color: red;">* </a>Assigned Location</label>
+                                        <select name="assigned_location" class="form-control" id="assigned_location" >
                                             <option value="" disabled selected>Select</option>
                                             <option value="Aplaya">Aplaya</option>
                                             <option value="Balibago">Balibago</option>
@@ -105,112 +110,225 @@
                                             <option value="Sinalhan">Sinalhan</option>
                                             <option value="Tagapo">Tagapo</option>
                                         </select>
-                                    </div>   
+                                    </div>
                                 </div>
                                 <div class="col-lg-3 col-sm-6 col-12">
                                     <div class="form-group">
                                         <label><a style="color: red;">* </a>First Name</label>
-                                        <input type="text" name="first_name" class="form-control" required maxlength="49"
-                                               pattern="^\S.*$"
-                                               oninvalid="this.setCustomValidity('First Name should not start with a space')"
-                                               oninput="setCustomValidity('')" />
+                                        <input type="text" id="firstNameInput" name="first_name" class="form-control"  maxlength="49" pattern="^\S.*$" oninput="validateFirstName()">
+                                        <div id="firstNameError" class="text-danger"></div>
                                     </div>
-                                    
+
                                     <div class="form-group">
-                                        <label><a style="color: red;">* </a> Password</label>
+                                        <label><a style="color: red;">* </a>Password</label>
                                         <div class="pass-group">
-                                            <input name="password" id="password" type="password" class="pass-inputs"  placeholder=" maximum of 11 characters" maxlength="11" minlength="7" required>
-                                           
+                                            <input id="password" name="password" type="password" class="pass-inputs form-control" placeholder=" maximum of 11 characters" minlength="7" maxlength="11"  oninput="validatePassword()">
+                                            <div id="passwordError" class="text-danger"></div>
                                         </div>
                                     </div>
-                                   
+
                                 </div>
                                 <div class="col-lg-3 col-sm-6 col-12">
                                     <div class="form-group">
                                         <label><a style="color: red;">* </a>Last Name</label>
-                                        <input type="text" name="last_name" class="form-control" required maxlength="49"
-                                               pattern="^\S.*$"
-                                               oninvalid="this.setCustomValidity('Last Name should not start with a space')"
-                                               oninput="setCustomValidity('')" />
-                                    </div>                                    
+                                        <input type="text" id="lastNameInput" name="last_name" class="form-control"  maxlength="49" pattern="^\S.*$" oninput="validateLastName()">
+                                        <div id="lastNameError" class="text-danger"></div>
+                                    </div>
                                     <div class="form-group">
                                         <label><a style="color: red;">* </a>Confirm Password</label>
-                                        <input type="password" id="confirm_password" name="confirm_password" class="pass-inputs"  placeholder=" maximum of 11 characters" minlength="7" maxlength="11" required>
+                                        <input id="confirm_password" name="confirm_password" type="password" class="pass-inputs form-control" placeholder=" maximum of 11 characters" minlength="7" maxlength="11"  oninput="validateConfirmPassword()">
+                                        <div id="confirmPasswordError" class="text-danger"></div>
                                     </div>
-                                    
-                                    
                                 </div>
                                 <div class="col-lg-3 col-sm-6 col-12">
                                     <div class="form-group">
                                         <label><a style="color: red;">* </a>Email</label>
-                                        <input type="email" name="email" class="form-control" required maxlength="100"
-                                               pattern="^(?!.*\.c0m).*$"
-                                               oninvalid="this.setCustomValidity('')"
-                                               oninput="setCustomValidity('')" />
+                                        <input type="email" id="email" name="email" class="form-control"  maxlength="100" oninput="validateEmail()">
+                                        <div id="emailError" class="text-danger"></div>
                                     </div>
-                                    
                                 </div>
-                                <div class="form-group">
-                                    <label for="profile_image"><a style="color: red;">* </a>Profile Picture</label>
-                                    <input name="profile_image" id="profile_image" type="file" required>
-                                </div>
-                                  
                                 <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for="profile_image"><a style="color: red;">* </a>Profile Picture</label>
+                                        <input type="file" id="profile_image" name="profile_image" class="form-control"  onchange="validateProfileImage()">
+                                        <div id="profileImageError" class="text-danger"></div>
+                                    </div>
                                     <button type="submit" class="btn btn-submit me-2">Add</button>
-                                    <a  href="{{url_for('enforcer.enforcer_data')}}" type="button" class="btn btn-cancel">Cancel</a>
+                                    <a href="{{url_for('enforcer.enforcer_data')}}" type="button" class="btn btn-cancel">Cancel</a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </form>
-
-                </div>
-               
-          
             </div>
         </div>
     </div>
+
+    <!-- Include jQuery and Bootstrap JavaScript -->
     <script src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>
-        <!-- Include other JavaScript files -->
-        <script>
-            $(document).ready(function() {
-                // Store the initial form state
-                var initialFormState = $('form').serialize();
-            
-                // Function to show confirmation dialog when leaving the page
-                function beforeUnloadHandler(e) {
-                    // If the current form state is different from the initial state
-                    var currentFormState = $('form').serialize();
-                    if (currentFormState !== initialFormState) {
-                        // Customize the confirmation message
-                        var confirmationMessage = 'You have unsaved changes. Are you sure you want to leave this page?';
-                        
-                        // For all browsers except Microsoft Edge
-                        e.returnValue = confirmationMessage;
-                        return confirmationMessage;
-                    }
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+
+    <!-- Custom JavaScript -->
+    <script>
+        // Function to validate username
+        function validateUsername() {
+            var username = $('#usernameInput').val().trim();
+            if (username.length === 0) {
+                $('#usernameError').text('Username is required');
+                return false;
+            } else if (username.length > 10) {
+                $('#usernameError').text('Username should not exceed 10 characters');
+                return false;
+            }
+            $('#usernameError').text('');
+            return true;
+        }
+
+        // Function to validate first name
+        function validateFirstName() {
+            var firstName = $('#firstNameInput').val().trim();
+            if (firstName.length === 0) {
+                $('#firstNameError').text('First Name is required');
+                return false;
+            } else if (!/^\S.*$/.test(firstName)) {
+                $('#firstNameError').text('First Name should not start with a space');
+                return false;
+            }
+            $('#firstNameError').text('');
+            return true;
+        }
+
+        // Function to validate last name
+        function validateLastName() {
+            var lastName = $('#lastNameInput').val().trim();
+            if (lastName.length === 0) {
+                $('#lastNameError').text('Last Name is required');
+                return false;
+            } else if (!/^\S.*$/.test(lastName)) {
+                $('#lastNameError').text('Last Name should not start with a space');
+                return false;
+            }
+            $('#lastNameError').text('');
+            return true;
+        }
+
+        // Function to validate password
+        function validatePassword() {
+            var password = $('#password').val();
+            if (password.length < 7 || password.length > 11) {
+                $('#passwordError').text('Password should be between 7 to 11 characters');
+                return false;
+            }
+            $('#passwordError').text('');
+            return true;
+        }
+
+        // Function to validate confirm password
+        function validateConfirmPassword() {
+            var confirmPassword = $('#confirm_password').val();
+            var password = $('#password').val();
+            if (confirmPassword !== password) {
+                $('#confirmPasswordError').text('Passwords do not match');
+                return false;
+            }
+            $('#confirmPasswordError').text('');
+            return true;
+        }
+
+        // Function to validate email
+        function validateEmail() {
+            var email = $('#email').val().trim();
+            if (email.length === 0) {
+                $('#emailError').text('Email is required');
+                return false;
+            } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                $('#emailError').text('Invalid email format');
+                return false;
+            }
+            $('#emailError').text('');
+            return true;
+        }
+
+        // Function to validate profile image
+        function validateProfileImage() {
+            var profileImage = $('#profile_image')[0].files;
+            if (profileImage.length === 0) {
+                $('#profileImageError').text('Profile Picture is required');
+                return false;
+            }
+            var fileSize = profileImage[0].size / 1024 / 1024; // in MB
+            if (fileSize > 2) { // Adjust as per your requirements
+                $('#profileImageError').text('File size should not exceed 2MB');
+                return false;
+            }
+            $('#profileImageError').text('');
+            return true;
+        }
+
+        $(document).ready(function () {
+            // Form submit validation
+            $('#addEnforcerForm').submit(function (event) {
+                event.preventDefault(); // Prevent the default form submission
+
+                // Validate all fields before submitting
+                var isUsernameValid = validateUsername();
+                var isFirstNameValid = validateFirstName();
+                var isLastNameValid = validateLastName();
+                var isPasswordValid = validatePassword();
+                var isConfirmPasswordValid = validateConfirmPassword();
+                var isEmailValid = validateEmail();
+                var isProfileImageValid = validateProfileImage();
+
+                // If any field is invalid, prevent form submission
+                if (!isUsernameValid || !isFirstNameValid || !isLastNameValid || !isPasswordValid || !isConfirmPasswordValid || !isEmailValid || !isProfileImageValid) {
+                    return false;
                 }
-            
-                window.addEventListener('beforeunload', beforeUnloadHandler);
-            
-                // Function to remove event listener when submitting the form
-                $('form').submit(function() {
-                    // Remove the beforeunload event listener
-                    window.removeEventListener('beforeunload', beforeUnloadHandler);
+                // If all validations pass, you can proceed with form submission
+                // Optionally, you can use AJAX to submit the form data asynchronously
+                // Here's an example of how you can do it with AJAX:
+                /*
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: $(this).attr('method'),
+                    data: new FormData(this),
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        // Handle success response
+                        console.log('Form submitted successfully');
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle error response
+                        console.error('Form submission error:', error);
+                    }
                 });
+                */
+
+                // For now, let's simulate form submission success with a message
+                // Replace this with actual form submission logic
+                swal({
+                    title: "Success!",
+                    text: "Enforcer added successfully.",
+                    icon: "success",
+                    button: "Okay",
+                }).then(function () {
+                    // Redirect or do something after success
+                    window.location.href = "{{ url_for('enforcer.enforcer_data') }}";
+                });
+
+                return false; // Prevent the form from submitting again
             });
-        </script>
+        });
+    </script>
 
+    {% else %}
+    <script>
+        window.onload = function () {
+            window.location.href = "{{ url_for('admin_signin') }}";
+        }
+    </script>
+    {% endif %}
 
-{% else %}
-<script>
-    
-
-window.onload = function() {
-    window.location.href = "{{ url_for('admin_signin') }}";
-}
-</script>
-{% endif %}
 
 
     <script src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>

@@ -16,6 +16,7 @@ violator_bp = Blueprint("violators", __name__, template_folder="templates")
 
 @violator_bp.route('/violator_list')
 def violator_list():
+    db_connection = get_db_connection()
     cursor = db_connection.cursor()
     cursor.execute("SELECT * FROM violators_data WHERE status = 'Unsettled'")
     data =  cursor.fetchall()
@@ -24,6 +25,7 @@ def violator_list():
 
 @violator_bp.route('/view_violator')
 def view_violator():
+    db_connection = get_db_connection()
     cursor = db_connection.cursor()
     violator_id = request.args.get('violator_id')
     query = "SELECT * FROM violators_data WHERE violators_id = %s"
@@ -39,6 +41,7 @@ def view_violator():
 #viewing of violators data specific 
 @violator_bp.route('/view_violators_data')
 def view_violators_data():
+    db_connection = get_db_connection()
     cursor = db_connection.cursor()
     violator_id = request.args.get('violator_id')
     query = "SELECT * FROM violators_data WHERE violators_id  = %s"
@@ -70,6 +73,7 @@ from flask import render_template, request
 
 @violator_bp.route('/edit_violators_data', methods=['GET', 'POST'])  
 def edit_violators_data():
+    db_connection = get_db_connection()
     cursor = db_connection.cursor()
     msg = ''
     violator_id = request.args.get('violator_id')
@@ -106,6 +110,7 @@ def edit_violators_data():
 #deleting of violators data        
 @violator_bp.route('/delete_violator')
 def delete_violator():
+    db_connection = get_db_connection()
     cursor = db_connection.cursor()
     violators_id = request.args.get('violator_id').split(',')
     for violator in violators_id:
@@ -116,6 +121,7 @@ def delete_violator():
 
 @violator_bp.route('/restore_reports')
 def restore_reports():
+    db_connection = get_db_connection()
     violators_id = request.args.get('violator_id').split(',')
     for violator in violators_id:
         cursor = db_connection.cursor()
@@ -130,6 +136,7 @@ def restore_reports():
 
 @violator_bp.route('/excellReports')
 def excellReports():
+    db_connection = get_db_connection()
     cursor = db_connection.cursor()
     violator_ids = request.args.get('violator_ids').split(',')
     all_data = []

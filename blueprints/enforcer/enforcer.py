@@ -12,6 +12,7 @@ enforcer_bp = Blueprint("enforcer", __name__, template_folder="templates")
 
 @enforcer_bp.route('/enforcer', methods=['GET', 'POST'])
 def enforcer():
+    db_connection = get_db_connection()
     cursor = db_connection.cursor()
     if 'loggedins' in session:
         return redirect(url_for('camera'))
@@ -32,6 +33,7 @@ def enforcer():
 
 @enforcer_bp.route('/add_enforcer', methods=['POST', 'GET'])
 def add_enforcer():
+    db_connection = get_db_connection()
     cursor = db_connection.cursor()
     msg = ''  # Initialize msg here
     if request.method == 'POST':
@@ -72,6 +74,7 @@ def add_enforcer():
 
 @enforcer_bp.route('/enforcer_data')
 def enforcer_data():
+    db_connection = get_db_connection()
     cursor = db_connection.cursor()
     cursor.execute("SELECT * From  enforcer_accounts")
     enforcer_data = cursor.fetchall()
@@ -96,6 +99,7 @@ def view_enforcer():
     
 @enforcer_bp.route('/edit_enforcer', methods=['POST', 'GET'])
 def edit_enforcer():
+    db_connection = get_db_connection()
     cursor = db_connection.cursor()
     enforcer_id = request.args.get('enforcer_id')
     print(" THis is the enforcer Id",enforcer_id)

@@ -184,7 +184,7 @@ def violators():
         session['submitted'] = True
 
         # Database connection and cursor
-       
+        db_connection = get_db_connection()
         cursor_svm = db_connection.cursor()
 
         # Get the latest extracted_id
