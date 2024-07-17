@@ -83,7 +83,9 @@
                                 <a class="me-3 " data-bs-toggle="tooltip" title="Delete Reports " data-bs-placement="top" onclick="deleteData()">
                                     <img src="static/img/icons/delete.svg"    alt="img">
                                 </a>
-                                <button class="btn btn-primary" onclick="toggleTables()">View Archive Table</button>
+                                <div class="d-flex justify-content-center">
+                                    <a href="{{ url_for('archive_reports') }}" class="btn btn-info" >View Archive Reports</a>
+                                </div>
                             </ul>
                         </div>
                     </div>
@@ -129,7 +131,7 @@
                     </div>
                    
                     <div class="table-responsive">
-                        <table class="table datanew" id="mainTable">
+                        <table class="table datanew mainTable" id="table1">
                             <thead>
                                 <tr>
                                     <th>Time</th>
@@ -169,109 +171,7 @@
                 </div>
             </div>
             
-            <div class="card" style="box-shadow:2px 5px 7px rgba(0, 0, 0, 0.3); display: none;" id="table2">
-                <div class="card-body">
-                    <div class="table-top">
-                        <div class="search-set">
-                            <div class="search-input">
-                                <a class="btn btn-searchset"><img src="static/img/icons/search-white.svg" alt="img"></a>
-                            </div>
-                        </div>
-                        <div class="wordset">
-                            <ul>
-                                <li>
-                                    <a data-bs-toggle="tooltip" data-bs-placement="top" title="Generate Reports" onclick="excellReports2()">
-                                        <img src="static/img/icons/excel.svg" alt="img">
-                                    </a>
-                                </li>
-                                <a data-bs-toggle="tooltip"  class="me-3 " title="Restore Reports"  onclick="restoreData2()" >
-                                    <img src="static/img/history.png" alt="img" width="25" height="35">
-                                </a>
-                                <button class="btn btn-primary" onclick="toggleTables()">View Settled Reports</button>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="card" id="filter_inputs">
-                        <div class="card-body pb-0">
-                            <div class="row">
-                                <div class="col-lg-2 col-sm-6 col-12">
-                                    <div class="form-group">
-                                        <input type="text" placeholder="Enter User Name">
-                                    </div>
-                                </div>
-                                <div class="col-lg-2 col-sm-6 col-12">
-                                    <div class="form-group">
-                                        <input type="text" placeholder="Enter Phone">
-                                    </div>
-                                </div>
-                                <div class="col-lg-2 col-sm-6 col-12">
-                                    <div class="form-group">
-                                        <input type="text" placeholder="Enter Email">
-                                    </div>
-                                </div>
-                                <div class="col-lg-2 col-sm-6 col-12">
-                                    <div class="form-group">
-                                        <input type="text" class="datetimepicker cal-icon" placeholder="Choose Date">
-                                    </div>
-                                </div>
-                                <div class="col-lg-2 col-sm-6 col-12">
-                                    <div class="form-group">
-                                        <select class="select">
-                                            <option>Disable</option>
-                                            <option>Enable</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-lg-1 col-sm-6 col-12 ms-auto">
-                                    <div class="form-group">
-                                        <a class="btn btn-filters ms-auto"><img src="static/img/icons/search-whites.svg" alt="img"></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="table-responsive">
-                        <table class="table datanew" id="mainTable">
-                            <thead>
-                                <tr>
-                                    <th>Time</th>
-                                    <th>Violation</th>
-                                    <th>Plate Number</th>
-                                    <th>Date </th>
-                                    <th>Barangay</th>
-                                    <th>Vehicle Type</th>
-                                    <th>Status</th>
-                                    <th>
-                                        <div class="d-flex justify-content-center" style="margin-left:20px">
-                                            <input type="checkbox" id="selectAll2" onclick="toggleCheckboxes2('rowCheckbox2', 'selectAll2')">
-                                        </div>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for rows in archiveData %}
-                                    <tr>
-                                        <td>{{rows.5}}</td>
-                                        <td class="ellipsis">{{rows.4}}</td>
-                                        <td>{{rows.8}}</td>
-                                        <td>{{rows.6}} </td>
-                                        <td>{{rows.7}}</td>
-                                        <td>{{rows.9}}</td>
-                                        <td><span class="bg-warning badges"> {{rows.10}}</span></td>
-                                        <td>
-                                            <div class="d-flex justify-content-center">
-                                                <input type="checkbox" class="rowCheckbox2" value="{{rows.0}}">
-                                            </div>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+            
         </div>
     </div> 
 
@@ -291,19 +191,6 @@
                 checkbox.checked = selectAllCheckbox.checked;
             });
         }
-
-        function toggleTables() {
-            var mainTable = document.getElementById('table1');
-            var archiveTable = document.getElementById('table2');
-            if (archiveTable.style.display === 'none') {
-                archiveTable.style.display = 'block';
-                mainTable.style.display = 'none';
-            } else {
-                archiveTable.style.display = 'none';
-                mainTable.style.display = 'block';
-            }
-        }
-
         function deleteData() {
             var checkboxes = document.querySelectorAll('.rowCheckbox');
             var viewIds = Array.from(checkboxes).filter(checkbox => checkbox.checked).map(checkbox => checkbox.value);

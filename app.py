@@ -156,7 +156,7 @@ def index():
         cursor.execute("SELECT COUNT(*) FROM enforcer_accounts")
         enforcers_count = cursor.fetchone()[0]
         
-        cursor.execute("SELECT COUNT(*) FROM violators_data")
+        cursor.execute("SELECT COUNT(*) FROM violators_data WHERE status = 'archive'")
         violators_count = cursor.fetchone()[0]
         
         cursor.execute("SELECT COUNT(*) FROM violators_data WHERE status = 'unsettled'")
@@ -165,13 +165,13 @@ def index():
         cursor.execute("SELECT COUNT(*) FROM violators_data WHERE status = 'settled'")
         settled_reports_count = cursor.fetchone()[0]
         
-        cursor.execute("SELECT * FROM violators_data")
-        violators = cursor.fetchall()
+        cursor.execute("SELECT * FROM activity_logs")
+        logs = cursor.fetchall()
         cursor.close()
         # Pass counts and data to template
         return render_template('index.html', enforcers_count=enforcers_count, violators_count=violators_count,
                                unsettled_reports_count=unsettled_reports_count, settled_reports_count=settled_reports_count,
-                               violators=violators)
+                               logs=logs)
     except Exception as e:
         # Handle any exceptions gracefully
         return render_template('error.html', error=str(e))
@@ -193,7 +193,16 @@ def settled_reports():
     cursor.close()
     return render_template('settled-reports.html',reports = data , archiveData = archiveData)
 
-
+@app.route('/archive_reports')
+def archive_reports():
+    db_connection = get_db_connection()
+    cursor = db_connection.cursor()
+    cursor.execute("SELECT * FROM violators_data WHERE status = 'settled'")
+    data =  cursor.fetchall()
+    cursor.execute("SELECT * FROM violators_data WHERE status = 'archive'")
+    archiveData = cursor.fetchall()
+    cursor.close()
+    return render_template('archive_tables.html',reports = data , archiveData = archiveData)
 
 #routes for admin
 @app.route('/admin_signin', methods=['GET','POST'])

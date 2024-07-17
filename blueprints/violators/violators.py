@@ -4,6 +4,7 @@ from openpyxl import Workbook
 from openpyxl.styles import Font, Alignment, Border, Side, PatternFill
 from openpyxl.drawing.image import Image
 import os
+import datetime
 
 
 
@@ -75,7 +76,7 @@ from flask import render_template, request
 def edit_violators_data():
     db_connection = get_db_connection()
     cursor = db_connection.cursor()
-    msg = ''
+    
     violator_id = request.args.get('violator_id')
     # Assuming you have a function to get violator data from the database
     query = "SELECT * FROM violators_data WHERE violators_id  = %s"
@@ -84,6 +85,7 @@ def edit_violators_data():
     
     if request.method == 'POST':
         violator_id = request.form['violators_id']
+        tct_number = request.form['tct_number'] 
         violation = request.form['violation']
         time = request.form['time']
         date = request.form['date']
@@ -96,6 +98,17 @@ def edit_violators_data():
         cursor.execute("UPDATE violators_data SET violation=%s, time=%s, date=%s, barangay=%s, plateNumber=%s, vehicle=%s ,status=%s WHERE violators_id  = %s",
                        (violation, time, date, barangay, plateNumber, vehicle, status,violator_id))
         db_connection.commit() 
+        current_date_time = datetime.datetime.now()
+        date = current_date_time.strftime('%A, %B %d, %Y')
+        time = current_date_time.strftime('%I:%M %p')
+        
+        if (status == 'settled'):
+            action = "Update ticket  " + tct_number + " into Settled."
+            cursor.execute("INSERT INTO activity_logs (date, time, action) VALUES (%s, %s, %s)", (date, time, action))
+        else:
+            action ="Update Information of ticket " + tct_number +"."
+            cursor.execute("INSERT INTO activity_logs (date, time, action) VALUES (%s, %s, %s)", (date, time, action))  
+        db_connection.commit()
         cursor.close()
         flash('Violator data updated successfully!', 'success')
         return redirect(url_for('violators.violator_list'))
@@ -113,21 +126,46 @@ def delete_violator():
     db_connection = get_db_connection()
     cursor = db_connection.cursor()
     violators_id = request.args.get('violator_id').split(',')
+
+    # Adding data to activity logs
+  
+    current_date_time = datetime.datetime.now()
+    date = current_date_time.strftime('%A, %B %d, %Y')
+    time = current_date_time.strftime('%I:%M %p')
+    action = f"Deleted violators data and was transferred to archive table."
+    cursor.execute("INSERT INTO activity_logs (date, time, action) VALUES (%s, %s, %s)", (date, time, action))
+    
     for violator in violators_id:
         cursor.execute("UPDATE violators_data SET status = 'archive' WHERE violators_id = %s", (violator,))
-    flash('Violator data move to archive successfully!', 'success')
-    return redirect(url_for('settled_reports'))
+    
+    # Commit the changes
+    db_connection.commit()
+    
+    # Close the cursor and connection
+    cursor.close()
+    db_connection.close()
 
+    flash('Violator data moved to archive successfully!', 'success')
+    return redirect(url_for('settled_reports'))
 
 @violator_bp.route('/restore_reports')
 def restore_reports():
     db_connection = get_db_connection()
     violators_id = request.args.get('violator_id').split(',')
+    cursor = db_connection.cursor()
+    # Adding data to activity logs
+    current_date_time = datetime.datetime.now()
+    date = current_date_time.strftime('%A, %B %d, %Y')
+    time = current_date_time.strftime('%I:%M %p')
+    action = f"Restored violators  data  and was transferred to settled reports table."
+    
+    cursor.execute("INSERT INTO activity_logs (date, time, action) VALUES (%s, %s, %s)", (date, time, action))
     for violator in violators_id:
         cursor = db_connection.cursor()
         cursor.execute("UPDATE violators_data SET status = 'settled' WHERE violators_id = %s", (violator,))
+    cursor.close()
     flash('Violator data restored successfully!', 'success')
-    return redirect(url_for('settled_reports'))
+    return redirect(url_for('archive_reports'))
 
 
 
@@ -140,7 +178,12 @@ def excellReports():
     cursor = db_connection.cursor()
     violator_ids = request.args.get('violator_ids').split(',')
     all_data = []
-    
+     # Adding data to the activity logs
+    current_date_time = datetime.datetime.now()
+    date = current_date_time.strftime('%A, %B %d, %Y')
+    time = current_date_time.strftime('%I:%M %p')
+    action = f"Exported reports to Excel."
+    cursor.execute("INSERT INTO activity_logs (date, time, action) VALUES (%s, %s, %s)", (date, time, action))
    
     # Connect to the database (already initialized db_connection and cursor assumed)
 
@@ -193,7 +236,7 @@ def excellReports():
         else:
             # No background for odd rows
             pass
-        sheet.merge_cells(start_row=row_index, start_column=left_margin, end_row=row_index, end_column=left_margin + 9)
+        sheet.merge_cells(start_row=row_index, start_column=left_margin, end_row=row_index, end_column=left_margin + 12)
 
     # Set up the header for the table
     table_header_row = top_margin + len(headers) + 1
@@ -204,10 +247,13 @@ def excellReports():
         "VIOLATION(S)",
         "PLACE OF APPREHENSION",
         "DRIVER'S LICENSE NO.",
-        " PLATE NO.",
-        "Vehicle",
+        "MV PLATE  NO.",
+        "MUN. PLATE NO.",
+        "PLATE NO.",
+        "VEHICLE",
         "DATE/TIME OF APPREHENSION",
-        "RECEIVED BY (NAME AND SIGNATURE)"
+        "RECEIVED BY (NAME AND SIGNATURE)",
+        "RECEIVED DATE"
     ]
 
     for col_index, header_title in enumerate(table_headers, start=left_margin):
@@ -241,7 +287,7 @@ def excellReports():
 
     file_path = 'temp.xlsx'
     wb.save(file_path)
-
+     
     # Serve the file as a response
     response = make_response(open(file_path, 'rb').read())
     response.headers['Content-Type'] = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'

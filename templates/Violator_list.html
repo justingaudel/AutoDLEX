@@ -123,7 +123,7 @@
                             </div>
                         </div>
                         <div class="table-responsive">
-                            <table class="table datanew">
+                            <table class="table datanew" id="example">
                                 <thead>
                                     <tr>
                                        <th>TCT Number</th>
@@ -160,6 +160,7 @@
                                 </tbody>
                             </table>
                         </div>
+                        
                     </div>
                 </div>
 
@@ -169,6 +170,7 @@
 
     {% else %}
     <script>
+    
         window.onload = function() {
             window.location.href = "{{ url_for('admin_signin') }}";
         }

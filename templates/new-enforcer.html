@@ -71,7 +71,7 @@
                         <h4>Enforcer Information</h4>
                     </div>
                 </div>
-                <form id="addEnforcerForm" action="{{ url_for('enforcer.add_enforcer') }}" enctype="multipart/form-data" method="post" style="box-shadow: 2px 5px 7px rgba(0, 0, 0, 0.3);">
+                <form id="addEnforcerForm" action="{{ url_for('enforcer.add_enforcer') }}" enctype="multipart/form-data" method="post" onsubmit="return validateForm()" style="box-shadow: 2px 5px 7px rgba(0, 0, 0, 0.3);">
                     <div class="card">
                         <div class="card-body">
                             {% if msg %}
@@ -82,70 +82,81 @@
                             <div class="row">
                                 <div class="col-lg-3 col-sm-6 col-12">
                                     <div class="form-group">
-                                        <label><a style="color: red;">* </a>User Name</label>
-                                        <input id="usernameInput" name="username" type="text" class="form-control" placeholder="maximum of 10 characters" maxlength="10" >
-                                        <div id="usernameError" class="text-danger"></div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label><a style="color: red;">* </a>Assigned Location</label>
-                                        <select name="assigned_location" class="form-control" id="assigned_location" >
-                                            <option value="" disabled selected>Select</option>
-                                            <option value="Aplaya">Aplaya</option>
-                                            <option value="Balibago">Balibago</option>
-                                            <option value="Caingin">Caingin</option>
-                                            <option value="Dila">Dila</option>
-                                            <option value="Dita">Dita</option>
-                                            <option value="Don Jose">Don Jose</option>
-                                            <option value="Ibaba">Ibaba</option>
-                                            <option value="Labas">Labas</option>
-                                            <option value="Macabling">Macabling</option>
-                                            <option value="Malitlit">Malitlit</option>
-                                            <option value="Malusak">Malusak</option>
-                                            <option value="Market Area">Market Area</option>
-                                            <option value="Kanluran">Kanluran</option>
-                                            <option value="Pooc">Pooc</option>
-                                            <option value="Pulong Santa Cruz">Pulong Santa Cruz</option>
-                                            <option value="Santo Domingo">Santo Domingo</option>
-                                            <option value="Sinalhan">Sinalhan</option>
-                                            <option value="Tagapo">Tagapo</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-sm-6 col-12">
-                                    <div class="form-group">
                                         <label><a style="color: red;">* </a>First Name</label>
                                         <input type="text" id="firstNameInput" name="first_name" class="form-control"  maxlength="49" pattern="^\S.*$" oninput="validateFirstName()">
                                         <div id="firstNameError" class="text-danger"></div>
                                     </div>
-
-                                    <div class="form-group">
-                                        <label><a style="color: red;">* </a>Password</label>
-                                        <div class="pass-group">
-                                            <input id="password" name="password" type="password" class="pass-inputs form-control" placeholder=" maximum of 11 characters" minlength="7" maxlength="11"  oninput="validatePassword()">
-                                            <div id="passwordError" class="text-danger"></div>
-                                        </div>
+                                    <div class="form-group" style="margin-top: 10px;">
+                                            <label><a style="color: red;">* </a>Assigned Location</label>
+                                            <select name="assigned_location" class="form-control" id="assigned_location" >
+                                                <option value="" disabled selected>Select</option>
+                                                <option value="Aplaya">Aplaya</option>
+                                                <option value="Balibago">Balibago</option>
+                                                <option value="Caingin">Caingin</option>
+                                                <option value="Dila">Dila</option>
+                                                <option value="Dita">Dita</option>
+                                                <option value="Don Jose">Don Jose</option>
+                                                <option value="Ibaba">Ibaba</option>
+                                                <option value="Labas">Labas</option>
+                                                <option value="Macabling">Macabling</option>
+                                                <option value="Malitlit">Malitlit</option>
+                                                <option value="Malusak">Malusak</option>
+                                                <option value="Market Area">Market Area</option>
+                                                <option value="Kanluran">Kanluran</option>
+                                                <option value="Pooc">Pooc</option>
+                                                <option value="Pulong Santa Cruz">Pulong Santa Cruz</option>
+                                                <option value="Santo Domingo">Santo Domingo</option>
+                                                <option value="Sinalhan">Sinalhan</option>
+                                                <option value="Tagapo">Tagapo</option>
+                                            </select>
+                                        <div id="assignedLocationError" class="text-danger"></div>
                                     </div>
-
                                 </div>
                                 <div class="col-lg-3 col-sm-6 col-12">
+                                   
                                     <div class="form-group">
                                         <label><a style="color: red;">* </a>Last Name</label>
                                         <input type="text" id="lastNameInput" name="last_name" class="form-control"  maxlength="49" pattern="^\S.*$" oninput="validateLastName()">
                                         <div id="lastNameError" class="text-danger"></div>
                                     </div>
-                                    <div class="form-group">
-                                        <label><a style="color: red;">* </a>Confirm Password</label>
-                                        <input id="confirm_password" name="confirm_password" type="password" class="pass-inputs form-control" placeholder=" maximum of 11 characters" minlength="7" maxlength="11"  oninput="validateConfirmPassword()">
-                                        <div id="confirmPasswordError" class="text-danger"></div>
+
+                                    <div class="form-group" style="margin-top: 10px;">
+                                        <label><a style="color: red;">* </a>Password</label>
+                                        <div class="input-group">
+                                            <input id="password" name="password" type="password" class="pass-inputs form-control" placeholder=" maximum of 11 characters" minlength="7" maxlength="11" oninput="validatePassword()">
+                                            <span class="input-group-text eye-icon" onclick="togglePasswordVisibility()">
+                                                <i id="eyeIcon" class="fa fa-eye" aria-hidden="true"></i>
+                                            </span>
+                                        </div  >
+                                        <div id="passwordError" class="text-danger"></div>
                                     </div>
+                                    
                                 </div>
                                 <div class="col-lg-3 col-sm-6 col-12">
                                     <div class="form-group">
-                                        <label><a style="color: red;">* </a>Email</label>
-                                        <input type="email" id="email" name="email" class="form-control"  maxlength="100" oninput="validateEmail()">
-                                        <div id="emailError" class="text-danger"></div>
+                                        <label><a style="color: red;">* </a>Phone Number</label>
+                                        <input type="text" id="phoneNumber" name="phone_number" class="form-control"maxlength="13" oninput="validatePhoneNumber()">
+                                        <div id="phoneNumberError" class="text-danger"></div>
+                                    </div>                                    
+                                    <div class="form-group" style="margin-top: 10px;">
+                                        <label><a style="color: red;">* </a>Confirm Password</label>
+                                        <div class="input-group">
+                                            <input id="confirm_password" name="confirm_password" type="password" class="pass-inputs form-control" placeholder=" maximum of 11 characters" minlength="7" maxlength="11" oninput="validateConfirmPassword()">
+                                            <span class="input-group-text eye-icon" onclick="toggleConfirmPasswordVisibility()">
+                                                <i id="confirmEyeIcon" class="fa fa-eye" aria-hidden="true"></i>
+                                            </span>
+                                        </div>
+                                        <div id="confirmPasswordError" class="text-danger"></div>
                                     </div>
+                                    
+                                </div>
+                                <div class="col-lg-3 col-sm-6 col-12">
+                                    <div class="form-group">
+                                        <label><a style="color: red;">* </a>Username</label>
+                                        <input id="usernameInput" name="username" type="text" class="form-control" value="{{generated_username}}" placeholder="maximum of 10 characters" maxlength="10" oninput="validateUsername()" readonly>
+                                        <div id="usernameError" class="text-danger"></div>
+                                    </div>
+                                   
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="form-group">
@@ -165,172 +176,208 @@
     </div>
 
     <!-- Include jQuery and Bootstrap JavaScript -->
-    <script src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 
     <!-- Custom JavaScript -->
     <script>
         // Function to validate username
         function validateUsername() {
-            var username = $('#usernameInput').val().trim();
-            if (username.length === 0) {
-                $('#usernameError').text('Username is required');
-                return false;
+            const usernameInput = document.getElementById('usernameInput');
+            const usernameError = document.getElementById('usernameError');
+
+            const username = usernameInput.value.trim();
+
+            if (!username) {
+                usernameError.textContent = 'Username is required.';
             } else if (username.length > 10) {
-                $('#usernameError').text('Username should not exceed 10 characters');
-                return false;
+                usernameError.textContent = 'Username must be maximum 10 characters long.';
+            } else {
+                usernameError.textContent = '';
             }
-            $('#usernameError').text('');
-            return true;
         }
 
         // Function to validate first name
         function validateFirstName() {
-            var firstName = $('#firstNameInput').val().trim();
-            if (firstName.length === 0) {
-                $('#firstNameError').text('First Name is required');
-                return false;
-            } else if (!/^\S.*$/.test(firstName)) {
-                $('#firstNameError').text('First Name should not start with a space');
-                return false;
+            const firstNameInput = document.getElementById('firstNameInput');
+            const firstNameError = document.getElementById('firstNameError');
+
+            const firstName = firstNameInput.value.trim();
+
+            if (!firstName) {
+                firstNameError.textContent = 'First name is required.';
+            } else if (firstName.length > 49) {
+                firstNameError.textContent = 'First name must be maximum 49 characters long.';
+            } else {
+                firstNameError.textContent = '';
             }
-            $('#firstNameError').text('');
-            return true;
         }
 
         // Function to validate last name
         function validateLastName() {
-            var lastName = $('#lastNameInput').val().trim();
-            if (lastName.length === 0) {
-                $('#lastNameError').text('Last Name is required');
-                return false;
-            } else if (!/^\S.*$/.test(lastName)) {
-                $('#lastNameError').text('Last Name should not start with a space');
-                return false;
+            const lastNameInput = document.getElementById('lastNameInput');
+            const lastNameError = document.getElementById('lastNameError');
+
+            const lastName = lastNameInput.value.trim();
+
+            if (!lastName) {
+                lastNameError.textContent = 'Last name is required.';
+            } else if (lastName.length > 49) {
+                lastNameError.textContent = 'Last name must be maximum 49 characters long.';
+            } else {
+                lastNameError.textContent = '';
             }
-            $('#lastNameError').text('');
-            return true;
         }
+
+        // Function to validate email
+      
+
+            function validatePhoneNumber() {
+                const phoneNumberInput = document.getElementById('phoneNumber');
+                const phoneNumberError = document.getElementById('phoneNumberError');
+
+                const phoneNumber = phoneNumberInput.value.trim();
+                const phoneNumberPattern = /^\+63\d{10}$/;
+
+                if (!phoneNumber) {
+                    phoneNumberError.textContent = 'Phone number is required.';
+                } else if (!phoneNumberPattern.test(phoneNumber)) {
+                    phoneNumberError.textContent = 'Please enter a valid phone number (+63xxxxxxxxxx).';
+                } else {
+                    phoneNumberError.textContent = '';
+                }
+            }
+
 
         // Function to validate password
         function validatePassword() {
-            var password = $('#password').val();
-            if (password.length < 7 || password.length > 11) {
-                $('#passwordError').text('Password should be between 7 to 11 characters');
-                return false;
+            const passwordInput = document.getElementById('password');
+            const passwordError = document.getElementById('passwordError');
+
+            const password = passwordInput.value.trim();
+
+            if (!password) {
+                passwordError.textContent = 'Password is required.';
+            } else if (password.length < 7 || password.length > 11) {
+                passwordError.textContent = 'Password must be between 7 and 11 characters long.';
+            } else {
+                passwordError.textContent = '';
             }
-            $('#passwordError').text('');
-            return true;
         }
 
         // Function to validate confirm password
         function validateConfirmPassword() {
-            var confirmPassword = $('#confirm_password').val();
-            var password = $('#password').val();
-            if (confirmPassword !== password) {
-                $('#confirmPasswordError').text('Passwords do not match');
-                return false;
+            const confirmPasswordInput = document.getElementById('confirm_password');
+            const confirmPasswordError = document.getElementById('confirmPasswordError');
+            const passwordInput = document.getElementById('password');
+
+            const confirmPassword = confirmPasswordInput.value.trim();
+            const password = passwordInput.value.trim();
+
+            if (!confirmPassword) {
+                confirmPasswordError.textContent = 'Confirm password is required.';
+            } else if (confirmPassword !== password) {
+                confirmPasswordError.textContent = 'Passwords do not match.';
+            } else {
+                confirmPasswordError.textContent = '';
             }
-            $('#confirmPasswordError').text('');
-            return true;
         }
 
-        // Function to validate email
-        function validateEmail() {
-            var email = $('#email').val().trim();
-            if (email.length === 0) {
-                $('#emailError').text('Email is required');
-                return false;
-            } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                $('#emailError').text('Invalid email format');
-                return false;
+        function togglePasswordVisibility() {
+        const passwordInput = document.getElementById('password');
+        const eyeIcon = document.getElementById('eyeIcon');
+
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            eyeIcon.classList.remove('fa-eye');
+            eyeIcon.classList.add('fa-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            eyeIcon.classList.remove('fa-eye-slash');
+            eyeIcon.classList.add('fa-eye');
+        }
+    }
+    //confirm password visibility
+        function toggleConfirmPasswordVisibility() {
+            const confirmPasswordInput = document.getElementById('confirm_password');
+            const confirmEyeIcon = document.getElementById('confirmEyeIcon');
+
+            if (confirmPasswordInput.type === 'password') {
+                confirmPasswordInput.type = 'text';
+                confirmEyeIcon.classList.remove('fa-eye');
+                confirmEyeIcon.classList.add('fa-eye-slash');
+            } else {
+                confirmPasswordInput.type = 'password';
+                confirmEyeIcon.classList.remove('fa-eye-slash');
+                confirmEyeIcon.classList.add('fa-eye');
             }
-            $('#emailError').text('');
-            return true;
         }
 
         // Function to validate profile image
         function validateProfileImage() {
-            var profileImage = $('#profile_image')[0].files;
-            if (profileImage.length === 0) {
-                $('#profileImageError').text('Profile Picture is required');
-                return false;
+            const profileImageInput = document.getElementById('profile_image');
+            const profileImageError = document.getElementById('profileImageError');
+
+            const profileImage = profileImageInput.files[0];
+
+            if (!profileImage) {
+                profileImageError.textContent = 'Profile image is required.';
+            } else if (!profileImage.type.startsWith('image/')) {
+                profileImageError.textContent = 'Only image files are allowed.';
+            } else {
+                profileImageError.textContent = '';
             }
-            var fileSize = profileImage[0].size / 1024 / 1024; // in MB
-            if (fileSize > 2) { // Adjust as per your requirements
-                $('#profileImageError').text('File size should not exceed 2MB');
-                return false;
-            }
-            $('#profileImageError').text('');
-            return true;
         }
 
-        $(document).ready(function () {
-            // Form submit validation
-            $('#addEnforcerForm').submit(function (event) {
-                event.preventDefault(); // Prevent the default form submission
+        // Function to validate assigned location
+        function validateBarangay() {
+            const assignedLocationSelect = document.getElementById('assigned_location');
+            const assignedLocationError = document.getElementById('assignedLocationError');
 
-                // Validate all fields before submitting
-                var isUsernameValid = validateUsername();
-                var isFirstNameValid = validateFirstName();
-                var isLastNameValid = validateLastName();
-                var isPasswordValid = validatePassword();
-                var isConfirmPasswordValid = validateConfirmPassword();
-                var isEmailValid = validateEmail();
-                var isProfileImageValid = validateProfileImage();
+            const assignedLocation = assignedLocationSelect.value;
 
-                // If any field is invalid, prevent form submission
-                if (!isUsernameValid || !isFirstNameValid || !isLastNameValid || !isPasswordValid || !isConfirmPasswordValid || !isEmailValid || !isProfileImageValid) {
-                    return false;
-                }
-                // If all validations pass, you can proceed with form submission
-                // Optionally, you can use AJAX to submit the form data asynchronously
-                // Here's an example of how you can do it with AJAX:
-                /*
-                $.ajax({
-                    url: $(this).attr('action'),
-                    type: $(this).attr('method'),
-                    data: new FormData(this),
-                    processData: false,
-                    contentType: false,
-                    success: function(response) {
-                        // Handle success response
-                        console.log('Form submitted successfully');
-                    },
-                    error: function(xhr, status, error) {
-                        // Handle error response
-                        console.error('Form submission error:', error);
-                    }
-                });
-                */
+            if (!assignedLocation) {
+                assignedLocationError.textContent = 'Assigned location is required.';
+            } else {
+                assignedLocationError.textContent = '';
+            }
+        }
 
-                // For now, let's simulate form submission success with a message
-                // Replace this with actual form submission logic
-                swal({
-                    title: "Success!",
-                    text: "Enforcer added successfully.",
-                    icon: "success",
-                    button: "Okay",
-                }).then(function () {
-                    // Redirect or do something after success
-                    window.location.href = "{{ url_for('enforcer.enforcer_data') }}";
-                });
+        // Function to validate the form before submission
+        function validateForm() {
+            validateUsername();
+            validateFirstName();
+            validateLastName();
+            validatePhoneNumber();
+            validatePassword();
+            validateConfirmPassword();
+            validateProfileImage();
+            validateBarangay();
 
-                return false; // Prevent the form from submitting again
-            });
-        });
+            const usernameError = document.getElementById('usernameError').textContent;
+            const firstNameError = document.getElementById('firstNameError').textContent;
+            const lastNameError = document.getElementById('lastNameError').textContent;
+            const phoneNumberError = document.getElementById('phoneNumberError').textContent;
+            const passwordError = document.getElementById('passwordError').textContent;
+            const confirmPasswordError = document.getElementById('confirmPasswordError').textContent;
+            const profileImageError = document.getElementById('profileImageError').textContent;
+            const assignedLocationError = document.getElementById('assignedLocationError').textContent;
+
+            if (usernameError || firstNameError || lastNameError || phoneNumberError || passwordError || confirmPasswordError || profileImageError || assignedLocationError) {
+                return false; // Prevent form submission
+            }
+
+            return true; // Allow form submission
+        }
+
     </script>
+
 
     {% else %}
     <script>
-        window.onload = function () {
-            window.location.href = "{{ url_for('admin_signin') }}";
-        }
+        window.location.href = "{{ url_for('admin_signin') }}";
     </script>
     {% endif %}
-
-
-
     <script src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>
 
     <script src="{{ url_for('static', filename='js/feather.min.js') }}"></script>

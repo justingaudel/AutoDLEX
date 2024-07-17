@@ -12,28 +12,40 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='plugins/fontawesome/css/fontawesome.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='plugins/fontawesome/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='index-css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <style>
+        .flashlight-on {
+            color: yellow;
+        }
+        .flashlight-off {
+            color: black;
+        }
+    </style>
 </head>
 <body>
     <div id="global-loader">
         <div class="whirly-loader">AutoDlex<i class="fa fa-camera" aria-hidden="true"></i></div>
     </div>
     <div class="contentarea">
-        {% if session.loggedins %}     
-        </div>
+        {% if session.loggedins %}
         <h1 style="margin-top: 50px; margin-bottom:4px; margin-left: 50px;" class="text-center">Scan License with Camera</h1>
         <p style="margin-bottom: 20px; margin-left: 50px;" class="text-center">Please ensure the license is clear and visible</p>
         <form action="{{ url_for('svm.violators') }}" method="post" enctype="multipart/form-data">
+            <h1 class="text-center">
+                <i id="flashlightButton" class="fas fa-lightbulb flashlight-off" style="margin-left: 34px; border-radius: 20px; cursor: pointer;"> Flashlight</i>
+            </h1>
             <div class="camera">
                 <video id="video">Video stream not available.</video>
                 <img id="capturedImage" class="capturedImage" src="" alt="Captured Image">
             </div>
-            <h1 class="text-center" ><button style="padding: 15px; font-size: 0.8rem;margin-left: 34px;" id="showModalButton" type="button">Show Extracted Data</button></h1>
+            <h1 class="text-center"><button style="padding: 15px; font-size: 0.8rem;margin-left: 34px;" id="showModalButton" type="button">Show Extracted Data</button></h1>
+            
             <div class="container">
-               
                 <button id="startbutton" style="margin-left: 170px;">
                     <img src="{{ url_for('static', filename='images/camera-svgrepo-com.png') }}" alt="Camera Icon">
                 </button>
+               
             </div>
             
             <input style="display:none" type="text" name="tct_number" value="test_tct">
@@ -67,12 +79,11 @@
         }
         </script>
         {% endif %}
-
         <div class="modal fade" id="captureModal" tabindex="-1" aria-labelledby="captureModalLabel" aria-hidden="true" data-bs-backdrop="false">
             <div class="modal-dialog modal-dialog-centered" style="margin-left:50px">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="captureModalLabel" >Captured Driver's License</h5>
+                        <h5 class="modal-title" id="captureModalLabel">Captured Driver's License</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -87,7 +98,6 @@
             </div>
         </div>
     </div>
-
     <script src="{{ url_for('static', filename='javascript/camera.js') }}"></script>
     <script src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/feather.min.js') }}"></script>
@@ -106,22 +116,15 @@
             document.getElementById("image_data").value = capturedImage;
         });
 
-        // Show Modal button click event
         document.getElementById("showModalButton").addEventListener("click", function() {
             var capturedImage = document.getElementById("capturedImage").src;
             var extractedText = document.getElementById("extractedText").innerHTML;
-            
-            // Example JSON data
-           
-
             document.getElementById("modalCapturedImage").src = capturedImage;
             document.getElementById("modalExtractedText").innerHTML = extractedText;
-        
             var captureModal = new bootstrap.Modal(document.getElementById('captureModal'));
             captureModal.show();
         });
 
-        // Confirm capture button click event in the modal
         document.getElementById("confirmCapture").addEventListener("click", function() {
             var capturedImage = document.getElementById("capturedImage").src;
             var extractedText = document.getElementById("extractedText").innerHTML;
@@ -130,44 +133,46 @@
             var captureModal = bootstrap.Modal.getInstance(document.getElementById('captureModal'));
             captureModal.hide();
         });
-    </script>
-   <style>
-    .flex-row {
-        display: flex;
-        justify-content: center; /* Center horizontally */
-        align-items: center;    /* Center vertically */
-        gap: 10px; /* Optional: Adds space between the buttons */
-    }
 
-    #showModalButton {
-        padding: 15px;
-        font-size: 0.8rem;
-    }
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.querySelector('form');
+            const submitButton = document.getElementById('submit');
+            let isFormSubmitted = false;
 
-    #startbutton img {
-        display: block;
-        margin: auto; /* Center the image within the button */
-    }
-   </style>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const form = document.querySelector('form');
-        const submitButton = document.getElementById('submit');
-        let isFormSubmitted = false;
+            submitButton.addEventListener('click', function () {
+                isFormSubmitted = true;
+            });
 
-        // Detect form submission
-        submitButton.addEventListener('click', function () {
-            isFormSubmitted = true;
+            const extractedTextMessage = document.getElementById('extractedText').innerHTML;
+            if (extractedTextMessage.trim() === "The image captured was not processed correctly. Please try again.") {
+                submitButton.disabled = true;
+            }
+
+            window.addEventListener('beforeunload', function (event) {
+                if (!isFormSubmitted) {
+                    event.preventDefault();
+                    event.returnValue = '';
+                }
+            });
         });
+    </script>
+    <script>
+        document.getElementById("flashlightButton").addEventListener("click", function() {
+            var flashlightButton = document.getElementById("flashlightButton");
+            var isFlashlightOn = flashlightButton.classList.contains("flashlight-on");
 
-        // Prevent page reload
-        window.addEventListener('beforeunload', function (event) {
-            if (!isFormSubmitted) {
-                event.preventDefault();
-                event.returnValue = '';
+            if (isFlashlightOn) {
+                // Turn off the flashlight
+                flashlightButton.classList.remove("flashlight-on");
+                flashlightButton.classList.add("flashlight-off");
+                // Add your code to turn off the flashlight here
+            } else {
+                // Turn on the flashlight
+                flashlightButton.classList.remove("flashlight-off");
+                flashlightButton.classList.add("flashlight-on");
+                // Add your code to turn on the flashlight here
             }
         });
-    });
-</script>
+    </script>
 </body>
 </html>

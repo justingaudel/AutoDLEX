@@ -1,0 +1,348 @@
+{% include 'include_assets/styles.html' %}
+
+</head>
+{% if session.loggedin %}
+<body>
+    <div id="global-loader">
+        <div class="whirly-loader">AutoDlex<i class="fa fa-camera" aria-hidden="true"></i></div>
+    </div>
+    
+    <div class="main-wrapper">
+
+    {% include 'include_assets/profile.html'%}
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <div class="sidebar" id="sidebar" style="background-color:  white;">
+        <div class="sidebar-inner slimscroll" >
+            <div id="sidebar-menu" class="sidebar-menu">
+                <div class="dashboard-logo">
+                    <a href="{{url_for('index')}}">
+                        <img src="static/images/autodlex.png" alt="" style="width: 200px; height: auto; margin-bottom: 80px;">
+                    </a>
+                </div>
+                <ul >
+                    <li >
+                        <a href="{{ url_for('index') }}"><span class="fa fa-home"></span><span>
+                                Dashboard</span> </a>
+                    </li>
+                         <li >
+                        <a href="{{ url_for('violators.violator_list') }}">
+                            <span class="fa fa-user-alt"></span>
+                            <span> Violator List</span>
+                        </a>
+                    </li>
+                    <li >
+                    <a href="{{ url_for('enforcer.enforcer_data') }}">
+                        <span class="fa fa-user-alt"></span>
+                            <span> Enforcers</span>
+                        </a>
+                    </li>
+                    <li class="active"  >
+                    <a href="{{ url_for('settled_reports') }}">
+                        <span class="fas fa-exclamation-circle"></span>
+                            <span  > Settled Reports</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-wrapper">
+        <div class="content">
+            <div class="page-header">
+                <div class="page-title">
+                    <h4>Archive List</h4>
+                </div>
+            </div>
+            <div class="card" style="box-shadow:2px 5px 7px rgba(0, 0, 0, 0.3);" id="table2">
+                <div class="card-body">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                    <div class="table-top">
+                        <div class="search-set">
+                            <div class="search-input">
+                                <a class="btn btn-searchset"><img src="static/img/icons/search-white.svg" alt="img"></a>
+                            </div>
+                        </div>
+                        <div class="wordset">
+                            <ul>
+                                <li>
+                                    <a data-bs-toggle="tooltip" data-bs-placement="top" title="Generate Reports" onclick="excellReports2()">
+                                        <img src="static/img/icons/excel.svg" alt="img">
+                                    </a>
+                                </li>
+                                <a data-bs-toggle="tooltip"  class="me-3 " title="Restore Reports"  onclick="restoreData2()" >
+                                    <img src="static/img/history.png" alt="img" width="25" height="35">
+                                </a>
+                                <div class="d-flex justify-content-center">
+                                    <a href="{{ url_for('settled_reports') }}" class="btn btn-info" >View Setted Reports</a>
+                                </div>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card" id="filter_inputs">
+                        <div class="card-body pb-0">
+                            <div class="row">
+                                <div class="col-lg-2 col-sm-6 col-12">
+                                    <div class="form-group">
+                                        <input type="text" placeholder="Enter User Name">
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-6 col-12">
+                                    <div class="form-group">
+                                        <input type="text" placeholder="Enter Phone">
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-6 col-12">
+                                    <div class="form-group">
+                                        <input type="text" placeholder="Enter Email">
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-6 col-12">
+                                    <div class="form-group">
+                                        <input type="text" class="datetimepicker cal-icon" placeholder="Choose Date">
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-6 col-12">
+                                    <div class="form-group">
+                                        <select class="select">
+                                            <option>Disable</option>
+                                            <option>Enable</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-1 col-sm-6 col-12 ms-auto">
+                                    <div class="form-group">
+                                        <a class="btn btn-filters ms-auto"><img src="static/img/icons/search-whites.svg" alt="img"></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table datanew mainTable" id="table2" >
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Violation</th>
+                                    <th>Plate Number</th>
+                                    <th>Date </th>
+                                    <th>Barangay</th>
+                                    <th>Vehicle Type</th>
+                                    <th>Status</th>
+                                    <th>
+                                        <div class="d-flex justify-content-center" style="margin-left:20px">
+                                            <input type="checkbox" id="selectAll2" onclick="toggleCheckboxes2('rowCheckbox2', 'selectAll2')">
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for rows in archiveData %}
+                                    <tr>
+                                        <td>{{rows.5}}</td>
+                                        <td class="ellipsis">{{rows.4}}</td>
+                                        <td>{{rows.8}}</td>
+                                        <td>{{rows.6}} </td>
+                                        <td>{{rows.7}}</td>
+                                        <td>{{rows.9}}</td>
+                                        <td><span class="bg-warning badges"> {{rows.10}}</span></td>
+                                        <td>
+                                            <div class="d-flex justify-content-center">
+                                                <input type="checkbox" class="rowCheckbox2" value="{{rows.0}}">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+
+    <script>
+        function toggleCheckboxes(checkboxClass, selectAllId) {
+            var checkboxes = document.querySelectorAll('.' + checkboxClass);
+            var selectAllCheckbox = document.getElementById(selectAllId);
+            checkboxes.forEach(function(checkbox) {
+                checkbox.checked = selectAllCheckbox.checked;
+            });
+        }
+
+        function toggleCheckboxes2(checkboxClass, selectAllId) {
+            var checkboxes = document.querySelectorAll('.' + checkboxClass);
+            var selectAllCheckbox = document.getElementById(selectAllId);
+            checkboxes.forEach(function(checkbox) {
+                checkbox.checked = selectAllCheckbox.checked;
+            });
+        }
+        function deleteData() {
+            var checkboxes = document.querySelectorAll('.rowCheckbox');
+            var viewIds = Array.from(checkboxes).filter(checkbox => checkbox.checked).map(checkbox => checkbox.value);
+
+            if (viewIds.length < 1) {
+            } else {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'You are about to delete this data',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Confirm',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var viewId = viewIds[0];
+                        window.location.href = "{{ url_for('violators.delete_violator', violator_id='') }}" + viewIds.join(',');
+                    }
+                });
+            } 
+        }
+
+
+        function restoreData() {
+            var checkboxes = document.querySelectorAll('.rowCheckbox');
+            var viewIds = Array.from(checkboxes).filter(checkbox => checkbox.checked).map(checkbox => checkbox.value);
+
+            if (viewIds.length < 1) {
+            } else {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'You are about to restore this data',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Confirm',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var viewId = viewIds[0];
+                        window.location.href = "{{ url_for('violators.restore_reports', violator_id='') }}" + viewIds.join(',');
+                    }
+                });
+            } 
+        }
+
+        function restoreData2() {
+            var checkboxes = document.querySelectorAll('.rowCheckbox2');
+            var viewIds = Array.from(checkboxes).filter(checkbox => checkbox.checked).map(checkbox => checkbox.value);
+
+            if (viewIds.length < 1) {
+            } else {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'You are about to restore this data',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Confirm',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var viewId = viewIds[0];
+                        window.location.href = "{{ url_for('violators.restore_reports', violator_id='') }}" + viewIds.join(',');
+                    }
+                });
+            } 
+        }
+
+
+        function excellReports() {
+            var checkboxes = document.querySelectorAll('.rowCheckbox');
+            var viewIds = Array.from(checkboxes)
+                .filter(checkbox => checkbox.checked)
+                .map(checkbox => checkbox.value);
+
+            if (viewIds.length < 1) {
+              
+            } else {
+                // Construct the URL dynamically with all selected viewIds
+                var url = "{{ url_for('violators.excellReports', violator_ids='') }}" + viewIds.join(',');
+                // Redirect the user to the generated URL
+                window.location.href = url;
+            }
+        }
+
+
+        function excellReports2() {
+            var checkboxes = document.querySelectorAll('.rowCheckbox2');
+            var viewIds = Array.from(checkboxes)
+                .filter(checkbox => checkbox.checked)
+                .map(checkbox => checkbox.value);
+
+            if (viewIds.length < 1) {
+              
+            } else {
+                // Construct the URL dynamically with all selected viewIds
+                var url = "{{ url_for('violators.excellReports', violator_ids='') }}" + viewIds.join(',');
+                // Redirect the user to the generated URL
+                window.location.href = url;
+            }
+        }
+    </script>
+
+
+{% else %}
+<script>
+window.onload = function() {
+    window.location.href = "{{ url_for('admin_signin') }}";
+}
+</script>
+{% endif %}
+
+<style>
+
+.ellipsis {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 200px; /* Adjust the width as needed */
+        }
+</style>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+  {% for category, message in messages %}
+    <script>
+      Swal.fire({
+        icon: '{{ category }}',
+        title: '{{ message }}',
+        showConfirmButton: true,
+        allowOutsideClick: false, 
+        allowEscapeKey: false 
+      });
+    </script>
+  {% endfor %}
+{% endif %}
+{% endwith %}
+
+
+<script data-cfasync="false" src="{{ url_for('static', filename='js/email-decode.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/feather.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/jquery.slimscroll.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/jquery.dataTables.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/dataTables.bootstrap4.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ url_for('static', filename='plugins/select2/js/select2.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/moment.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bootstrap-datetimepicker.min.js') }}"></script>
+<script src="{{ url_for('static', filename='plugins/sweetalert/sweetalert2.all.min.js') }}"></script>
+<script src="{{ url_for('static', filename='plugins/sweetalert/sweetalerts.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+</html>

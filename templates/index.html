@@ -8,8 +8,8 @@
         <div class="whirly-loader">AutoDlex<i class="fa fa-camera" aria-hidden="true"></i></div>
     </div>
     <!--test commit    -->
-    <div class="main-wrapper">
-
+   
+    </head>
         {% include 'include_assets/profile.html'%}
         <!--  Changes wre applied-->
         <div class="sidebar" id="sidebar" style="background-color:  white;">
@@ -51,48 +51,57 @@
             <div class="content">
                 <div class="row">
                     <div class="col-lg-3 col-sm-6 col-12">
-                        <div class="dash-widget" style="box-shadow:2px 5px 7px rgba(0, 0, 0, 0.3);">
-                            <div class="dash-imgs">
-                                <i data-feather="user"></i>
+                        <a href="{{ url_for('enforcer.enforcer_data') }}" style="text-decoration: none; color: inherit;">
+                            <div class="dash-widget" style="box-shadow: 2px 5px 7px rgba(0, 0, 0, 0.3);">
+                                <div class="dash-imgs">
+                                    <i data-feather="user"></i>
+                                </div>
+                                <div class="dash-widgetcontent">
+                                    <h5><span class="counters" data-count="{{enforcers_count}}">24</span></h5>
+                                    <h6>Enforcers</h6>
+                                </div>
                             </div>
-                        <div class="dash-widgetcontent" >
-                            <h5><span class="counters" data-count="{{enforcers_count}}">24</span></h5>
-                        <h6>Enforcers</h6>
-                            </div>
-                        </div>
+                        </a>
+                        
                     </div>
                     <div class="col-lg-3 col-sm-6 col-12">
+                        <a href="{{ url_for('archive_reports') }}" style="text-decoration: none; color: inherit;">
                         <div class="dash-widget" style="box-shadow:2px 5px 7px rgba(0, 0, 0, 0.3);">
                             <div class="dash-imgs">
                                 <i data-feather="user"></i>
                             </div>
                         <div class="dash-widgetcontent">
-                            <h5><span class="counters" data-count="{{violators_count}}">43</span></h5>
-                        <h6>Violators</h6>
+                            <h5><span class="counters" data-count="{{violators_count}}"></span></h5>
+                        <h6>Archive Reports</h6>
                             </div>
                         </div>
+                    </a>
                     </div>
                     <div class="col-lg-3 col-sm-6 col-12">
+                        <a href="{{ url_for('settled_reports') }}" style="text-decoration: none; color: inherit;">
                         <div class="dash-widget" style="box-shadow:2px 5px 7px rgba(0, 0, 0, 0.3);">
                             <div class="dash-imgs">
                                 <i data-feather="file-text"></i>
                                 </div>
                         <div class="dash-widgetcontent">
-                            <h5><span class="counters" data-count="{{settled_reports_count}}">54</span></h5>
+                            <h5><span class="counters" data-count="{{settled_reports_count}}"></span></h5>
                         <h6>Settled Reports</h6>
                             </div>
                         </div>
+                    </a>
                     </div>
                     <div class="col-lg-3 col-sm-6 col-12" >
+                        <a href="{{ url_for('violators.violator_list') }}" style="text-decoration: none; color: inherit;">
                         <div class="dash-widget" style="box-shadow:2px 5px 7px rgba(0, 0, 0, 0.3);">
                             <div class="dash-imgs">
                                 <i data-feather="file-text"></i>
                                 </div>
                         <div class="dash-widgetcontent">
-                            <h5><span class="counters" data-count="{{unsettled_reports_count}}">98</span></h5>
+                            <h5><span class="counters" data-count="{{unsettled_reports_count}}"></span></h5>
                         <h6>Unsettled Reports</h6>
                             </div>
                         </div>
+                    </a>
                     </div>
                    
                 </div>
@@ -102,31 +111,27 @@
                 {% include 'include_assets/boostrap-table.html'%}
                 <div class="card mb-0">
                     <div class="card-body" style="box-shadow:2px 5px 7px rgba(0, 0, 0, 0.3);">
-                        <h4 class="card-title"> Violators Data</h4>
+                        <h4 class="card-title">Activity logs</h4>
                         <div class="container-fluid mb-4" >
                             <table id="example" class="table table-striped table-bordered" style="width:100%">
                         <thead>
                             <tr>
-                                <th>TCT Number</th>
-                                <th>Plate Number</th>
-                                <th>Barangay</th>
-                                <th>Violation</th>
-                                <th>Date</th>
-                                <th>Status</th>
+                                <th class="text-center">Date</th>
+                                <th class="text-center">Time</th>
+                                <th class="text-center">Action</th>
+                                
                             </tr>
                         </thead>
                         <tbody>
-                            {% for data in violators  %}
+                            {% for log in logs %}
                             <tr>
-                                <td>{{ data.3}}</td>
-                                <td>{{ data.8 }}</td>
-                                <td>{{ data.7 }}</td>
-                                <td class="ellipsis">{{ data.4 }}</td>
-                                <td>{{ data.6 }}</td>
-                                <td>{{ data.10 }}</td>
+                              
+                                <td class="text-center">{{log.4}}</td>
+                                <td class="text-center">{{log.5}}</td>
+                                <td class="text-center">{{log.6}}</td>
+                              
                             </tr>
-                        {% endfor %}
-                        
+                            {% endfor %}
                         </tbody>
                         </table> 
                         </div>  
@@ -137,8 +142,10 @@
     </div>
 
     {% else %}
+
         <script>
             
+        
 
         window.onload = function() {
             window.location.href = "{{ url_for('admin_signin') }}";
@@ -148,7 +155,9 @@
 
    {% include 'include_assets/script.html'%}
    <script>
-    new DataTable('#example'); 
+   new DataTable('#example', {
+    order: [[0, 'desc']]
+});
 
 </script>
 <style>
