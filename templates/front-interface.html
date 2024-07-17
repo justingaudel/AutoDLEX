@@ -55,11 +55,11 @@
               enforcerButton.disabled = false;
               enforcerButton.onclick = function() { redirectTo('enforcer'); }; // Enable click event
 
-             // adminButton.disabled = true;
-            //  adminButton.onclick = null; // Remove the click event
+             adminButton.disabled = true;
+             adminButton.onclick = null; // Remove the click event
           } else { // Desktop screen
-             // enforcerButton.disabled = true;
-             // enforcerButton.onclick = null; // Remove the click event
+              enforcerButton.disabled = true;
+             enforcerButton.onclick = null; // Remove the click event
 
               adminButton.disabled = false;
               adminButton.onclick = function() { redirectTo('admin_signin'); }; // Enable click event
